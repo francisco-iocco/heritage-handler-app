@@ -1,4 +1,9 @@
+import Form from "components/Form";
 import "./index.css";
+
+/**
+ * TODO: finish the section below the login form
+ */
 
 export default function Login() {
   return (
@@ -9,7 +14,9 @@ export default function Login() {
           <h2>Quick, smart, easy to use... All in one place!</h2>
         </div>
       </div>
-      <div className="section-2"></div>
+      <div className="section-2">
+        <Form title="Log into your account" />
+      </div>
     </>
   )
 }

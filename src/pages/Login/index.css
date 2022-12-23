@@ -33,11 +33,6 @@
   padding: 10px;
 }
 
-.section-2 {
-  position: relative;
-  height: 100vh;
-}
-
 .section-2::before {
   background-color: #fff;
   content: "";
@@ -48,4 +43,12 @@
   transform: rotate(-35deg);
   width: 100%;
   border-radius: 0 50px 50px 0;
+}
+
+.section-2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 100vh;
 }
