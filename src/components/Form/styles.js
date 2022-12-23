@@ -3,10 +3,13 @@ import styled from "@emotion/styled";
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  padding: 25px 15px;
+  margin: 25px 0;
   position: relative;
   width: 80%;
-  z-index: 1; 
+  z-index: 1;
+  box-shadow: 0 0 30px -10px #000;
+  border-radius: 15px;
 
   & h3 {
     align-self: center;
@@ -31,6 +34,12 @@ const StyledForm = styled.form`
     color: #fff;
     margin: 15px 0;
     padding: 10px;
+  }
+
+  & a {
+    text-align: center;
+    color: #2424d2;
+    margin: 10px;
   }
 `
 

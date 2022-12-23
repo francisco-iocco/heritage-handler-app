@@ -9,13 +9,15 @@ export default function Login() {
   return (
     <>
       <div className="section-1">
-        <div>
+        <header>
           <h1>Heritage Handler App</h1>
           <h2>Quick, smart, easy to use... All in one place!</h2>
-        </div>
+        </header>
       </div>
       <div className="section-2">
         <Form title="Log into your account" />
+        <div className="divider"></div>
+        <button className="registerBtn">Create a new account</button>
       </div>
     </>
   )

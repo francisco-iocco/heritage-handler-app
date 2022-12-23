@@ -7,6 +7,7 @@ export default function Form({ title }) {
       <input type="email" placeholder="Email"/>
       <input type="password" placeholder="Password" />
       <button type="submit">Log in</button>
+      <a>Forget your password?</a>
     </StyledForm>
   )
 }
