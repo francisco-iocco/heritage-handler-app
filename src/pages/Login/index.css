@@ -1,13 +1,13 @@
 .section-1::before {
-    background-color: #fff;
-    content: "";
-    display: block;
-    height: 7vh;
-    position: absolute;
-    top: 0;
-    transform: rotate(145deg);
-    width: 100%;
-    border-radius: 0 50px 50px 0;
+  background-color: #fff;
+  content: "";
+  display: block;
+  height: 7vh;
+  position: absolute;
+  top: 0;
+  transform: rotate(145deg);
+  width: 100%;
+  border-radius: 0 50px 50px 0;
 }
 
 .section-1 {

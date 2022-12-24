@@ -1,10 +1,6 @@
 import Form from "components/Form";
 import "./index.css";
 
-/**
- * TODO: finish the section below the login form
- */
-
 export default function Login() {
   return (
     <>
