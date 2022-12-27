@@ -27,6 +27,12 @@ const StyledForm = styled.form`
     padding: 10px;
   }
 
+  & p {
+    color: red;
+    margin: 5px 1px;
+    font-size: 10px;
+  }
+
   & button {
     background-color: #2424d2;
     border-radius: 15px;

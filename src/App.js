@@ -1,11 +1,14 @@
-import Router from './Router';
+import Router from 'Router';
+import { JWTContextProvider } from 'contexts/JWTContext';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <Router />
-    </div>
+    <JWTContextProvider>
+      <div className="App">
+        <Router />
+      </div>
+    </JWTContextProvider>
   );
 }
 
