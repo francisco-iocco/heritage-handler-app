@@ -1,0 +1,9 @@
+.graph-container {
+  background-color: lightcyan;
+  height: 50%;
+}
+
+.current-money-container {
+  background-color: lightblue;
+  height: 25%;
+}
