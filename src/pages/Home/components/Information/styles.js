@@ -5,7 +5,7 @@ const StyledDiv = styled.div`
   display: flex;
   height: 15%;
   
-  & div {
+  div {
     display: flex;
     padding: 15px;
     flex-direction: column;
@@ -15,25 +15,25 @@ const StyledDiv = styled.div`
     width: 50%;
   }
   
-  & div h4 {
+  div h4 {
     font-size: 18px;
   }
   
-  & div select {
+  div select {
     margin: 10px auto;
     padding: 5px;
     outline: none;
   }
   
-  & div p {
+  div p {
     font-size: 20px;
   }
   
-  & .incomes-container {
+  .incomes-container {
     color: #1ac31a;
   }
   
-  & .remittances-container {
+  .remittances-container {
     border-right: 1px solid #999;
     color: #dc1616;
   }

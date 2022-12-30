@@ -1,15 +1,18 @@
 import Nav from "components/Nav";
 import Information from "./components/Information";
 import Percentajes from "./components/Percentajes";
-import CurrentHeritage from "./components/CurrentHeritage";
+import StyledHome from "./styles";
 
 export default function Home() {
   return (
-    <div className="section">
+    <StyledHome className="section">
       <Nav />
       <Information />
       <Percentajes />
-      <CurrentHeritage />
-    </div>
+      <div className="current-heritage-container">
+        <h3>Current Heritage</h3>
+        <p>$900000</p>
+      </div>
+    </StyledHome>
   );
 }

@@ -1,21 +1,19 @@
 import { FaHome, FaSearch, FaRegUserCircle } from "react-icons/fa";
-import { useLocation } from "react-router-dom";
+import Button from "./components/Button";
 import StyledNav from "./styles";
 
 export default function Nav() {
-  const { pathname } = useLocation();
-  
   return (
     <StyledNav>
-      <li className={pathname === "/search" ? "active" : undefined}>
+      <Button destination="/search">
         <FaSearch />
-      </li>
-      <li className={pathname === "/home" ? "active" : undefined}>
+      </Button>
+      <Button destination="/home">
         <FaHome />
-      </li>
-      <li className={pathname === "/account" ? "active" : undefined}>
+      </Button>
+      <Button destination="/account">
         <FaRegUserCircle />
-      </li>
+      </Button>
     </StyledNav>
   );
 }

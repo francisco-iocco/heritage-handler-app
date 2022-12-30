@@ -1,12 +1,10 @@
 import styled from "@emotion/styled";
 
 const StyledDiv = styled.div`
-  & {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 50%;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50%;
 
   & > div {
     width: 90%;
@@ -17,8 +15,8 @@ const StyledDiv = styled.div`
     align-items: center;
     box-shadow: 0 0 30px -5px #808080;
   }
-  
-  & div .title {
+
+  div .title {
     padding: 30px;
     display: flex;
     flex-direction: column;
@@ -28,18 +26,18 @@ const StyledDiv = styled.div`
     width: 100%;
   }
 
-  & div h4 {
+  div h4 {
     font-size: 20px;
     border-bottom: 1px solid lightblue;
     padding: 5px;
   }
 
-  & div .title select {
+  div .title select {
     padding: 10px;
     outline: none;
   }
 
-  & div .data {
+  div .data {
     height: 50%;
     width: 100%;
     display: flex;
@@ -48,7 +46,7 @@ const StyledDiv = styled.div`
     padding: 30px 0;
   }
 
-  & div .data div {
+  div .data div {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -58,20 +56,20 @@ const StyledDiv = styled.div`
     text-align: center;
   }
 
-  & div .data .remittances-data {
+  div .data .remittances-data {
     color: #f00;
   }
 
-  & div .data .incomes-data {
+  div .data .incomes-data {
     color: #1ac31a;
     border-left: 1px solid #999999;
   }
 
-  & div .data div h5 {
+  div .data div h5 {
     font-size: 20px;
   }
 
-  & div .data div p {
+  div .data div p {
     font-size: 16px;
   }
 `;
