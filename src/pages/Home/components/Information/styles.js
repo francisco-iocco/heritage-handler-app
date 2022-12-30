@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 const StyledDiv = styled.div`
-  border-bottom: 1px solid #2424d2;
+  border-bottom: 1px solid #999;
   display: flex;
   height: 15%;
   
@@ -12,16 +12,17 @@ const StyledDiv = styled.div`
     justify-content: space-around;
     text-align: center;
     width: 50%;
+    padding: 15px;
   }
 
-  & div h3 {
+  & div h4 {
     font-size: 18px;
   }
   
   & div select {
-    display: block;
     margin: 10px auto;
     padding: 5px;
+    outline: none;
   }
   
   & div p {
@@ -29,7 +30,7 @@ const StyledDiv = styled.div`
   }
   
   & .incomes-container {
-    border-right: 1px solid #2424d2;
+    border-right: 1px solid #999;
     color: #1ac31a;
   }
   
