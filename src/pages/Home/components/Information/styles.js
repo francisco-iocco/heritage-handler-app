@@ -7,14 +7,14 @@ const StyledDiv = styled.div`
   
   & div {
     display: flex;
+    padding: 15px;
     flex-direction: column;
     height: 100%;
     justify-content: space-around;
     text-align: center;
     width: 50%;
-    padding: 15px;
   }
-
+  
   & div h4 {
     font-size: 18px;
   }
@@ -30,11 +30,11 @@ const StyledDiv = styled.div`
   }
   
   & .incomes-container {
-    border-right: 1px solid #999;
     color: #1ac31a;
   }
   
   & .remittances-container {
+    border-right: 1px solid #999;
     color: #dc1616;
   }
 `;

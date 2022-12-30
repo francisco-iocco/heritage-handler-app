@@ -1,9 +1,7 @@
 import Nav from "components/Nav";
 import Information from "./components/Information";
 import Percentajes from "./components/Percentajes";
-import "./index.css";
-
-/* This page isn't finished yet, this is just a model so we can start imagine how it will be in the future */
+import CurrentHeritage from "./components/CurrentHeritage";
 
 export default function Home() {
   return (
@@ -11,7 +9,7 @@ export default function Home() {
       <Nav />
       <Information />
       <Percentajes />
-      <div className="current-money-container"></div>
+      <CurrentHeritage />
     </div>
   );
 }
