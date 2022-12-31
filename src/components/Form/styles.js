@@ -11,7 +11,7 @@ const StyledForm = styled.form`
   box-shadow: 0 0 30px -10px #000;
   border-radius: 15px;
 
-  & h3 {
+  h3 {
     align-self: center;
     border-bottom: 1px solid lightblue;
     font-size: 1.2em;
@@ -21,19 +21,19 @@ const StyledForm = styled.form`
     width: 80%;
   }
 
-  & input {
+  input {
     margin: 15px 0 10px 0;
     outline: none;
     padding: 10px;
   }
 
-  & p {
+  p {
     color: red;
     margin: 5px 1px;
     font-size: 10px;
   }
 
-  & button {
+  button {
     background-color: #2424d2;
     border-radius: 15px;
     border: none;
@@ -42,7 +42,7 @@ const StyledForm = styled.form`
     padding: 10px;
   }
 
-  & a {
+  a {
     text-align: center;
     color: #2424d2;
     margin: 10px;
