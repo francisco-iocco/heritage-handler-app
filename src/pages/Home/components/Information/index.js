@@ -1,8 +1,8 @@
-import StyledDiv from "./styles";
+import StyledInformation from "./styles";
 
-export default function IncoRemiInfo() {
+export default function Information() {
   return (
-    <StyledDiv>
+    <StyledInformation>
       <div className="remittances-container">
         <h4>Remittances</h4>
         <select>
@@ -23,6 +23,6 @@ export default function IncoRemiInfo() {
         </select>
         <p>$500000</p>
       </div>
-    </StyledDiv>
+    </StyledInformation>
   );
 }

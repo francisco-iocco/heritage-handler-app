@@ -31,6 +31,7 @@ const StyledModal = styled.div`
     margin: 0;
     right: 10px;
     top: 5px;
+    border: none;
   }
 
   .modal-content form {
@@ -39,6 +40,12 @@ const StyledModal = styled.div`
     justify-content: space-evenly;
     align-items: center;
     height: 100%;
+    padding: 10px;
+  }
+
+  .modal-content form h1 {
+    text-align: center;
+    border-bottom: 1px solid lightblue;
     padding: 10px;
   }
 
@@ -51,6 +58,10 @@ const StyledModal = styled.div`
   .modal-content form button[type="submit"] {
     background-color: #2424d2;
     font-size: 20px;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    color: #fff;
   }
 `;
 

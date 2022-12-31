@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 const StyledNav = styled.nav`
   align-items: center;
   background-color: #fff;
-  border-top: 1px solid #2424d2;
+  border-top: 1px solid #999;
   bottom: 0;
   display: flex;
   height: 10%;

@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-const StyledDiv = styled.div`
+const StyledPercentajes = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -74,4 +74,4 @@ const StyledDiv = styled.div`
   }
 `;
 
-export default StyledDiv;
+export default StyledPercentajes;

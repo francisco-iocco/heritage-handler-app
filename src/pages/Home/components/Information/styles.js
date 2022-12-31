@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-const StyledDiv = styled.div`
+const StyledInformation = styled.div`
   border-bottom: 1px solid #999;
   display: flex;
   height: 15%;
@@ -39,4 +39,4 @@ const StyledDiv = styled.div`
   }
 `;
 
-export default StyledDiv;
+export default StyledInformation;

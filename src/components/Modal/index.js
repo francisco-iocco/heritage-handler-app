@@ -1,6 +1,6 @@
 import StyledModal from "./styles";
 
-export default function Modal({ onClose, title }) {
+export default function Modal({ onClose, children }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -10,13 +10,8 @@ export default function Modal({ onClose, title }) {
   return (
     <StyledModal>
       <div className="modal-content">
-        <button className="close" onClick={onClose}>x</button>
-        <form>
-          <h1>{title}</h1>
-          <input type="text" placeholder="Title" />
-          <input type="number" placeholder="Amount" />
-          <button type="submit" onClick={handleSubmit}>Ok</button>
-        </form>
+        <button className="close" onClick={handleSubmit}>x</button>
+        {children}
       </div>
     </StyledModal>
   );

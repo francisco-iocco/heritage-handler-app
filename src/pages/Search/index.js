@@ -1,11 +1,13 @@
 import Nav from "components/Nav";
-import Creator from "components/IncoRemiCreator";
+import ResultCreator from "pages/Search/components/ResultCreator";
+import ResultsTable from "pages/Search/components/ResultsTable";
 
 export default function Search() {
   return (
     <div className="section">
-      <Creator />
       <Nav />
+      <ResultCreator />
+      <ResultsTable />
     </div>
   );
 }
