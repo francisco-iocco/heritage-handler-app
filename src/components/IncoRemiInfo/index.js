@@ -1,6 +1,6 @@
 import StyledDiv from "./styles";
 
-export default function IncomesAndRemittancesInfo() {
+export default function IncoRemiInfo() {
   return (
     <StyledDiv>
       <div className="remittances-container">

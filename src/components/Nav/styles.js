@@ -21,6 +21,8 @@ const StyledNav = styled.nav`
   }
 
   li a {
+    display: flex;
+    align-items: center;
     color: #2424d2;
   }
 

@@ -1,6 +1,6 @@
 import StyledDiv from "./styles";
 
-export default function Percentajes() {
+export default function IncoRemiPercent() {
   return (
     <StyledDiv>
       <div>
