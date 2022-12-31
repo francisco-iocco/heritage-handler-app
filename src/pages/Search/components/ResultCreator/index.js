@@ -2,23 +2,24 @@ import { FaSearch } from "react-icons/fa";
 import { useState } from "react";
 import Modal from "components/Modal";
 import StyledResultCreator from "./styles";
+import ResultsForm from "../ResultsForm";
+
+/**
+ * TODO: button filter should open a different Modal to search for incomes and remittances.
+ */
 
 export default function ResultCreator() {
   const [showModal, setShowModal] = useState(false);
-  const [formTitle, setformTitle] = useState("");
+  const [formTitle, setFormTitle] = useState("");
 
   const handleShowModal = ({ target: { innerHTML } }) => {
-    setformTitle(innerHTML);
+    setFormTitle(innerHTML);
     setShowModal(true);
-  }
+  };
 
   const handleCloseModal = () => {
     setShowModal(false);
-  }
-
-  /**
-   * TODO: button filter should open a different Modal to search for incomes and remittances.
-   */
+  };
 
   return (
     <StyledResultCreator>
@@ -35,14 +36,7 @@ export default function ResultCreator() {
       </button>
       {showModal && (
         <Modal onClose={handleCloseModal}>
-          <form>
-            <h1>{formTitle}</h1>
-            <input type="text" placeholder="Title" />
-            <input type="number" placeholder="Amount" />
-            <button type="submit" onClick={handleCloseModal}>
-              Create
-            </button>
-          </form>
+          <ResultsForm title={formTitle} onClose={handleCloseModal} />
         </Modal>
       )}
     </StyledResultCreator>
