@@ -1,7 +1,11 @@
 import styled from "@emotion/styled";
 
-const StyledResultsTable = styled.table`
+const StyledResultsDiv = styled.div`
   width: 100%;
+
+  table {
+    width: 100%;
+  }
 
   tr:nth-of-type(odd) {
     background-color: #eee;
@@ -49,6 +53,34 @@ const StyledResultsTable = styled.table`
   td:last-child button.delete {
     background-color: #dc1616;
   }
+
+  .search-container {
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    background-color: #fff;
+    padding: 15px;
+    bottom: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .search-container input {
+    padding: 10px;
+    outline: none;
+  }
+
+  .search-container button {
+    background-color: transparent;
+    font-size: 20px;
+    border: none;
+    margin-left: 15px;
+    border-left: 1px solid #999;
+    height: 50%;
+    padding-left: 15px;
+    color: #808080;
+  }
 `;
 
-export default StyledResultsTable;
+export default StyledResultsDiv;

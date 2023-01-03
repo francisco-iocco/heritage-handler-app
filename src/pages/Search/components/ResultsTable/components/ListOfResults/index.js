@@ -1,8 +1,8 @@
 import Result from "./Result";
 
-// This is just Raw data which is used to start to know how the layout will be. 
+// This is just Raw data which is used to start to know how the layout will be.
 
-const results = [
+let results = [
   {
     description: "Car selled",
     amount: 1000,
@@ -41,8 +41,31 @@ const results = [
   },
 ];
 
-export default function ListOfResults() {
+export default function ListOfResults({ searchInputValue }) {
+  if (searchInputValue) {
+    return results
+      .filter((result) => {
+        if (
+          result.description
+            .toLowerCase()
+            .includes(searchInputValue)
+        ) {
+          return true;
+        }
+      })
+      .map((result, index) => (
+        <Result
+          key={index}
+          description={result.description}
+          amount={result.amount}
+        />
+      ));
+  }
   return results.map((result, index) => (
-    <Result key={index} description={result.description} amount={result.amount} />
+    <Result
+      key={index}
+      description={result.description}
+      amount={result.amount}
+    />
   ));
 }

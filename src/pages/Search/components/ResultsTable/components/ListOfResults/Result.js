@@ -1,5 +1,5 @@
 import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
-import ResultsForm from "../../../ResultsForm";
+import CreateForm from "pages/Search/components/CreateForm";
 import Modal from "components/Modal";
 import { useState } from "react";
 
@@ -31,7 +31,7 @@ export default function Result({ description, amount }) {
       </td>
       {showModal && (
         <Modal onClose={handleCloseModal}>
-          <ResultsForm onClose={handleCloseModal} title={formTitle} defaultValues={{ description, amount }} />
+          <CreateForm onClose={handleCloseModal} title={formTitle} defaultValues={{ description, amount }} />
         </Modal>
       )}
     </tr>
