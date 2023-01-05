@@ -20,27 +20,3 @@ export default function CreateForm({ defaultValues, title, onClose }) {
     </StyledCreateForm>
   );
 }
-
-// import CreateContent from "./components/CreateContent";
-// import SearchContent from "./components/SearchContent";
-
-// export default function ResultsForm({
-//   title,
-//   onClose,
-//   defaultValues = {},
-//   forSearching,
-// }) {
-//   return (
-//     <StyledResultsForm title={title}>
-//       <h2>{title}</h2>
-//       {forSearching ? (
-//         <SearchContent />
-//       ) : (
-//         <CreateContent defaultValues={defaultValues} />
-//       )}
-//       <button type="submit" onClick={onClose}>
-//         OK
-//       </button>
-//     </StyledResultsForm>
-//   );
-// }

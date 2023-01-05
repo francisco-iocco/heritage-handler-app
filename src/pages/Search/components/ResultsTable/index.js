@@ -4,15 +4,16 @@ import { useContext, useState } from "react";
 import SearchContext from "contexts/SearchContext";
 
 export default function ResultsTable() {
-  const { showSearchInput, setShowSearchInput } = useContext(SearchContext);
+  const { showSearchInput, toggleSearchInput } = useContext(SearchContext);
   const [searchInputValue, setSearchInputValue] = useState("");
 
   const handleInputValue = ({ target: { value } }) => {
     setSearchInputValue(value);
   }
 
-  const closeSearchInput = ({ target: { value } }) => {
-    setShowSearchInput(false);
+  const closeSearchInput = () => {
+    setSearchInputValue("");
+    toggleSearchInput();
   }
 
   return (

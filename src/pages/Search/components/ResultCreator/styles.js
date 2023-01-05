@@ -14,8 +14,11 @@ const StyledResultCreator = styled.div`
     padding: 15px;
     border-radius: 15px;
     color: #fff;
-    margin: 15px;
     width: 40%;
+    margin: 0 15px;
+    height: 80%;
+    align-self: center;
+    font-size: 1.5vh;
   }
 
   div.filter-container {

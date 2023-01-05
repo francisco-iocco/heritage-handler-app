@@ -18,6 +18,7 @@ const StyledNav = styled.nav`
     display: flex;
     font-size: 30px;
     padding: 15px 20px;
+    height: 80%;
   }
 
   li a {
