@@ -5,11 +5,12 @@ const SearchContext = createContext({});
 
 export function SearchContextProvider({ children }) {
   const {
+    convertToIncome,
+    convertToRemittance,
     toggleSearchInput,
     toggleIsPermanent,
-    toggleIsIncome,
-    toggleIsRemittance,
-    showSearchInput,
+    reset,
+    isSearchInputActive,
     isPermanent,
     isIncome,
     isRemittance,
@@ -18,11 +19,12 @@ export function SearchContextProvider({ children }) {
   return (
     <SearchContext.Provider
       value={{
+        convertToIncome,
+        convertToRemittance,
         toggleSearchInput,
         toggleIsPermanent,
-        toggleIsIncome,
-        toggleIsRemittance,
-        showSearchInput,
+        reset,
+        isSearchInputActive,
         isPermanent,
         isIncome,
         isRemittance,

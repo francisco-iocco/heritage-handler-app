@@ -1,10 +1,10 @@
-import StyledModal from "./styles";
 import { createPortal } from "react-dom";
+import StyledModal from "./styles";
 
 function Modal({ onClose, children }) {
   const handleSubmit = (e) => {
     e.preventDefault();
-    onClose();
+    onClose(e);
   };
 
   return (
@@ -19,11 +19,9 @@ function Modal({ onClose, children }) {
   );
 }
 
-export default function ModalPortal ({ onClose, children }) {
+export default function ModalPortal({ onClose, children }) {
   return createPortal(
-    <Modal onClose={onClose}>
-      {children}
-    </Modal>,
-    document.getElementById('modal')
+    <Modal onClose={onClose}>{children}</Modal>,
+    document.getElementById("modal")
   );
 }

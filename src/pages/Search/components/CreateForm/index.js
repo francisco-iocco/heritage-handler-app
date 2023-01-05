@@ -1,20 +1,24 @@
 import StyledCreateForm from "./styles";
 
-export default function CreateForm({ defaultValues, title, onClose }) {
+export default function CreateForm({ onSubmit, title, defaultValues }) {
+  const handleCloseForm = (e) => {
+    e.preventDefault();
+    onSubmit();
+  }
   return (
     <StyledCreateForm title={title}>
       <h2>{title}</h2>
       <input
-        type="text"
-        placeholder="Title"
         defaultValue={defaultValues ? defaultValues.description : ""}
+        placeholder="Title"
+        type="text"
       />
       <input
-        type="number"
-        placeholder="Amount"
         defaultValue={defaultValues ? defaultValues.amount : ""}
+        placeholder="Amount"
+        type="number"
       />
-      <button type="submit" onClick={onClose}>
+      <button onClick={handleCloseForm} type="submit">
         OK
       </button>
     </StyledCreateForm>

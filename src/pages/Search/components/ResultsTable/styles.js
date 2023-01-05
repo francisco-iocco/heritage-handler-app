@@ -10,16 +10,16 @@ const StyledResultsDiv = styled.div`
   tr:nth-of-type(odd) {
     background-color: #eee;
   }
-  
+
   thead > tr.head-row {
     background-color: #fff;
   }
 
   th, td {
     display: inline-block;
-    width: 33.33%;
     padding: 20px;
     text-align: center;
+    width: 33.33%;
   }
 
   th span {
@@ -29,8 +29,8 @@ const StyledResultsDiv = styled.div`
 
   td.amount {
     border-left: 1px solid #999;
-    height: 80%;
     border-right: 1px solid #999;
+    height: 80%;
   }
 
   td:last-child {
@@ -39,11 +39,11 @@ const StyledResultsDiv = styled.div`
   }
 
   td:last-child button {
-    border: none;
-    padding: 10px;
-    font-size: 16px;
     border-radius: 5px;
+    border: none;
     color: #fff;
+    font-size: 16px;
+    padding: 10px;
   }
 
   td:last-child button.edit {
@@ -55,31 +55,31 @@ const StyledResultsDiv = styled.div`
   }
 
   .search-container {
-    border-radius: 10px;
-    display: flex;
     align-items: center;
-    position: fixed;
     background-color: #fff;
-    padding: 15px;
+    border-radius: 10px;
     bottom: 15%;
+    display: flex;
     left: 50%;
+    padding: 15px;
+    position: fixed;
     transform: translateX(-50%);
   }
 
   .search-container input {
-    padding: 10px;
     outline: none;
+    padding: 10px;
   }
 
   .search-container button {
     background-color: transparent;
-    font-size: 20px;
-    border: none;
-    margin-left: 15px;
     border-left: 1px solid #999;
-    height: 50%;
-    padding-left: 15px;
+    border: none;
     color: #808080;
+    font-size: 20px;
+    height: 50%;
+    margin-left: 15px;
+    padding-left: 15px;
   }
 `;
 

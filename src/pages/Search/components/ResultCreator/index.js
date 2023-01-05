@@ -1,83 +1,57 @@
 import { FaListUl } from "react-icons/fa";
 import { useState, useContext } from "react";
-import SearchContext from "contexts/SearchContext";
-import Modal from "components/Modal";
-import StyledResultCreator from "./styles";
 import CreateForm from "../CreateForm";
+import Modal from "components/Modal";
+import SearchContext from "contexts/SearchContext";
 import SearchForm from "../SearchForm";
+import StyledResultCreator from "./styles";
 
 export default function ResultCreator() {
-  const [showCreateModal, setShowCreateModal] = useState(false);
-  const [showSearchModal, setShowSearchModal] = useState(false);
-  const {
-    toggleSearchInput, 
-    toggleIsPermanent,
-    toggleIsIncome,
-    toggleIsRemittance,
-    showSearchInput,
-    isPermanent,
-    isIncome,
-    isRemittance,
-  } = useContext(SearchContext);
+  const [isCreateModalActive, setIsCreateModalActive] = useState(false);
+  const [isSearchModalActive, setIsSearchModalActive] = useState(false);
   const [formTitle, setFormTitle] = useState("");
 
-  const handleShowModal = ({ target: { innerText } }) => {
-    if(showSearchInput) {
-      toggleSearchInput();
-    }
-    if (innerText) {
-      setFormTitle(innerText);
-      setShowCreateModal(true);
-    } else {
-      setFormTitle("Filters");
-      setShowSearchModal(true);
-    }
-  };
+  const { toggleSearchInput, isSearchInputActive, reset } = useContext(SearchContext);
 
-  const handleSubmitForm = (e, callback) => {
-    e.preventDefault();
-    callback && callback();
-    if (showCreateModal) {
-      setShowCreateModal(false);
-    } else {
-      setShowSearchModal(false);
-    }
+  const handleShowCreateModal = ({ target: { innerText } }) => {
+    reset();
+    setFormTitle(innerText);
+    setIsCreateModalActive(true);
   };
+  const handleCloseCreateModal = () => setIsCreateModalActive(false);
 
-  const handleCloseModal = () => {
-    if (showCreateModal) {
-      setShowCreateModal(false);
-    } else {
-      setShowSearchModal(false);
-      isPermanent && toggleIsPermanent();
-      isIncome && toggleIsIncome();
-      isRemittance && toggleIsRemittance();
-    }
-  }
+  const handleShowSearchModal = () => {
+    isSearchInputActive && toggleSearchInput();
+    setFormTitle("Filters");
+    setIsSearchModalActive(true);
+  };
+  const handleCloseSearchModal = ({ type }) => {
+    setIsSearchModalActive(false);
+  };
 
   return (
     <StyledResultCreator>
       <div className="filter-container">
-        <button className="filter" onClick={handleShowModal}>
+        <button className="filter" onClick={handleShowSearchModal}>
           <FaListUl />
         </button>
       </div>
-      <button className="income" onClick={handleShowModal}>
+      <button className="income" onClick={handleShowCreateModal}>
         New income
       </button>
-      <button className="remittance" onClick={handleShowModal}>
+      <button className="remittance" onClick={handleShowCreateModal}>
         New remittance
       </button>
 
-      {showCreateModal && (
-        <Modal onClose={handleCloseModal}>
-          <CreateForm title={formTitle} onSubmit={handleSubmitForm} />
+      {isCreateModalActive && (
+        <Modal onClose={handleCloseCreateModal}>
+          <CreateForm onSubmit={handleCloseCreateModal} title={formTitle} />
         </Modal>
       )}
 
-      {showSearchModal && (
-        <Modal onClose={handleCloseModal}>
-          <SearchForm title={formTitle} onSubmit={handleSubmitForm} />
+      {isSearchModalActive && (
+        <Modal onClose={handleCloseSearchModal}>
+          <SearchForm onSubmit={handleCloseSearchModal} title={formTitle} />
         </Modal>
       )}
     </StyledResultCreator>

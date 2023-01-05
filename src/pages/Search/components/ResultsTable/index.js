@@ -1,11 +1,11 @@
-import StyledResultsDiv from "./styles";
-import ListOfResults from "./components/ListOfResults";
 import { useContext, useState } from "react";
+import ListOfResults from "./components/ListOfResults";
 import SearchContext from "contexts/SearchContext";
+import StyledResultsDiv from "./styles";
 
 export default function ResultsTable() {
-  const { showSearchInput, toggleSearchInput } = useContext(SearchContext);
-  const [searchInputValue, setSearchInputValue] = useState("");
+  const { isSearchInputActive, toggleSearchInput } = useContext(SearchContext);
+  const [ searchInputValue, setSearchInputValue ] = useState("");
 
   const handleInputValue = ({ target: { value } }) => {
     setSearchInputValue(value);
@@ -37,7 +37,7 @@ export default function ResultsTable() {
             <ListOfResults searchInputValue={searchInputValue.toLowerCase()} />
           </tbody>
         </table>
-        {showSearchInput && (
+        {isSearchInputActive && (
           <div className="search-container">
             <input type="text" autoFocus onChange={handleInputValue} />
             <button onClick={closeSearchInput}>x</button>

@@ -1,5 +1,5 @@
-import Result from "./Result";
 import { useContext } from "react";
+import Result from "./Result";
 import SearchContext from "contexts/SearchContext";
 
 // This is just Raw data which is used to start to know how the layout will be.
@@ -37,7 +37,7 @@ let results = [
   {
     description: "Rent",
     amount: -1000,
-    permanent: true
+    permanent: true,
   },
   {
     description: "Travel ticket",
@@ -58,14 +58,16 @@ export default function ListOfResults({ searchInputValue }) {
     renderResults = [];
     if (isPermanent) {
       let permanents = results.filter((result) => result.permanent);
-      if(isIncome) {
-        permanents = permanents.filter(result => result.type === "income");
-      } else if(isRemittance) {
-        permanents = permanents.filter(result => result.type === "remittance");
+      if (isIncome) {
+        permanents = permanents.filter((result) => result.type === "income");
+      } else if (isRemittance) {
+        permanents = permanents.filter(
+          (result) => result.type === "remittance"
+        );
       }
       renderResults = [...renderResults, ...permanents];
     } else if (isIncome) {
-      const incomes = results.filter(result => result.type === "income");
+      const incomes = results.filter((result) => result.type === "income");
       renderResults = [...renderResults, ...incomes];
     } else if (isRemittance) {
       const remittances = results.filter((result) => result.type === "remittance");
@@ -82,9 +84,9 @@ export default function ListOfResults({ searchInputValue }) {
   return renderResults.map((result, index) => {
     return (
       <Result
-        key={index}
-        description={result.description}
         amount={result.amount}
+        description={result.description}
+        key={index}
       />
     );
   });

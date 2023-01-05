@@ -1,18 +1,14 @@
 import styled from "@emotion/styled";
 
 const StyledCreateForm = styled.form`
+  align-items: center;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
   height: 100%;
+  justify-content: space-evenly;
   padding: 10px;
 
   h2 {
-    font-size: 30px;
-    letter-spacing: 2px;
-    text-align: center;
-    padding: 10px;
     ${(props) => {
       if (props.title.includes("income")) {
         return "color: #1ac31a";
@@ -20,6 +16,10 @@ const StyledCreateForm = styled.form`
         return "color: #dc1616"; 
       }
     }}
+    font-size: 30px;
+    letter-spacing: 2px;
+    padding: 10px;
+    text-align: center;
   }
 
   label {
@@ -38,17 +38,17 @@ const StyledCreateForm = styled.form`
   }
 
   div {
-    display: flex;
     align-items: center;
+    display: flex;
   }
 
   button[type="submit"] {
     background-color: #2424d2;
+    border-radius: 10px;
+    border: none;
+    color: #fff;
     font-size: 20px;
     padding: 15px;
-    border: none;
-    border-radius: 10px;
-    color: #fff;
   }
 `;
 

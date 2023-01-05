@@ -17,14 +17,14 @@ const StyledNav = styled.nav`
     box-shadow: 0 0 30px -5px #808080;
     display: flex;
     font-size: 30px;
-    padding: 15px 20px;
     height: 80%;
+    padding: 15px 20px;
   }
 
   li a {
-    display: flex;
     align-items: center;
     color: #2424d2;
+    display: flex;
   }
 
   li.active {
@@ -34,6 +34,6 @@ const StyledNav = styled.nav`
   li.active a {
     color: #fff;
   }
-`
+`;
 
 export default StyledNav;

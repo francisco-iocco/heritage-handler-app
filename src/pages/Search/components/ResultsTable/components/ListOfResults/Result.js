@@ -1,11 +1,11 @@
-import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
-import CreateForm from "pages/Search/components/CreateForm";
-import Modal from "components/Modal";
 import { useState } from "react";
+import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
+import Modal from "components/Modal";
+import CreateForm from "pages/Search/components/CreateForm";
 
 export default function Result({ description, amount, onDelete }) {
   const [showModal, setShowModal] = useState(false);
-  const [formTitle] = useState(() =>
+  const [ formTitle ] = useState(() =>
     amount > 0 ? "Edit income" : "Edit remittance"
   );
 
@@ -31,7 +31,11 @@ export default function Result({ description, amount, onDelete }) {
       </td>
       {showModal && (
         <Modal onClose={handleCloseModal}>
-          <CreateForm onClose={handleCloseModal} title={formTitle} defaultValues={{ description, amount }} />
+          <CreateForm
+            defaultValues={{ description, amount }}
+            onClose={handleCloseModal}
+            title={formTitle}
+          />
         </Modal>
       )}
     </tr>

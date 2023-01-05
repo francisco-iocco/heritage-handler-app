@@ -1,37 +1,37 @@
 import styled from "@emotion/styled";
 
 const StyledModal = styled.div`
-  display: flex;
   align-items: center;
-  justify-content: center;
-  z-index: 1;
-  width: 100%;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(2px);
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  height: 100vh;
+  justify-content: center;
   position: fixed;
+  width: 100%;
+  z-index: 1;
 
   .modal-content {
-    height: 60%;
-    width: 80%;
-    border-radius: 15px;
-    background-color: #fff;
-    flex-direction: column;
-    justify-content: space-around;
     align-items: center;
+    background-color: #fff;
+    border-radius: 15px;
+    flex-direction: column;
+    height: 60%;
+    justify-content: space-around;
     position: relative;
+    width: 80%;
   }
 
   button.close {
-    position: absolute;
     background-color: #fff;
+    border: none;
     color: #808080;
     font-size: 30px;
-    padding: 0;
     margin: 0;
+    padding: 0;
+    position: absolute;
     right: 15px;
     top: 5px;
-    border: none;
   }
 `;
 

@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Login from "pages/Login";
 import Home from "pages/Home";
+import Login from "pages/Login";
 import Search from "pages/Search";
 
 export default function Router() {

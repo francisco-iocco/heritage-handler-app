@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 const StyledDiv = styled.div`
   .section-1::before {
     background-color: #fff;
+    border-radius: 0 50px 50px 0;
     content: "";
     display: block;
     height: 7vh;
@@ -10,16 +11,15 @@ const StyledDiv = styled.div`
     top: 0;
     transform: rotate(145deg);
     width: 100%;
-    border-radius: 0 50px 50px 0;
   }
-  
+
   .section-1 {
     align-items: center;
     background-color: #2424d2;
     display: flex;
     justify-content: center;
   }
-  
+
   .section-1 header {
     align-items: center;
     display: flex;
@@ -28,15 +28,16 @@ const StyledDiv = styled.div`
     justify-content: space-evenly;
     width: 90%;
   }
-  
+
   .section-1 header > * {
     background-color: #fff;
     border-radius: 15px;
     padding: 10px;
   }
-  
+
   .section-2::before {
     background-color: #fff;
+    border-radius: 0 50px 50px 0;
     content: "";
     display: block;
     height: 7vh;
@@ -44,37 +45,36 @@ const StyledDiv = styled.div`
     top: 0;
     transform: rotate(-35deg);
     width: 100%;
-    border-radius: 0 50px 50px 0;
   }
-  
+
   .section-2 {
+    align-items: center;
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
     position: relative;
   }
-  
+
   .divider {
-    height: 1px;
-    width: 65%;
     border-bottom: 1px solid #808080;
+    height: 1px;
     margin-bottom: 15px;
     position: relative;
+    width: 65%;
   }
-  
+
   .divider::after {
-    content: "or";
-    display: inline;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
     background-color: #fff;
     color: #808080;
+    content: "or";
+    display: inline;
+    left: 50%;
     padding: 5px;
+    position: absolute;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
   }
-  
+
   .section-2 .registerBtn {
     background-color: #1ac31a;
     border-radius: 15px;
@@ -84,6 +84,6 @@ const StyledDiv = styled.div`
     padding: 10px;
     width: 75%;
   }
-`
+`;
 
 export default StyledDiv;
