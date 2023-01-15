@@ -2,8 +2,9 @@ import { useState } from "react";
 import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import Modal from "components/Modal";
 import CreateForm from "pages/Search/components/CreateForm";
+import StyledResult from "./styles";
 
-export default function Result({ description, amount, onDelete }) {
+export default function Result({ amount, description, onDelete, isPermanent = false, time = "", index = null }) {
   const [showModal, setShowModal] = useState(false);
   const [ formTitle ] = useState(() =>
     amount > 0 ? "Edit income" : "Edit remittance"
@@ -18,9 +19,15 @@ export default function Result({ description, amount, onDelete }) {
   };
 
   return (
-    <tr>
-      <td>{description}</td>
-      <td className="amount">${amount}</td>
+    <StyledResult index={index}>
+      <td>
+        {isPermanent && <div className="permanent">Permanent</div>}
+        {description}
+      </td>
+      <td className="amount">
+        ${amount}
+        <p>{time && `(${time})`}</p>
+      </td>
       <td>
         <button className="edit" onClick={handleShowModal}>
           <FaPencilAlt />
@@ -38,6 +45,6 @@ export default function Result({ description, amount, onDelete }) {
           />
         </Modal>
       )}
-    </tr>
+    </StyledResult>
   );
 }

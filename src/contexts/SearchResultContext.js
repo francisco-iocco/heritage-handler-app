@@ -1,4 +1,6 @@
-import { useReducer } from "react";
+import { createContext, useReducer } from "react";
+
+const SearchResultContext = createContext({});
 
 const INITIAL_STATE = {
   isSearchInputActive: false,
@@ -32,21 +34,34 @@ function reducer(state, action) {
   }
 }
 
-export default function useSearch() {
+export function SearchResultContextProvider({ children }) {
   const [
     { isSearchInputActive, isPermanent, isIncome, isRemittance },
     dispatch,
   ] = useReducer(reducer, INITIAL_STATE);
 
-  return {
-    convertToIncome: () => dispatch({ type: ACTIONS.CONVERT_TO_INCOME }),
-    convertToRemittance: () => dispatch({ type: ACTIONS.CONVERT_TO_REMITTANCE }),
-    toggleSearchInput: () => dispatch({ type: ACTIONS.TOGGLE_SEARCH_INPUT }),
-    toggleIsPermanent: () => dispatch({ type: ACTIONS.TOGGLE_IS_PERMANENT }),
-    reset: () => dispatch({ type: ACTIONS.RESET }),
-    isSearchInputActive,
-    isPermanent,
-    isIncome,
-    isRemittance,
-  };
+  return (
+    <SearchResultContext.Provider
+      value={{
+        isSearchInputActive,
+        isPermanent,
+        isIncome,
+        isRemittance,
+        convertToIncome: () => 
+          dispatch({ type: ACTIONS.CONVERT_TO_INCOME }),
+        convertToRemittance: () =>
+          dispatch({ type: ACTIONS.CONVERT_TO_REMITTANCE }),
+        toggleSearchInput: () =>
+          dispatch({ type: ACTIONS.TOGGLE_SEARCH_INPUT }),
+        toggleIsPermanent: () =>
+          dispatch({ type: ACTIONS.TOGGLE_IS_PERMANENT }),
+        reset: () => 
+          dispatch({ type: ACTIONS.RESET }),
+      }}
+    >
+      {children}
+    </SearchResultContext.Provider>
+  );
 }
+
+export default SearchResultContext;

@@ -42,6 +42,11 @@ const StyledCreateForm = styled.form`
     display: flex;
   }
 
+  select {
+    outline: none;
+    padding: 10px;
+  }
+
   button[type="submit"] {
     background-color: #2424d2;
     border-radius: 10px;

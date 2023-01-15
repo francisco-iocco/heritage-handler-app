@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
 import ListOfResults from "./components/ListOfResults";
-import SearchContext from "contexts/SearchContext";
+import SearchResultContext from "contexts/SearchResultContext";
 import StyledResultsDiv from "./styles";
 
 export default function ResultsTable() {
-  const { isSearchInputActive, toggleSearchInput } = useContext(SearchContext);
+  const { isSearchInputActive, toggleSearchInput } = useContext(SearchResultContext);
   const [ searchInputValue, setSearchInputValue ] = useState("");
 
   const handleInputValue = ({ target: { value } }) => {
@@ -39,7 +39,7 @@ export default function ResultsTable() {
         </table>
         {isSearchInputActive && (
           <div className="search-container">
-            <input type="text" autoFocus onChange={handleInputValue} />
+            <input autoFocus onChange={handleInputValue} type="text" />
             <button onClick={closeSearchInput}>x</button>
           </div>
         )}

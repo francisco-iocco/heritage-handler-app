@@ -10,6 +10,7 @@ const StyledNav = styled.nav`
   justify-content: space-evenly;
   position: fixed;
   width: 100%;
+  z-index: 1;
 
   li {
     background-color: #fff;

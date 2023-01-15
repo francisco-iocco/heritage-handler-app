@@ -7,15 +7,11 @@ const StyledResultsDiv = styled.div`
     width: 100%;
   }
 
-  tr:nth-of-type(odd) {
-    background-color: #eee;
-  }
-
   thead > tr.head-row {
     background-color: #fff;
   }
 
-  th, td {
+  th {
     display: inline-block;
     padding: 20px;
     text-align: center;
@@ -25,33 +21,6 @@ const StyledResultsDiv = styled.div`
   th span {
     border-bottom: 1px solid lightblue;
     padding-bottom: 5px;
-  }
-
-  td.amount {
-    border-left: 1px solid #999;
-    border-right: 1px solid #999;
-    height: 80%;
-  }
-
-  td:last-child {
-    display: inline-flex;
-    justify-content: space-evenly;
-  }
-
-  td:last-child button {
-    border-radius: 5px;
-    border: none;
-    color: #fff;
-    font-size: 16px;
-    padding: 10px;
-  }
-
-  td:last-child button.edit {
-    background-color: #2424d2;
-  }
-
-  td:last-child button.delete {
-    background-color: #dc1616;
   }
 
   .search-container {

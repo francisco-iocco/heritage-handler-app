@@ -2,7 +2,7 @@ import { FaListUl } from "react-icons/fa";
 import { useState, useContext } from "react";
 import CreateForm from "../CreateForm";
 import Modal from "components/Modal";
-import SearchContext from "contexts/SearchContext";
+import SearchResultContext from "contexts/SearchResultContext";
 import SearchForm from "../SearchForm";
 import StyledResultCreator from "./styles";
 
@@ -11,7 +11,7 @@ export default function ResultCreator() {
   const [isSearchModalActive, setIsSearchModalActive] = useState(false);
   const [formTitle, setFormTitle] = useState("");
 
-  const { toggleSearchInput, isSearchInputActive, reset } = useContext(SearchContext);
+  const { toggleSearchInput, isSearchInputActive, reset } = useContext(SearchResultContext);
 
   const handleShowCreateModal = ({ target: { innerText } }) => {
     reset();

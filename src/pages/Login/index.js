@@ -1,4 +1,4 @@
-import Form from "components/LoginForm";
+import Form from "components/UserForm";
 import StyledDiv from "./styles";
 
 export default function Login() {

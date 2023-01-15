@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import JWTContext from "contexts/JWTContext";
 import StyledForm from "./styles";
-import useForm from "./hook";
+import useForm from "hooks/useUserForm";
 
 export default function Form({ title }) {
   const { setJWT } = useContext(JWTContext);

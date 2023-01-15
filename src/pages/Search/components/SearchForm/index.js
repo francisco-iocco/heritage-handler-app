@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import SearchContext from "contexts/SearchContext";
+import SearchResultContext from "contexts/SearchResultContext";
 import StyledSearchForm from "./styles";
 
 export default function SearchForm({ title, onSubmit }) {
@@ -12,7 +12,7 @@ export default function SearchForm({ title, onSubmit }) {
     isIncome,
     isRemittance,
     reset,
-  } = useContext(SearchContext);
+  } = useContext(SearchResultContext);
 
   const handleSearchButton = (e) => {
     e.preventDefault();
@@ -28,7 +28,7 @@ export default function SearchForm({ title, onSubmit }) {
         <input
           checked={isPermanent}
           id="permanent"
-          onClick={toggleIsPermanent}
+          onChange={toggleIsPermanent}
           type="checkbox"
         />
       </div>

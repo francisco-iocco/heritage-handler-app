@@ -8,6 +8,7 @@ const StyledResultCreator = styled.div`
   justify-content: space-evenly;
   position: sticky;
   top: 0;
+  z-index: 1;
 
   & > button {
     align-self: center;

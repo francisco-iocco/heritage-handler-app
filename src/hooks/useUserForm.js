@@ -29,7 +29,7 @@ function reducer(state, action) {
   }
 }
 
-export default function useForm() {
+export default function useUserForm() {
   const [ { email, emailError, password, passwordError }, dispatch ] = useReducer(
     reducer,
     INITIAL_STATE
