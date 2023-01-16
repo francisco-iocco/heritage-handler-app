@@ -50,13 +50,19 @@ let results = [
 
 export default function ListOfResults({ searchInputValue }) {
   const { isPermanent, isIncome, isRemittance } = useSearchResult();
-  const { newResult } = useCreateResult();
+  const { newResult, setNewResult, index, setIndex } = useCreateResult();
   let [renderResults, setRenderResults] = useState([]);
   
   useEffect(
     () => {
       if(Object.keys(newResult)[0]) {
-        results = [ newResult, ...results ];
+        if(index || index === 0) {
+          results = results.map((result, _index) => _index === index ? newResult : result); 
+        } else {
+          results = [ newResult, ...results ];
+        }
+        setIndex(undefined)
+        setNewResult({});
       }
       results = results.map((result) => {
         const type = result.amount > 0 ? "income" : "remittance";
@@ -64,7 +70,7 @@ export default function ListOfResults({ searchInputValue }) {
       });
       setRenderResults(results);
     },
-    [newResult]
+    [ newResult, index, setIndex, setNewResult ]
   );
 
   useEffect(() => {

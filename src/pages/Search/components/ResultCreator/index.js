@@ -25,7 +25,8 @@ export default function ResultCreator() {
     setFormTitle("Filters");
     setIsSearchModalActive(true);
   };
-  const handleCloseSearchModal = ({ type }) => {
+  const handleCloseSearchModal = () => {
+    reset();
     setIsSearchModalActive(false);
   };
 

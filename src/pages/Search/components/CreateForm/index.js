@@ -1,8 +1,7 @@
-import { useEffect } from "react";
-import useCreateResultContext from "hooks/useCreateResult";
+import useCreateResult from "hooks/useCreateResult";
 import StyledCreateForm from "./styles";
 
-export default function CreateForm({ onSubmit, title, defaultValues }) {
+export default function CreateForm({ onSubmit, title }) {
   const {
     description,
     amount,
@@ -12,15 +11,9 @@ export default function CreateForm({ onSubmit, title, defaultValues }) {
     changeAmount,
     toggleIsPermanent,
     changeTime,
+    reset,
     setNewResult,
-  } = useCreateResultContext();
-
-  useEffect(() => {
-    if (defaultValues) {
-      changeDescription(defaultValues.description);
-      changeAmount(defaultValues.amount);
-    }
-  }, [defaultValues, changeDescription, changeAmount]);
+  } = useCreateResult();
 
   const handleDescriptionValue = ({ target: { value } }) => {
     changeDescription(value);
@@ -29,7 +22,7 @@ export default function CreateForm({ onSubmit, title, defaultValues }) {
   const handleAmountValue = ({ target: { value } }) => {
     let amount = value;
     if (title.includes("remittance")) {
-      amount = amount.includes("-") ? amount : `-${amount}`;
+      amount = amount.startsWith("-") ? amount : `-${amount}`;
     }
     changeAmount(amount);
   };
@@ -41,6 +34,7 @@ export default function CreateForm({ onSubmit, title, defaultValues }) {
     isPermanent
       ? setNewResult({ description, amount, isPermanent, time })
       : setNewResult({ description, amount });
+    reset();
     onSubmit();
   };
 
@@ -66,6 +60,7 @@ export default function CreateForm({ onSubmit, title, defaultValues }) {
           type="checkbox"
           onChange={toggleIsPermanent}
           value={isPermanent}
+          checked={isPermanent}
         />
       </div>
       {isPermanent && (
