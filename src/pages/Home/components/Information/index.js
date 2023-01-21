@@ -16,10 +16,10 @@ export default function Information() {
       <div className="incomes-container">
         <h4>Incomes</h4>
         <select>
-          <option>Per hour</option>
-          <option>Per day</option>
-          <option>Per month</option>
-          <option>Per year</option>
+          <option>This hour</option>
+          <option>This day</option>
+          <option>This month</option>
+          <option>This year</option>
         </select>
         <p>$500000</p>
       </div>

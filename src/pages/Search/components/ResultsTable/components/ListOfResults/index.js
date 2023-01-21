@@ -1,129 +1,51 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import ResultsContext from "contexts/ResultsContext";
+import SearchResultContext from "contexts/SearchResultContext";
 import Result from "../Result";
-import useSearchResult from "hooks/useSearchResult";
-import useCreateResult from "hooks/useCreateResult";
-
-// This is just Raw data which is used to start to know how the layout will be.
-
-let results = [
-  {
-    description: "Car sold",
-    amount: 1000,
-  },
-  {
-    description: "Hair cut",
-    amount: -50,
-  },
-  {
-    description: "Travel ticket",
-    amount: -1000,
-  },
-  {
-    description: "Software Developer",
-    amount: 80000,
-    isPermanent: true,
-    time: "per year",
-  },
-  {
-    description: "Hair cut",
-    amount: -50,
-  },
-  {
-    description: "Travel ticket",
-    amount: -1000,
-  },
-  {
-    description: "Car selled",
-    amount: 1000,
-  },
-  {
-    description: "Rent",
-    amount: -1000,
-    isPermanent: true,
-    time: "per month",
-  },
-  {
-    description: "Travel ticket",
-    amount: -1000,
-  },
-];
+import deleteResult from "services/deleteResult";
 
 export default function ListOfResults({ searchInputValue }) {
-  const { isPermanent, isIncome, isRemittance } = useSearchResult();
-  const { newResult, setNewResult, index, setIndex } = useCreateResult();
-  let [renderResults, setRenderResults] = useState([]);
+  const { isPermanent, isIncome, isRemittance } = useContext(SearchResultContext);
+  const { results, updateResults } = useContext(ResultsContext);
+  const [ renderResults, setRenderResults ] = useState(results);
   
-  useEffect(
-    () => {
-      if(Object.keys(newResult)[0]) {
-        if(index || index === 0) {
-          results = results.map((result, _index) => _index === index ? newResult : result); 
-        } else {
-          results = [ newResult, ...results ];
-        }
-        setIndex(undefined)
-        setNewResult({});
-      }
-      results = results.map((result) => {
-        const type = result.amount > 0 ? "income" : "remittance";
-        return { ...result, type };
-      });
-      setRenderResults(results);
-    },
-    [ newResult, index, setIndex, setNewResult ]
-  );
+  useEffect(() => setRenderResults(results), [ results ]);
 
   useEffect(() => {
-    if (isPermanent || isIncome || isRemittance) {
-      setRenderResults([]);
-
-      if (isPermanent) {
-        let permanents = results.filter((result) => result.isPermanent);
-
-        if (isIncome) {
-          permanents = permanents.filter((result) => result.type === "income");
-        } else if (isRemittance) {
-          permanents = permanents.filter(
-            (result) => result.type === "remittance"
-          );
-        }
-
-        setRenderResults((prevState) => [...prevState, ...permanents]);
-      } else if (isIncome) {
-        const incomes = results.filter((result) => result.type === "income");
-        setRenderResults((prevState) => [...prevState, ...incomes]);
-      } else if (isRemittance) {
-        const remittances = results.filter(
-          (result) => result.type === "remittance"
-        );
-        setRenderResults((prevState) => [...prevState, ...remittances]);
-      }
+    if (searchInputValue) {
+      setRenderResults(results.filter((result) =>
+        result.description.toLowerCase().includes(searchInputValue)
+      ));
     } else {
       setRenderResults(results);
     }
-  }, [isPermanent, isIncome, isRemittance]);
+  }, [ searchInputValue ]);
 
-  const handleDelete = (index) => {
-    results = results.filter((results, _index) => _index !== index);
-    setRenderResults(results);
+  useEffect(() => {
+    let info = results;
+
+    isPermanent ? info = info.filter(result => result.isPermanent) : info = info;
+    isIncome ? info = info.filter(result => result.amount > 0) : info = info;
+    isRemittance ? info = info.filter(result => result.amount < 0) : info = info;
+
+    setRenderResults(info);
+  }, [ isPermanent, isIncome, isRemittance ]);
+
+  const handleDelete = async (id) => {
+    await deleteResult({ type: "income", id });
+    updateResults();
   };
 
-  if (searchInputValue) {
-    renderResults = renderResults.filter((result) =>
-      result.description.toLowerCase().includes(searchInputValue)
-    );
-  }
-
-  return renderResults.map((result, index) => {
+  return renderResults.map((result) => {
     return (
       <Result
         amount={result.amount}
         description={result.description}
-        key={index}
-        index={index}
         isPermanent={result.isPermanent}
         time={result.time}
-        onDelete={() => handleDelete(index)}
+        key={result._id}
+        id={result._id}
+        onDelete={() => handleDelete(result._id)}
       />
     );
   });

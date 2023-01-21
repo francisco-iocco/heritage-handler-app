@@ -16,8 +16,8 @@ export default function SearchForm({ title, onSubmit }) {
 
   const handleSearchButton = (e) => {
     e.preventDefault();
-    toggleSearchInput();
     onSubmit(e);
+    toggleSearchInput();
   };
 
   return (

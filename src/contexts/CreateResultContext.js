@@ -6,7 +6,8 @@ const INITIAL_STATE = {
   description: "",
   amount: "",
   isPermanent: false,
-  time: "per day",
+  time: null,
+  id: null
 };
 
 const ACTIONS = {
@@ -14,6 +15,7 @@ const ACTIONS = {
   CHANGE_AMOUNT: "CHANGE_AMOUNT",
   TOGGLE_IS_PERMANENT: "TOGGLE_IS_PERMANENT",
   CHANGE_TIME: "CHANGE_TIME",
+  CHANGE_ID: "CHANGE_ID",
   RESET: "RESET"
 };
 
@@ -24,9 +26,13 @@ function reducer(state, action) {
     case ACTIONS.CHANGE_AMOUNT:
       return { ...state, amount: action.payload };
     case ACTIONS.TOGGLE_IS_PERMANENT:
-      return { ...state, isPermanent: !state.isPermanent };
+      let time = state.time;
+      !state.isPermanent && !state.time ? time = "per day" : time = time; 
+      return { ...state, isPermanent: !state.isPermanent, time };
     case ACTIONS.CHANGE_TIME:
       return { ...state, time: action.payload };
+    case ACTIONS.CHANGE_ID:
+      return { ...state, id: action.payload };
     case ACTIONS.RESET:
       return INITIAL_STATE;
     default:
@@ -35,9 +41,7 @@ function reducer(state, action) {
 }
 
 export function CreateResultContextProvider({ children }) {
-  const [ newResult, setNewResult ] = useState({});
-  const [ index, setIndex ] = useState(undefined);
-  const [ { description, amount, isPermanent, time }, dispatch ] = useReducer(
+  const [ { description, amount, isPermanent, time, id }, dispatch ] = useReducer(
     reducer,
     INITIAL_STATE
   );
@@ -49,8 +53,7 @@ export function CreateResultContextProvider({ children }) {
         amount,
         isPermanent,
         time,
-        newResult,
-        index,
+        id,
         changeDescription: (description) =>
           dispatch({ type: ACTIONS.CHANGE_DESCRIPTION, payload: description }),
         changeAmount: (amount) =>
@@ -59,10 +62,10 @@ export function CreateResultContextProvider({ children }) {
           dispatch({ type: ACTIONS.TOGGLE_IS_PERMANENT }),
         changeTime: (time) =>
           dispatch({ type: ACTIONS.CHANGE_TIME, payload: time }),
+        changeId: (id) =>
+          dispatch({ type: ACTIONS.CHANGE_ID, payload: id }),
         reset: () =>
           dispatch({ type: ACTIONS.RESET }),
-        setIndex,
-        setNewResult,
       }}
     >
       {children}

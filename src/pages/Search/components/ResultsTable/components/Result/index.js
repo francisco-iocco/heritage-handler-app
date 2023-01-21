@@ -1,36 +1,39 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import Modal from "components/Modal";
 import CreateForm from "pages/Search/components/CreateForm";
 import StyledResult from "./styles";
-import useCreateResult from "hooks/useCreateResult";
+import CreateResultContext from "contexts/CreateResultContext";
 
 export default function Result({
   amount,
   description,
   isPermanent = false,
-  time = "",
-  index = null,
+  time,
+  id,
   onDelete,
 }) {
   const [showModal, setShowModal] = useState(false);
-  const [formTitle] = useState(() =>
-    amount > 0 ? "Edit income" : "Edit remittance"
-  );
-  const { toggleIsPermanent, changeDescription, changeAmount, setIndex, reset } =
-    useCreateResult();
+  const { 
+    changeDescription,
+    changeAmount,
+    toggleIsPermanent,
+    changeTime,
+    changeId,
+    reset 
+  } = useContext(CreateResultContext);
 
   const handleShowModal = () => {
-    setIndex(index);
     changeDescription(description);
     changeAmount(amount);
     isPermanent && toggleIsPermanent();
+    changeTime(time);
+    changeId(id);
     setShowModal(true);
   };
 
   const handleCloseModal = () => {
     reset();
-    setIndex(undefined);
     setShowModal(false);
   };
 
@@ -41,8 +44,8 @@ export default function Result({
         {description}
       </td>
       <td className="amount">
-        <span>${amount}</span>
-        <p>{time && `(${time})`}</p>
+        <p>${amount}</p>
+        <p>{isPermanent && `(${time})`}</p>
       </td>
       <td>
         <button className="edit" onClick={handleShowModal}>
@@ -54,7 +57,7 @@ export default function Result({
       </td>
       {showModal && (
         <Modal onClose={handleCloseModal}>
-          <CreateForm onSubmit={handleCloseModal} title={formTitle} />
+          <CreateForm onSubmit={handleCloseModal} title={amount > 0 ? "Edit income" : "Edit remittance"} />
         </Modal>
       )}
     </StyledResult>

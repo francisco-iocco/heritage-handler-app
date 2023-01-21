@@ -10,7 +10,6 @@ const StyledCreateForm = styled.form`
 
   h2 {
     ${(props) => {
-      console.log(props);
       if (props.title.includes("income")) {
         return "color: #1ac31a;";
       } else if (props.title.includes("remittance")) {
