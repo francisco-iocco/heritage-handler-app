@@ -4,7 +4,7 @@ const StyledResultCreator = styled.div`
   background-color: #fff;
   border-bottom: 1px solid #999;
   display: flex;
-  height: 10%;
+  height: 75px;
   justify-content: space-evenly;
   position: sticky;
   top: 0;

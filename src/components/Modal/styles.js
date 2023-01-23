@@ -16,7 +16,7 @@ const StyledModal = styled.div`
     background-color: #fff;
     border-radius: 15px;
     flex-direction: column;
-    height: 60%;
+    height: 500px;
     justify-content: space-around;
     position: relative;
     width: 80%;
