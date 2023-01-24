@@ -1,28 +1,26 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import JWTContext from "contexts/JWTContext";
-import useForm from "./hook";
 import StyledForm from "./styles";
+import useForm from "hooks/useUserForm";
 
 export default function Form({ title }) {
+  const { setJWT } = useContext(JWTContext);
+  const navigate = useNavigate();
   const {
-    updateEmail,
-    updatePassword,
-    setEmailError,
-    setPasswordError,
     email,
     password,
     emailError,
     passwordError,
+    updateEmail,
+    updatePassword,
+    setEmailError,
+    setPasswordError,
   } = useForm();
-
-  const { setJWT } = useContext(JWTContext);
-
-  const navigate = useNavigate();
 
   const handleEmailValue = ({ target: { value } }) => updateEmail(value);
   const handlePasswordValue = ({ target: { value } }) => updatePassword(value);
-
+  
   const cleanEmailError = () => setEmailError(false, "");
   const cleanPasswordError = () => setPasswordError(false, "");
 
@@ -48,19 +46,19 @@ export default function Form({ title }) {
     <StyledForm onSubmit={handleSubmit}>
       <h3>{title}</h3>
       <input
-        type="email"
-        placeholder="Email"
-        value={email}
         onChange={handleEmailValue}
         onFocus={cleanEmailError}
+        placeholder="Email"
+        type="email"
+        value={email}
       />
       {emailError.has && <p>{emailError.message}</p>}
       <input
-        type="password"
-        placeholder="Password"
-        value={password}
         onChange={handlePasswordValue}
         onFocus={cleanPasswordError}
+        placeholder="Password"
+        type="password"
+        value={password}
       />
       {passwordError.has && <p>{passwordError.message}</p>}
       <a>Forgot your password?</a>

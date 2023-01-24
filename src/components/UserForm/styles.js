@@ -1,15 +1,15 @@
 import styled from "@emotion/styled";
 
 const StyledForm = styled.form`
+  border-radius: 15px;
+  box-shadow: 0 0 30px -10px #000;
   display: flex;
   flex-direction: column;
-  padding: 25px 15px;
   margin: 25px 0;
+  padding: 25px 15px;
   position: relative;
   width: 80%;
   z-index: 1;
-  box-shadow: 0 0 30px -10px #000;
-  border-radius: 15px;
 
   h3 {
     align-self: center;
@@ -29,8 +29,8 @@ const StyledForm = styled.form`
 
   p {
     color: red;
-    margin: 5px 1px;
     font-size: 10px;
+    margin: 5px 1px;
   }
 
   button {
@@ -43,10 +43,10 @@ const StyledForm = styled.form`
   }
 
   a {
-    text-align: center;
     color: #2424d2;
     margin: 10px;
+    text-align: center;
   }
-`
+`;
 
 export default StyledForm;

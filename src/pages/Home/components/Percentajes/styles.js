@@ -1,59 +1,59 @@
 import styled from "@emotion/styled";
 
-const StyledDiv = styled.div`
-  display: flex;
+const StyledPercentajes = styled.div`
   align-items: center;
-  justify-content: center;
+  display: flex;
   height: 50%;
+  justify-content: center;
 
   & > div {
-    width: 90%;
-    height: 90%;
+    align-items: center;
     border-radius: 15px;
+    box-shadow: 0 0 30px -5px #808080;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    box-shadow: 0 0 30px -5px #808080;
+    height: 90%;
+    width: 90%;
   }
 
   div .title {
-    padding: 30px;
+    align-items: center;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
     height: 50%;
+    justify-content: space-evenly;
+    padding: 30px;
     width: 100%;
   }
 
   div h4 {
-    font-size: 20px;
     border-bottom: 1px solid lightblue;
+    font-size: 20px;
     padding: 5px;
   }
 
   div .title select {
-    padding: 10px;
     outline: none;
+    padding: 10px;
   }
 
   div .data {
-    height: 50%;
-    width: 100%;
-    display: flex;
-    justify-content: space-evenly;
     align-items: center;
+    display: flex;
+    height: 50%;
+    justify-content: space-evenly;
     padding: 30px 0;
+    width: 100%;
   }
 
   div .data div {
+    align-items: center;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
     height: 100%;
-    width: 50%;
+    justify-content: space-evenly;
     text-align: center;
+    width: 50%;
   }
 
   div .data .remittances-data {
@@ -61,8 +61,8 @@ const StyledDiv = styled.div`
   }
 
   div .data .incomes-data {
-    color: #1ac31a;
     border-left: 1px solid #999999;
+    color: #1ac31a;
   }
 
   div .data div h5 {
@@ -74,4 +74,4 @@ const StyledDiv = styled.div`
   }
 `;
 
-export default StyledDiv;
+export default StyledPercentajes;

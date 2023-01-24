@@ -11,14 +11,4 @@ async function connect() {
   }
 }
 
-const userSchema = new mongoose.Schema({
-  email: String,
-  password: String
-});
-
-const User = mongoose.model("users", userSchema);
-
-module.exports = {
-  connect,
-  User 
-};
+module.exports = connect;

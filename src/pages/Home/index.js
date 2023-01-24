@@ -1,5 +1,5 @@
-import Nav from "components/Nav";
 import Information from "./components/Information";
+import Nav from "components/Nav";
 import Percentajes from "./components/Percentajes";
 import StyledHome from "./styles";
 

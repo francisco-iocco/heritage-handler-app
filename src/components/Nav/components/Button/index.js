@@ -6,9 +6,7 @@ export default function Button({ destination, children }) {
 
   return (
     <li className={pathname === destination ? "active" : undefined}>
-      <Link to={destination}>
-        {children}
-      </Link>
+      <Link to={destination}>{children}</Link>
     </li>
   );
 }

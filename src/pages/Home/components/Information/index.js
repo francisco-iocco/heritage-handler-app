@@ -1,8 +1,8 @@
-import StyledDiv from "./styles";
+import StyledInformation from "./styles";
 
-export default function IncomesAndRemittancesInfo() {
+export default function Information() {
   return (
-    <StyledDiv>
+    <StyledInformation>
       <div className="remittances-container">
         <h4>Remittances</h4>
         <select>
@@ -16,13 +16,13 @@ export default function IncomesAndRemittancesInfo() {
       <div className="incomes-container">
         <h4>Incomes</h4>
         <select>
-          <option>Per hour</option>
-          <option>Per day</option>
-          <option>Per month</option>
-          <option>Per year</option>
+          <option>This hour</option>
+          <option>This day</option>
+          <option>This month</option>
+          <option>This year</option>
         </select>
         <p>$500000</p>
       </div>
-    </StyledDiv>
+    </StyledInformation>
   );
 }

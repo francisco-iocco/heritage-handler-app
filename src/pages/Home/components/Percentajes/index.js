@@ -1,8 +1,8 @@
-import StyledDiv from "./styles";
+import StyledPercentajes from "./styles";
 
 export default function Percentajes() {
   return (
-    <StyledDiv>
+    <StyledPercentajes>
       <div>
         <div className="title">
           <h4>Results in porcentaje</h4>
@@ -24,6 +24,6 @@ export default function Percentajes() {
           </div>
         </div>
       </div>
-    </StyledDiv>
+    </StyledPercentajes>
   );
 }
