@@ -12,16 +12,6 @@ export default function ListOfResults({ searchInputValue }) {
   useEffect(() => setRenderResults(results), [ results ]);
 
   useEffect(() => {
-    if (searchInputValue) {
-      setRenderResults(results.filter((result) =>
-        result.description.toLowerCase().includes(searchInputValue)
-      ));
-    } else {
-      setRenderResults(results);
-    }
-  }, [ searchInputValue ]);
-
-  useEffect(() => {
     let info = results;
 
     isPermanent ? info = info.filter(result => result.isPermanent) : info = info;
@@ -29,14 +19,26 @@ export default function ListOfResults({ searchInputValue }) {
     isRemittance ? info = info.filter(result => result.amount < 0) : info = info;
 
     setRenderResults(info);
-  }, [ isPermanent, isIncome, isRemittance ]);
 
-  const handleDelete = async (id) => {
-    await deleteResult({ type: "income", id });
+    if (searchInputValue) {
+      info = info.filter((result) =>
+        result.description.toLowerCase().includes(searchInputValue)
+      );
+    }
+
+    setRenderResults(info);
+  }, [ searchInputValue, isPermanent, isIncome, isRemittance, results ]);
+
+  const handleDelete = async (id, type) => {
+    await deleteResult({ type, id });
     updateResults();
   };
 
   return renderResults.map((result) => {
+    const onDelete = () => {
+      const type = result.amount > 0 ? "income" : "remittance";
+      handleDelete(result._id, type);
+    };
     return (
       <Result
         amount={result.amount}
@@ -45,7 +47,7 @@ export default function ListOfResults({ searchInputValue }) {
         time={result.time}
         key={result._id}
         id={result._id}
-        onDelete={() => handleDelete(result._id)}
+        onDelete={onDelete}
       />
     );
   });

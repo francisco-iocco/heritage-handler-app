@@ -4,7 +4,7 @@ import SearchResultContext from "contexts/SearchResultContext";
 import StyledResultsDiv from "./styles";
 
 export default function ResultsTable() {
-  const { isSearchInputActive, toggleSearchInput } = useContext(SearchResultContext);
+  const { isSearchInputActive, reset } = useContext(SearchResultContext);
   const [ searchInputValue, setSearchInputValue ] = useState("");
 
   const handleInputValue = ({ target: { value } }) => {
@@ -12,8 +12,8 @@ export default function ResultsTable() {
   }
 
   const closeSearchInput = () => {
+    reset();
     setSearchInputValue("");
-    toggleSearchInput();
   }
 
   return (

@@ -35,13 +35,14 @@ export default function CreateForm({ onSubmit, title }) {
   const handleTimeValue = ({ target: { value } }) => changeTime(value);
 
   const handleCloseForm = async (e) => {
+    const type = amount > 0 ? "income" : "remittance";
     e.preventDefault();
     const data = isPermanent
       ? { description, amount, isPermanent, time }
       : { description, amount, isPermanent, time: null };
     id
-      ? await editResult({ data, id }) 
-      : await createResult({ data }); 
+      ? await editResult({ data, id, type }) 
+      : await createResult({ data, type }); 
     updateResults();
     reset();
     onSubmit();

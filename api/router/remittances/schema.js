@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const incomeSchema = mongoose.Schema({
+const remittanceSchema = mongoose.Schema({
   description: String,
   amount: Number,
   isPermanent: Boolean,
@@ -12,6 +12,6 @@ const incomeSchema = mongoose.Schema({
   }
 });
 
-const Income = mongoose.model("incomes", incomeSchema);
+const Remittance = mongoose.model("remittances", remittanceSchema);
 
-module.exports = Income;
+module.exports = Remittance;

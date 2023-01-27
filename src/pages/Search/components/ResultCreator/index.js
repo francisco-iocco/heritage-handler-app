@@ -52,7 +52,7 @@ export default function ResultCreator() {
 
       {isSearchModalActive && (
         <Modal onClose={handleCloseSearchModal}>
-          <SearchForm onSubmit={handleCloseSearchModal} title={formTitle} />
+          <SearchForm onSubmit={() =>setIsSearchModalActive(false)} title={formTitle} />
         </Modal>
       )}
     </StyledResultCreator>
