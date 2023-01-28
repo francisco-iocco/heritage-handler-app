@@ -3,33 +3,30 @@ const User = require("./schema");
 
 const router = Router();
 
-router.get("/", async (req, res) => {
+router.get("/:id", async (req, res) => {
   const {
     query: { email, password },
   } = req;
 
-  const emailExists = await User.find({ email });
-  const users = await User.find({ email, password });
-
-  if (!emailExists.length) {
+  const isLogged = await User.find({ email });
+  
+  if (isLogged.length === 0) {
     return res.status(400).json({
       emailError: true,
       errorMessage: "User doesn't exist...",
     });
   }
 
-  const isLogged = users.some((user) => {
-    return user.email === email && user.password === password ? true : false;
-  });
+  const users = await User.find({ email, password });
 
-  if (!isLogged) {
+  if (users.length === 0) {
     return res.status(400).json({
       passwordError: true,
       errorMessage: "Password is incorrect...",
     });
   }
 
-  res.status(200).json({ token: users[0]._id });
+  res.status(200).json({ token: users[0]._id, heritage: users[0].heritage });
 });
 
 module.exports = router;
