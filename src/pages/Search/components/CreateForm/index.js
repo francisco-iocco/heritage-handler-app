@@ -28,7 +28,7 @@ export default function CreateForm({ onSubmit, title }) {
   const handleAmountValue = ({ target: { value } }) => {
     let amount = value;
     if (title.includes("remittance")) {
-      amount = amount.startsWith("-") ? amount : `-${amount}`;
+      amount = parseInt(amount.startsWith("-") ? amount : `-${amount}`);
     }
     changeAmount(amount);
   };
