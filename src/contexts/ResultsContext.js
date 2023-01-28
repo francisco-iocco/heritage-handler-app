@@ -1,21 +1,23 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import getResults from "services/getResults";
+import JWTContext from "./JWTContext";
 
 const ResultsContext = createContext({});
 
 export function ResultsContextProvider({ children }) {
   const [ results, setResults ] = useState([]);
+  const { JWT } = useContext(JWTContext);
 
   const updateResults = async () => {
-    const incomes = await getResults({ type: "income" });
-    const remittances = await getResults({ type: "remittance" });
-    let results = [...incomes, ...remittances];
+    const incomes = await getResults({ type: "income", JWT });
+    const remittances = await getResults({ type: "remittance", JWT });
+    let results = [ ...incomes, ...remittances ];
     results = results.sort((a, b) => {
       const firstDate = new Date(a.updated_at).getTime();
       const secondDate = new Date(b.updated_at).getTime();
-      if (firstDate > secondDate) {
+      if (firstDate < secondDate) {
         return 1;
-      } else if (firstDate < secondDate) {
+      } else if (firstDate > secondDate) {
         return -1;
       }
       return 0;

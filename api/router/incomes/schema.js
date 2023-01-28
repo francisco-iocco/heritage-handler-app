@@ -4,7 +4,11 @@ const incomeSchema = mongoose.Schema({
   description: String,
   amount: Number,
   isPermanent: Boolean,
-  time: String
+  time: String,
+  user_id: {
+    type: "ObjectId",
+    ref: "users"
+  }
 }, {
   timestamps: {
     createdAt: 'created_at',

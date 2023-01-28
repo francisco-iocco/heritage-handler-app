@@ -2,7 +2,9 @@ import styled from "@emotion/styled";
 
 const StyledResultsDiv = styled.div`
   width: 100%;
-
+  overflow: auto;
+  height: calc(100% - 175px);
+  
   table {
     width: 100%;
   }

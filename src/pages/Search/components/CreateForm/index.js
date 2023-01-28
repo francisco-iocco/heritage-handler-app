@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import CreateResultContext from "contexts/CreateResultContext";
-import StyledCreateForm from "./styles";
-import ResultsContext from "contexts/ResultsContext";
-import createResult from "services/createResult";
+import useCreateResult from "hooks/useCreateResult";
+import useEditResult from "hooks/useEditResult";
 import editResult from "services/editResult";
+import StyledCreateForm from "./styles";
 
 export default function CreateForm({ onSubmit, title }) {
   const {
@@ -18,7 +18,8 @@ export default function CreateForm({ onSubmit, title }) {
     changeTime,
     reset,
   } = useContext(CreateResultContext);
-  const { updateResults } = useContext(ResultsContext);
+  const { createResult } = useCreateResult();
+  const { editResult } = useEditResult();
 
   const handleDescriptionValue = ({ target: { value } }) => {
     changeDescription(value);
@@ -43,7 +44,6 @@ export default function CreateForm({ onSubmit, title }) {
     id
       ? await editResult({ data, id, type }) 
       : await createResult({ data, type }); 
-    updateResults();
     reset();
     onSubmit();
   };

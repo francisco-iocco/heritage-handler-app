@@ -1,5 +1,5 @@
-export default async function getResults({ type }) {
-  let results = await fetch(`http://localhost:4000/${type}s`);
+export default async function getResults({ type, JWT }) {
+  let results = await fetch(`http://localhost:4000/${JWT}/${type}s`);
   results = await results.json();
   return results;
 }

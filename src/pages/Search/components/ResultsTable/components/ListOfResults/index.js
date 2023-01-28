@@ -1,13 +1,14 @@
 import { useState, useEffect, useContext } from "react";
 import ResultsContext from "contexts/ResultsContext";
 import SearchResultContext from "contexts/SearchResultContext";
+import useDeleteResult from "hooks/useDeleteResult";
 import Result from "../Result";
-import deleteResult from "services/deleteResult";
 
 export default function ListOfResults({ searchInputValue }) {
   const { isPermanent, isIncome, isRemittance } = useContext(SearchResultContext);
   const { results, updateResults } = useContext(ResultsContext);
   const [ renderResults, setRenderResults ] = useState(results);
+  const { deleteResult } = useDeleteResult();
   
   useEffect(() => setRenderResults(results), [ results ]);
 
