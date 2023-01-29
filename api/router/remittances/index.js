@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const Remittance = require("./schema");
-const Heritage = require("../heritages/schema");
+const Heritage = require("../heritage/schema");
 
 const router = Router();
 
@@ -8,10 +8,8 @@ router.post("/:user_id/remittances", async (req, res) => {
   const { body, params: { user_id } } = req;
 
   const [ outdatedHeritage ] = await Heritage.find({ user_id });
-  const amount = outdatedHeritage.amount + body.amount;
-  Heritage.findByIdAndUpdate(outdatedHeritage._id, { amount }, (err, doc) => {
-    err ? console.error(err) : console.log(doc);
-  });
+  const newAmount = outdatedHeritage.amount + body.amount;
+  await Heritage.findOneAndUpdate(outdatedHeritage._id, { amount: newAmount });
 
   const data = { ...body, user_id };
   const newRemittance = new Remittance(data);
@@ -32,9 +30,7 @@ router.put("/:user_id/remittances/:id", async (req, res) => {
   const oldRemittanceAmount = remittance.amount;
   const [ outdatedHeritage ] = await Heritage.find({ user_id });
   const newAmount = outdatedHeritage.amount - oldRemittanceAmount + body.amount;
-  Heritage.findByIdAndUpdate(outdatedHeritage._id, { amount: newAmount }, (err, doc) => {
-    err ? console.error(err) : console.log(doc);
-  });
+  await Heritage.findOneAndUpdate(outdatedHeritage._id, { amount: newAmount });
 
   res.status(200).send();
 })
@@ -42,13 +38,12 @@ router.put("/:user_id/remittances/:id", async (req, res) => {
 router.delete("/:user_id/remittances/:id", async (req, res) => {
   const { id, user_id } = req.params;
 
-  const remittance = await Remittance.findOneAndDelete(id);
+  const remittance = await Remittance.findById(id);
+  await Remittance.findByIdAndDelete(id);
   const oldRemittanceAmount = remittance.amount;
   const [ outdatedHeritage ] = await Heritage.find({ user_id });
   const newAmount = outdatedHeritage.amount - oldRemittanceAmount;
-  Heritage.findByIdAndUpdate(outdatedHeritage._id, { amount: newAmount }, (err, doc) => {
-    err ? console.error(err) : console.log(doc);
-  });
+  await Heritage.findOneAndUpdate(outdatedHeritage._id, { amount: newAmount });
   
   res.status(204).send();
 });

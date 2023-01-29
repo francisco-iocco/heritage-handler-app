@@ -1,9 +1,11 @@
 import { useState, useContext } from "react";
 import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
+import CreateResultContext from "contexts/CreateResultContext";
+import ResultsContext from "contexts/ResultsContext";
+import useDeleteResult from "hooks/useDeleteResult";
 import Modal from "components/Modal";
 import CreateForm from "pages/Search/components/CreateForm";
 import StyledResult from "./styles";
-import CreateResultContext from "contexts/CreateResultContext";
 
 export default function Result({
   amount,
@@ -11,7 +13,6 @@ export default function Result({
   isPermanent = false,
   time,
   id,
-  onDelete,
 }) {
   const [showModal, setShowModal] = useState(false);
   const { 
@@ -22,6 +23,11 @@ export default function Result({
     changeId,
     reset 
   } = useContext(CreateResultContext);
+  const { deleteResult } = useDeleteResult();
+  
+  const handleDelete = async () => {
+    await deleteResult({ type: amount > 0 ? "income" : "remittance", id });
+  };
 
   const handleShowModal = () => {
     changeDescription(description);
@@ -51,7 +57,7 @@ export default function Result({
         <button className="edit" onClick={handleShowModal}>
           <FaPencilAlt />
         </button>
-        <button className="delete" onClick={onDelete}>
+        <button className="delete" onClick={handleDelete}>
           <FaTrashAlt />
         </button>
       </td>

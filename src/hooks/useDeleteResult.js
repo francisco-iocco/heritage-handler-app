@@ -8,6 +8,7 @@ export default function useDeleteResult() {
   const { updateResults } = useContext(ResultsContext);
   return {
     deleteResult: async ({id, type}) => {
+      console.log(id);
       await deleteResult({id, type, JWT});
       updateResults();
     }

@@ -7,8 +7,8 @@ export default function useCreateResult() {
   const { JWT } = useContext(JWTContext);
   const { updateResults } = useContext(ResultsContext);
   return {
-    createResult: async ({data, type}) => {
-      await createResult({data, type, JWT});
+    createResult: async ({ data, type }) => {
+      await createResult({ data, type, JWT });
       updateResults();
     }
   };

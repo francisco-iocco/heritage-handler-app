@@ -1,5 +1,5 @@
-export default function createResult({ data, type, JWT }) {
-  fetch(`http://localhost:4000/${JWT}/${type}s`, {
+export default async function createResult({ data, type, JWT }) {
+  await fetch(`http://localhost:4000/${JWT}/${type}s`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

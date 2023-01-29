@@ -28,9 +28,9 @@ export default function CreateForm({ onSubmit, title }) {
   const handleAmountValue = ({ target: { value } }) => {
     let amount = value;
     if (title.includes("remittance")) {
-      amount = parseInt(amount.startsWith("-") ? amount : `-${amount}`);
+      amount = amount.startsWith("-") ? amount : `-${amount}`;
     }
-    changeAmount(amount);
+    changeAmount(parseInt(amount));
   };
 
   const handleTimeValue = ({ target: { value } }) => changeTime(value);
