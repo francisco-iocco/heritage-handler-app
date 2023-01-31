@@ -2,7 +2,9 @@ import { useState } from "react";
 
 export default function useResultsRate(results) {
   const [ remittancesAmount, setRemittancesAmount ] = useState([]);
+  const [ remittancesPercentaje, setRemittancesPercentaje ] = useState([]);
   const [ incomesAmount, setIncomesAmount ] = useState([]);
+  const [ incomesPercentaje, setIncomesPercentaje ] = useState([]);
   const currentDate = new Date();
 
   const prevMondayDate = (weekday, monthDay) => {
@@ -106,17 +108,21 @@ export default function useResultsRate(results) {
   };
 
   const setResultsTime = ({ target: { value } }) => {
-    setRemittancesAmount(
-      filterResultsByTime(value, results.filter((result) => result.amount < 0))
-    );
-    setIncomesAmount(
-      filterResultsByTime(value, results.filter((result) => result.amount > 0))
-    );
+    const remittancesSum = filterResultsByTime(value, results.filter((result) => result.amount < 0)) * -1;
+    const incomesSum = filterResultsByTime(value, results.filter((result) => result.amount > 0));
+    const totalSum = incomesSum + remittancesSum;
+
+    setRemittancesAmount(remittancesSum);
+    setRemittancesPercentaje(((remittancesSum / totalSum) * 100).toFixed(1));
+    setIncomesAmount(incomesSum);
+    setIncomesPercentaje(((incomesSum / totalSum) * 100).toPrecision(3))
   };
 
   return {
     remittancesAmount,
+    remittancesPercentaje,
     incomesAmount,
+    incomesPercentaje,
     setResultsTime
   };
 }

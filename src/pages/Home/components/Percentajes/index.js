@@ -1,6 +1,14 @@
+import { useEffect } from "react";
 import StyledPercentajes from "./styles";
 
-export default function Percentajes({ setResultsTime }) {
+export default function Percentajes({
+  setResultsTime,
+  remittancesPercentaje,
+  incomesPercentaje,
+}) {
+  useEffect(() => {
+    setResultsTime({ target: { value: "This day " } });
+  }, []);
   return (
     <StyledPercentajes>
       <div>
@@ -16,11 +24,11 @@ export default function Percentajes({ setResultsTime }) {
         <div className="data">
           <div className="remittances-data">
             <h5>Remittances</h5>
-            <p>30%</p>
+            <p>{remittancesPercentaje}%</p>
           </div>
           <div className="incomes-data">
             <h5>Incomes</h5>
-            <p>70%</p>
+            <p>{incomesPercentaje}%</p>
           </div>
         </div>
       </div>

@@ -12,10 +12,12 @@ export default function Home() {
   const [amount, setAmount] = useState(0);
   const { JWT } = useContext(JWTContext);
   const { results } = useContext(ResultsContext);
-  const { 
-    setResultsTime, 
-    remittancesAmount, 
-    incomesAmount 
+  const {
+    remittancesAmount,
+    incomesAmount,
+    remittancesPercentaje,
+    incomesPercentaje,
+    setResultsTime,
   } = useResultsRate(results);
 
   useEffect(() => {
@@ -32,7 +34,11 @@ export default function Home() {
         remittancesAmount={remittancesAmount}
         incomesAmount={incomesAmount}
       />
-      <Percentajes setResultsTime={setResultsTime} />
+      <Percentajes
+        remittancesPercentaje={remittancesPercentaje}
+        incomesPercentaje={incomesPercentaje}
+        setResultsTime={setResultsTime}
+      />
       <div className="current-heritage-container">
         <h3>Current Heritage</h3>
         <p>${amount}</p>
