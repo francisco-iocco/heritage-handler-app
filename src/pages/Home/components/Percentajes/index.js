@@ -1,12 +1,12 @@
 import StyledPercentajes from "./styles";
 
-export default function Percentajes() {
+export default function Percentajes({ setResultsTime }) {
   return (
     <StyledPercentajes>
       <div>
         <div className="title">
           <h4>Results in porcentaje</h4>
-          <select>
+          <select onChange={setResultsTime}>
             <option>This day</option>
             <option>This week</option>
             <option>This month</option>
