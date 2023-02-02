@@ -1,15 +1,49 @@
-import { useState } from "react";
+import { useState, useReducer } from "react";
+
+const INITIAL_STATE = {
+  incomesAmount: 0,
+  remittancesAmount: 0,
+  incomesPercentaje: 0,
+  remittancesPercentaje: 0,
+};
+
+const ACTIONS = {
+  CHANGE_INCOMES_AMOUNT: "CHANGE_INCOMES_AMOUNT",
+  CHANGE_REMITTANCES_AMOUNT: "CHANGE_REMITTANCES_AMOUNT",
+  CHANGE_INCOMES_PERCENTAJE: "CHANGE_INCOMES_PERCENTAJE",
+  CHANGE_REMITTANCES_PERCENTAJE: "CHANGE_REMITTANCES_PERCENTAJE",
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case ACTIONS.CHANGE_INCOMES_AMOUNT:
+      return { ...state, incomesAmount: action.payload };
+    case ACTIONS.CHANGE_REMITTANCES_AMOUNT:
+      return { ...state, remittancesAmount: action.payload };
+    case ACTIONS.CHANGE_INCOMES_PERCENTAJE:
+      return { ...state, incomesPercentaje: action.payload };
+    case ACTIONS.CHANGE_REMITTANCES_PERCENTAJE:
+      return { ...state, remittancesPercentaje: action.payload };
+    default:
+      return state;
+  }
+}
 
 export default function useResultsRate(results) {
-  const [ remittancesAmount, setRemittancesAmount ] = useState([]);
-  const [ remittancesPercentaje, setRemittancesPercentaje ] = useState([]);
-  const [ incomesAmount, setIncomesAmount ] = useState([]);
-  const [ incomesPercentaje, setIncomesPercentaje ] = useState([]);
+  const [
+    {
+      incomesAmount,
+      remittancesAmount,
+      incomesPercentaje,
+      remittancesPercentaje,
+    },
+    dispatch,
+  ] = useReducer(reducer, INITIAL_STATE);
   const currentDate = new Date();
 
-  const prevMondayDate = (weekday, monthDay) => {
+  const prevMondayDate = (date) => {
     let difference;
-    switch (weekday) {
+    switch (date.getDay()) {
       case 0:
         difference = 6;
         break;
@@ -32,7 +66,7 @@ export default function useResultsRate(results) {
         difference = 5;
         break;
     }
-    return monthDay - difference;
+    return new Date(date.getTime() - difference * 86400000);
   };
 
   const filterResultsByTime = (time, results) => {
@@ -40,61 +74,44 @@ export default function useResultsRate(results) {
     switch (time) {
       case "This day":
         filteredResults = filteredResults.filter((result) => {
-          const resultDay = new Date(result.created_at).getDate();
-          const resultMonth = new Date(result.created_at).getMonth();
-          const resultYear = new Date(result.created_at).getFullYear();
-          if (
-            resultDay === currentDate.getDate() &&
-            resultMonth === currentDate.getMonth() &&
-            resultYear === currentDate.getFullYear()
-          ) return true;
-          return false;
+          const resultDate = new Date(result.created_at);
+          return (
+            resultDate.getDate() === currentDate.getDate() &&
+            resultDate.getMonth() === currentDate.getMonth() &&
+            resultDate.getFullYear() === currentDate.getFullYear()
+          )
         });
         break;
       case "This week":
         filteredResults = filteredResults.filter((result) => {
-          const resultWeekday = new Date(result.created_at).getDay();
-          const resultMonthDay = new Date(result.created_at).getDate();
-          const resultPrevMonday = prevMondayDate(
-            resultWeekday,
-            resultMonthDay
+          const resultPrevMondayDate = prevMondayDate(
+            new Date(result.created_at)
           );
-          const resultMonth = new Date(result.created_at).getMonth();
-          const resultYear = new Date(result.created_at).getFullYear();
-
-          const currentDateWeekday = currentDate.getDay();
-          const currentDateMonthDay = currentDate.getDate();
-          const currentDatePrevMonday = prevMondayDate(
-            currentDateWeekday,
-            currentDateMonthDay
+          const currentDatePrevMonday = prevMondayDate(currentDate);
+          return (
+            resultPrevMondayDate.getDate() ===
+              currentDatePrevMonday.getDate() &&
+            resultPrevMondayDate.getMonth() ===
+              currentDatePrevMonday.getMonth() &&
+            resultPrevMondayDate.getFullYear() ===
+              currentDatePrevMonday.getFullYear()
           );
-
-          if (
-            resultPrevMonday === currentDatePrevMonday &&
-            resultMonth === currentDate.getMonth() &&
-            resultYear === currentDate.getFullYear()
-          ) return true;
-          return false;
         });
         break;
       case "This month":
         filteredResults = filteredResults.filter((result) => {
-          const resultMonth = new Date(result.created_at).getMonth();
-          const resultYear = new Date(result.created_at).getFullYear();
+          const resultDate = new Date(result.created_at);
 
-          if (
-            resultMonth === currentDate.getMonth() &&
-            resultYear === currentDate.getFullYear()
-          ) return true;
-          return false;
+          return (
+            resultDate.getMonth() === currentDate.getMonth() &&
+            resultDate.getFullYear() === currentDate.getFullYear()
+          );
         });
         break;
       case "This year":
         filteredResults = filteredResults.filter((result) => {
-          const resultYear = new Date(result.created_at).getFullYear();
-
-          if (resultYear === currentDate.getFullYear()) return true;
-          return false;
+          const resultDate = new Date(result.created_at);
+          return resultDate.getFullYear() === currentDate.getFullYear();
         });
         break;
       default:
@@ -108,14 +125,36 @@ export default function useResultsRate(results) {
   };
 
   const setResultsTime = ({ target: { value } }) => {
-    const remittancesSum = filterResultsByTime(value, results.filter((result) => result.amount < 0)) * -1;
-    const incomesSum = filterResultsByTime(value, results.filter((result) => result.amount > 0));
+    const remittancesSum =
+      filterResultsByTime(
+        value,
+        results.filter((result) => result.amount < 0)
+      ) * -1;
+    const incomesSum = filterResultsByTime(
+      value,
+      results.filter((result) => result.amount > 0)
+    );
     const totalSum = incomesSum + remittancesSum;
 
-    setRemittancesAmount(remittancesSum);
-    setRemittancesPercentaje(((remittancesSum / totalSum) * 100).toFixed(1));
-    setIncomesAmount(incomesSum);
-    setIncomesPercentaje(((incomesSum / totalSum) * 100).toPrecision(3))
+    dispatch({
+      type: ACTIONS.CHANGE_INCOMES_AMOUNT,
+      payload: incomesSum,
+    });
+    dispatch({
+      type: ACTIONS.CHANGE_REMITTANCES_AMOUNT,
+      payload: remittancesSum,
+    });
+
+    if (totalSum) {
+      dispatch({
+        type: ACTIONS.CHANGE_REMITTANCES_PERCENTAJE,
+        payload: ((remittancesSum / totalSum) * 100).toFixed(1),
+      });
+      dispatch({
+        type: ACTIONS.CHANGE_INCOMES_PERCENTAJE,
+        payload: ((incomesSum / totalSum) * 100).toFixed(1),
+      });
+    }
   };
 
   return {
@@ -123,6 +162,6 @@ export default function useResultsRate(results) {
     remittancesPercentaje,
     incomesAmount,
     incomesPercentaje,
-    setResultsTime
+    setResultsTime,
   };
 }

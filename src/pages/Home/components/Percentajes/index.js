@@ -7,7 +7,7 @@ export default function Percentajes({
   incomesPercentaje,
 }) {
   useEffect(() => {
-    setResultsTime({ target: { value: "This day " } });
+    setResultsTime({ target: { value: "This day" } });
   }, []);
   return (
     <StyledPercentajes>
