@@ -1,8 +1,6 @@
 import { useContext } from "react";
 import CreateResultContext from "contexts/CreateResultContext";
-import useCreateResult from "hooks/useCreateResult";
-import useEditResult from "hooks/useEditResult";
-import editResult from "services/editResult";
+import useHandleResult from "hooks/useHandleResult";
 import StyledCreateForm from "./styles";
 
 export default function CreateForm({ onSubmit, title }) {
@@ -18,26 +16,19 @@ export default function CreateForm({ onSubmit, title }) {
     changeTime,
     reset,
   } = useContext(CreateResultContext);
-  const { createResult } = useCreateResult();
-  const { editResult } = useEditResult();
+  const { createResult, editResult } = useHandleResult();
 
   const handleDescriptionValue = ({ target: { value } }) => {
     changeDescription(value);
   };
 
-  const handleAmountValue = ({ target: { value } }) => {
-    let amount = value;
-    if (title.includes("remittance")) {
-      amount = amount.startsWith("-") ? amount : `-${amount}`;
-    }
-    changeAmount(amount);
-  };
+  const handleAmountValue = ({ target: { value } }) => changeAmount(parseInt(value));
 
   const handleTimeValue = ({ target: { value } }) => changeTime(value);
 
   const handleCloseForm = async (e) => {
-    const type = amount > 0 ? "income" : "remittance";
     e.preventDefault();
+    const type = (title.includes("remittance")) ? "remittance" : "income";
     const data = isPermanent
       ? { description, amount, isPermanent, time }
       : { description, amount, isPermanent, time: null };

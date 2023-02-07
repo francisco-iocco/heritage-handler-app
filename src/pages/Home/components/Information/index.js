@@ -1,27 +1,15 @@
 import StyledInformation from "./styles";
 
-export default function Information() {
+export default function Information({ remittancesAmount, incomesAmount }) {
   return (
     <StyledInformation>
       <div className="remittances-container">
         <h4>Remittances</h4>
-        <select>
-          <option>This hour</option>
-          <option>This day</option>
-          <option>This month</option>
-          <option>This year</option>
-        </select>
-        <p>$400000</p>
+        <p>${remittancesAmount}</p>
       </div>
       <div className="incomes-container">
         <h4>Incomes</h4>
-        <select>
-          <option>This hour</option>
-          <option>This day</option>
-          <option>This month</option>
-          <option>This year</option>
-        </select>
-        <p>$500000</p>
+        <p>${incomesAmount}</p>
       </div>
     </StyledInformation>
   );

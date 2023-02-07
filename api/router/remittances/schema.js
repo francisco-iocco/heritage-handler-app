@@ -5,6 +5,7 @@ const remittanceSchema = mongoose.Schema({
   amount: Number,
   isPermanent: Boolean,
   time: String,
+  lastAdd: Date,
   user_id: {
     type: "ObjectId",
     ref: "users"
