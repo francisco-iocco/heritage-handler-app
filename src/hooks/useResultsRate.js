@@ -1,4 +1,4 @@
-import { useState, useReducer } from "react";
+import { useReducer } from "react";
 
 const INITIAL_STATE = {
   incomesAmount: 0,
@@ -70,11 +70,14 @@ export default function useResultsRate(results) {
   };
 
   const filterResultsByTime = (time, results) => {
-    let filteredResults = results;
+    let filteredResults = results.filter((result) => {
+      return !(new Date(result.updated_at).getDate() ===
+      new Date(result.created_at).getDate())}
+    );
     switch (time) {
       case "This day":
         filteredResults = filteredResults.filter((result) => {
-          const resultDate = new Date(result.created_at);
+          const resultDate = new Date(result.lastAdd || result.created_at);
           return (
             resultDate.getDate() === currentDate.getDate() &&
             resultDate.getMonth() === currentDate.getMonth() &&
@@ -85,7 +88,7 @@ export default function useResultsRate(results) {
       case "This week":
         filteredResults = filteredResults.filter((result) => {
           const resultPrevMondayDate = prevMondayDate(
-            new Date(result.created_at)
+            new Date(result.lastAdd || result.created_at)
           );
           const currentDatePrevMonday = prevMondayDate(currentDate);
           return (
@@ -100,8 +103,7 @@ export default function useResultsRate(results) {
         break;
       case "This month":
         filteredResults = filteredResults.filter((result) => {
-          const resultDate = new Date(result.created_at);
-
+          const resultDate = new Date(result.lastAdd || result.created_at);
           return (
             resultDate.getMonth() === currentDate.getMonth() &&
             resultDate.getFullYear() === currentDate.getFullYear()
@@ -110,7 +112,7 @@ export default function useResultsRate(results) {
         break;
       case "This year":
         filteredResults = filteredResults.filter((result) => {
-          const resultDate = new Date(result.created_at);
+          const resultDate = new Date(result.lastAdd || result.created_at);
           return resultDate.getFullYear() === currentDate.getFullYear();
         });
         break;
@@ -154,6 +156,9 @@ export default function useResultsRate(results) {
         type: ACTIONS.CHANGE_INCOMES_PERCENTAJE,
         payload: ((incomesSum / totalSum) * 100).toFixed(1),
       });
+    } else {
+      dispatch({ type: ACTIONS.CHANGE_REMITTANCES_PERCENTAJE, payload: 0 });
+      dispatch({ type: ACTIONS.CHANGE_INCOMES_PERCENTAJE, payload: 0 });
     }
   };
 

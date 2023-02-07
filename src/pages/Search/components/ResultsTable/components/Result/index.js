@@ -1,8 +1,7 @@
 import { useState, useContext } from "react";
 import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import CreateResultContext from "contexts/CreateResultContext";
-import ResultsContext from "contexts/ResultsContext";
-import useDeleteResult from "hooks/useDeleteResult";
+import useHandleResult from "hooks/useHandleResult";
 import Modal from "components/Modal";
 import CreateForm from "pages/Search/components/CreateForm";
 import StyledResult from "./styles";
@@ -23,7 +22,7 @@ export default function Result({
     changeId,
     reset 
   } = useContext(CreateResultContext);
-  const { deleteResult } = useDeleteResult();
+  const { deleteResult } = useHandleResult();
   
   const handleDelete = async () => {
     await deleteResult({ type: amount > 0 ? "income" : "remittance", id });
@@ -31,7 +30,7 @@ export default function Result({
 
   const handleShowModal = () => {
     changeDescription(description);
-    changeAmount(amount);
+    changeAmount(amount < 0 ? amount * -1 : amount);
     isPermanent && toggleIsPermanent();
     changeTime(time);
     changeId(id);

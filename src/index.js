@@ -1,13 +1,16 @@
-import './index.css';
-import App from './App';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
+import App from './App';
+import { JWTContextProvider } from 'contexts/JWTContext';
+import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <JWTContextProvider>
+      <App />
+    </JWTContextProvider>
   </React.StrictMode>
 );
 

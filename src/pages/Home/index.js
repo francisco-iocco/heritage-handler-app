@@ -24,8 +24,9 @@ export default function Home() {
     (async () => {
       const { amount } = await getHeritage({ JWT });
       setAmount(amount);
+      setResultsTime({ target: { value: "This day" } });
     })();
-  }, [results]);
+  }, []);
 
   return (
     <StyledHome className="section">

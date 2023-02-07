@@ -8,7 +8,9 @@ export default function ListOfResults({ searchInputValue }) {
   const { results } = useContext(ResultsContext);
   const [ renderResults, setRenderResults ] = useState(results);
   
-  useEffect(() => setRenderResults(results), [ results ]);
+  useEffect(() => {
+    setRenderResults(results)
+  }, [ results ]);
 
   useEffect(() => {
     let info = results;

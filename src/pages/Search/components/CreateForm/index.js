@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import CreateResultContext from "contexts/CreateResultContext";
-import useCreateResult from "hooks/useCreateResult";
-import useEditResult from "hooks/useEditResult";
+import useHandleResult from "hooks/useHandleResult";
 import StyledCreateForm from "./styles";
 
 export default function CreateForm({ onSubmit, title }) {
@@ -17,8 +16,7 @@ export default function CreateForm({ onSubmit, title }) {
     changeTime,
     reset,
   } = useContext(CreateResultContext);
-  const { createResult } = useCreateResult();
-  const { editResult } = useEditResult();
+  const { createResult, editResult } = useHandleResult();
 
   const handleDescriptionValue = ({ target: { value } }) => {
     changeDescription(value);
@@ -34,7 +32,6 @@ export default function CreateForm({ onSubmit, title }) {
     const data = isPermanent
       ? { description, amount, isPermanent, time }
       : { description, amount, isPermanent, time: null };
-    console.log(id);
     id
       ? await editResult({ data, id, type }) 
       : await createResult({ data, type }); 

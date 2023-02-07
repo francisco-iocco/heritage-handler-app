@@ -29,4 +29,11 @@ router.get("/:id", async (req, res) => {
   res.status(200).json({ token: users[0]._id, heritage: users[0].heritage });
 });
 
+router.put("/:id", async (req, res) => {
+  const { body: { lastConnection }, params: { id } } = req;
+
+  await User.findByIdAndUpdate(id, { lastConnection });
+  res.status(200).send();
+})
+
 module.exports = router;

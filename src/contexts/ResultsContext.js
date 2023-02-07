@@ -13,8 +13,8 @@ export function ResultsContextProvider({ children }) {
     const remittances = await getResults({ type: "remittance", JWT });
     let results = [ ...incomes, ...remittances ];
     results = results.sort((a, b) => {
-      const firstDate = new Date(a.updated_at).getTime();
-      const secondDate = new Date(b.updated_at).getTime();
+      const firstDate = new Date(a.created_at).getTime();
+      const secondDate = new Date(b.created_at).getTime();
       if (firstDate < secondDate) {
         return 1;
       } else if (firstDate > secondDate) {
