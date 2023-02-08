@@ -9,7 +9,7 @@ import getHeritage from "services/getHeritage";
 import StyledHome from "./styles";
 
 export default function Home() {
-  const [amount, setAmount] = useState(0);
+  const [ amount, setAmount ] = useState(0);
   const { JWT } = useContext(JWTContext);
   const { results } = useContext(ResultsContext);
   const {

@@ -1,7 +1,13 @@
-import Form from "components/UserForm";
+import { useState } from "react";
+import UserForm from "components/UserForm";
+import Modal from "components/Modal";
 import StyledDiv from "./styles";
 
 export default function Login() {
+  const [ isModalActive, setIsModalActive ] = useState(false);
+
+  const handleModal = () => setIsModalActive(!isModalActive);
+
   return (
     <StyledDiv>
       <div className="section section-1">
@@ -11,10 +17,15 @@ export default function Login() {
         </header>
       </div>
       <div className="section section-2">
-        <Form title="Log into your account" />
+        <UserForm title="Log into your account" btnTitle="Log in"/>
         <div className="divider"></div>
-        <button className="registerBtn">Create a new account</button>
+        <button className="registerBtn" onClick={handleModal}>Create a new account</button>
       </div>
+      {isModalActive && (
+        <Modal onClose={handleModal}>
+          <UserForm title="Register" btnTitle="Create account" registerUsage={true} />
+        </Modal>
+      )}
     </StyledDiv>
   )
 }

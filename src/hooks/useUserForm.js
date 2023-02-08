@@ -2,51 +2,72 @@ import { useReducer } from "react";
 
 const INITIAL_STATE = {
   email: "",
-  emailError: { has: false, message: "" },
   password: "",
-  passwordError: { has: false, message: "" },
+  heritage: "",
+  emailError: { status: false, message: "" },
+  passwordError: { status: false, message: "" },
+  heritageError: { status: false, message: "" },
 };
 
 const ACTIONS = {
   SET_EMAIL_ERROR: "EMAIL_ERROR",
   SET_PASSWORD_ERROR: "PASSWORD_ERROR",
+  SET_HERITAGE_ERROR: "HERITAGE_ERROR",
   UPDATE_EMAIL: "UPDATE_EMAIL",
   UPDATE_PASSWORD: "UPDATE_PASSWORD",
+  UPDATE_HERITAGE: "UPDATE_HERITAGE",
 };
 
 function reducer(state, action) {
-  switch (action.type) {
+  const { type, payload } = action;
+  switch (type) {
     case ACTIONS.SET_EMAIL_ERROR:
-      return { ...state, emailError: action.payload };
+      return { ...state, emailError: payload };
     case ACTIONS.SET_PASSWORD_ERROR:
-      return { ...state, passwordError: action.payload };
+      return { ...state, passwordError: payload };
+    case ACTIONS.SET_HERITAGE_ERROR:
+      return { ...state, heritageError: payload };
     case ACTIONS.UPDATE_EMAIL:
-      return { ...state, email: action.payload };
+      return { ...state, email: payload };
     case ACTIONS.UPDATE_PASSWORD:
-      return { ...state, password: action.payload };
+      return { ...state, password: payload };
+    case ACTIONS.UPDATE_HERITAGE:
+      return { ...state, heritage: payload };
     default:
       return state;
   }
 }
 
 export default function useUserForm() {
-  const [ { email, emailError, password, passwordError }, dispatch ] = useReducer(
-    reducer,
-    INITIAL_STATE
-  );
+  const [ 
+    { 
+      email, 
+      password, 
+      heritage, 
+      emailError, 
+      passwordError, 
+      heritageError 
+    }, 
+    dispatch 
+  ] = useReducer(reducer, INITIAL_STATE);
 
   return {
     email,
-    emailError,
     password,
-    passwordError,
-    setEmailError: (has, message) =>
-      dispatch({ type: ACTIONS.SET_EMAIL_ERROR, payload: { has, message } }),
-    setPasswordError: (has, message) =>
-      dispatch({ type: ACTIONS.SET_PASSWORD_ERROR, payload: { has, message } }),
+    heritage,
+    errors: { emailError, passwordError, heritageError },
+    setEmailError: (status, message) => {
+      dispatch({ type: ACTIONS.SET_EMAIL_ERROR, payload: { status, message } });
+    },
+    setPasswordError: (status, message) =>
+      dispatch({ type: ACTIONS.SET_PASSWORD_ERROR, payload: { status, message } }),
+    setHeritageError: (status, message) =>
+      dispatch({ type: ACTIONS.SET_HERITAGE_ERROR, payload: { status, message } }),
     updateEmail: (email) =>
       dispatch({ type: ACTIONS.UPDATE_EMAIL, payload: email }),
     updatePassword: (password) =>
       dispatch({ type: ACTIONS.UPDATE_PASSWORD, payload: password }),
+    updateHeritage: (heritage) =>
+      dispatch({ type: ACTIONS.UPDATE_HERITAGE, payload: heritage }),
   };
 }

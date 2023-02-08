@@ -1,32 +1,49 @@
 const { Router } = require("express");
 const User = require("./schema");
+const Heritage = require("../heritage/schema")
 
 const router = Router();
 
-router.get("/:id", async (req, res) => {
+router.get("/", async (req, res) => {
   const {
     query: { email, password },
   } = req;
 
-  const isLogged = await User.find({ email });
+  const isLogged = await User.findOne({ email });
   
-  if (isLogged.length === 0) {
+  if (!isLogged) {
     return res.status(400).json({
       emailError: true,
-      errorMessage: "User doesn't exist...",
+      errorMessage: "User isn't logged...",
     });
   }
 
-  const users = await User.find({ email, password });
+  const user = await User.findOne({ email, password });
 
-  if (users.length === 0) {
+  if (!user) {
     return res.status(400).json({
       passwordError: true,
       errorMessage: "Password is incorrect...",
     });
   }
 
-  res.status(200).json({ token: users[0]._id, heritage: users[0].heritage });
+  res.status(200).json({ JWT: user._id });
+});
+
+router.post("/", async (req, res) => {
+  const { body } = req;
+
+  const heritage = await Heritage({ amount: body.heritage });
+  heritage.save();
+
+  const user = await User({ 
+    ...body, 
+    heritage: heritage._id, 
+    lastConnection: new Date() 
+  });
+  user.save();
+
+  res.status(201).json({ JWT: user._id });
 });
 
 router.put("/:id", async (req, res) => {

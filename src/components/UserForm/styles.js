@@ -1,36 +1,53 @@
 import styled from "@emotion/styled";
 
-const StyledForm = styled.form`
+const StyledUserForm = styled.form`
   border-radius: 15px;
-  box-shadow: 0 0 30px -10px #000;
+  ${props => props.title === ("Log into your account") && "box-shadow: 0 0 30px -10px #aaa;"}
   display: flex;
   flex-direction: column;
-  margin: 25px 0;
-  padding: 25px 15px;
-  position: relative;
-  width: 80%;
-  z-index: 1;
+  padding: 25px;
 
   h3 {
-    align-self: center;
-    border-bottom: 1px solid lightblue;
-    font-size: 1.2em;
-    margin-bottom: 15px;
-    padding: 5px 0;
+    display: inline-block;
+    border-bottom: 1px solid #2424d2;
     text-align: center;
-    width: 80%;
+    font-size: 1.2em;
+    margin: 15px auto;
+    padding-bottom: 10px;
   }
 
-  input {
-    margin: 15px 0 10px 0;
-    outline: none;
-    padding: 10px;
+  div.input-container {
+    margin: 15px 0;
+    height: 40px;
   }
 
-  p {
+  div.input-container + p {
     color: red;
-    font-size: 10px;
-    margin: 5px 1px;
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+
+  label {
+    float: left;
+    font-size: 20px;
+    color: #2424d2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 15%;
+    border-radius: 10px 0 0 10px;
+    box-shadow: 0 0 20px 0 #eee;
+  }
+  
+  input {
+    float: right;
+    padding: 10px;
+    height: 100%;
+    width: 85%;
+    border-radius: 0 10px 10px 0;
+    border: 1px solid #aaa;
+    outline: none;
   }
 
   button {
@@ -49,4 +66,4 @@ const StyledForm = styled.form`
   }
 `;
 
-export default StyledForm;
+export default StyledUserForm;
