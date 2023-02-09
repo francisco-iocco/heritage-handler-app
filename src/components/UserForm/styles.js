@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 const StyledUserForm = styled.form`
-  border-radius: 15px;
+  border-radius: 10px;
   ${props => props.title === ("Log into your account") && "box-shadow: 0 0 30px -10px #aaa;"}
   display: flex;
   flex-direction: column;
@@ -21,7 +21,7 @@ const StyledUserForm = styled.form`
     height: 40px;
   }
 
-  div.input-container + p {
+  p {
     color: red;
     font-size: 15px;
     margin-bottom: 10px;
@@ -63,6 +63,15 @@ const StyledUserForm = styled.form`
     color: #2424d2;
     margin: 10px;
     text-align: center;
+  }
+
+  p.note span {
+    font-size: 10px;
+  }
+
+  p.note {
+    font-size: 15px;
+    color: #B0E0E6;
   }
 `;
 

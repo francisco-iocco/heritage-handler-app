@@ -27,7 +27,10 @@ router.get("/", async (req, res) => {
     });
   }
 
-  res.status(200).json({ JWT: user._id });
+  res.status(200).json({ 
+    JWT: user._id, 
+    email: user.email, 
+  });
 });
 
 router.post("/", async (req, res) => {
@@ -43,13 +46,16 @@ router.post("/", async (req, res) => {
   });
   user.save();
 
-  res.status(201).json({ JWT: user._id });
+  res.status(201).json({ 
+    JWT: user._id, 
+    email: user.email, 
+  });
 });
 
 router.put("/:id", async (req, res) => {
-  const { body: { lastConnection }, params: { id } } = req;
+  const { body, params: { id } } = req;
 
-  await User.findByIdAndUpdate(id, { lastConnection });
+  await User.findByIdAndUpdate(id, { body });
   res.status(200).send();
 })
 

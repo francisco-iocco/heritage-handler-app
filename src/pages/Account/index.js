@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import UserDataContext from "contexts/UserDataContext";
 import { FaRegUserCircle, FaCog, FaExchangeAlt } from "react-icons/fa";
 import Nav from "components/Nav";
 import Settings from "./components/Settings";
@@ -7,6 +8,7 @@ import StyledAccount from "./styles";
 
 export default function Account() {
   const [ sectionToRender, setSectionToRender ] = useState("settings");
+  const { userData } = useContext(UserDataContext);
 
   return (
     <StyledAccount className="section" sectionToRender={sectionToRender}>
@@ -16,7 +18,7 @@ export default function Account() {
           <span>
             <FaRegUserCircle />
           </span>
-          <p>franciscoiocco6@gmail.com</p>
+          <p>{userData.email}</p>
         </div>
       </div>
       <div className="account-configuration">
@@ -26,7 +28,7 @@ export default function Account() {
         </div>
         <div className="content">
           {sectionToRender === "settings" && <Settings />}
-          {sectionToRender === "account-list" && <AccountList />}
+          {sectionToRender === "account-list" && <AccountList myEmail={userData.email}/>}
         </div>
       </div>
       <Nav />

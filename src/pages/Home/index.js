@@ -2,7 +2,7 @@ import { useEffect, useContext, useState } from "react";
 import Nav from "components/Nav";
 import Information from "./components/Information";
 import Percentajes from "./components/Percentajes";
-import JWTContext from "contexts/JWTContext";
+import UserDataContext from "contexts/UserDataContext";
 import ResultsContext from "contexts/ResultsContext";
 import useResultsRate from "hooks/useResultsRate";
 import getHeritage from "services/getHeritage";
@@ -10,7 +10,7 @@ import StyledHome from "./styles";
 
 export default function Home() {
   const [ amount, setAmount ] = useState(0);
-  const { JWT } = useContext(JWTContext);
+  const { userData } = useContext(UserDataContext);
   const { results } = useContext(ResultsContext);
   const {
     remittancesAmount,
@@ -22,7 +22,7 @@ export default function Home() {
 
   useEffect(() => {
     (async () => {
-      const { amount } = await getHeritage({ JWT });
+      const { amount } = await getHeritage({ JWT: userData.JWT });
       setAmount(amount);
       setResultsTime({ target: { value: "This day" } });
     })();

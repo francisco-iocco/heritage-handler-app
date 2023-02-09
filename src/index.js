@@ -2,15 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import App from './App';
-import { JWTContextProvider } from 'contexts/JWTContext';
+import { UserDataContextProvider } from 'contexts/UserDataContext';
 import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <JWTContextProvider>
+    <UserDataContextProvider>
       <App />
-    </JWTContextProvider>
+    </UserDataContextProvider>
   </React.StrictMode>
 );
 
