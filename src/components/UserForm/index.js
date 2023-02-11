@@ -1,24 +1,18 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { TfiLock, TfiMoney, TfiEmail, TfiInfoAlt } from "react-icons/tfi";
 import UserDataContext from "contexts/UserDataContext";
-import StyledForm from "./styles";
 import useUserForm from "hooks/useUserForm";
-import logUser from "services/logUser";
-import createUser from "services/createUser";
+import useHandleUser from "hooks/useHandleUser";
+import { TfiLock, TfiMoney, TfiEmail, TfiInfoAlt } from "react-icons/tfi";
+import StyledForm from "./styles";
 
 export default function UserForm({
-  title,
-  btnTitle,
-  usage = "",
-  note = ""
+  title = "",
+  btnTitle = "",
+  render = { email: false, password: false, heritage: false },
+  note = "",
 }) {
-  const [ render, setRender ] = useState({ 
-    email: false, 
-    password: false, 
-    heritage: false 
-  });
-  const { setUserData } = useContext(UserDataContext);
+  const { userData } = useContext(UserDataContext);
   const navigate = useNavigate();
   const {
     email,
@@ -32,25 +26,7 @@ export default function UserForm({
     setPasswordError,
     setHeritageError,
   } = useUserForm();
-
-  useEffect(() => {
-    switch (usage) {
-      case "register":
-        setRender({ email: true, password: true, heritage: true });
-        break;
-      case "login":
-        setRender({ email: true, password: true });
-        break;
-      case "link-existing-account":
-        setRender({ email: true });
-        break;
-      case "link-new-account":
-        setRender({ email: true, password: true, heritage: true });
-        break;
-      default:
-        break;
-    }
-  }, []);
+  const { logUser, registerUser, updateUser } = useHandleUser();
 
   const handleEmailValue = ({ target: { value } }) => updateEmail(value);
   const handlePasswordValue = ({ target: { value } }) => updatePassword(value);
@@ -65,26 +41,31 @@ export default function UserForm({
 
     // Veryfing if all the inputs were filled.
 
-    render.email && !email && setEmailError(true, "Email is required...");
-    render.password && !password && setPasswordError(true, "Password is required...");
-    render.heritage && !heritage && setHeritageError(true, "Heritage is required...");
+    render.email && !email && setEmailError("Email is required...");
+    render.password && !password && setPasswordError("Password is required...");
+    render.heritage && !heritage && setHeritageError("Heritage is required...");
     
-    if (emailError.status || passwordError.status || heritageError.status) return;
+    if (emailError || passwordError || heritageError) return;
     
-    const response = render.heritage
-      ? await createUser({ data: { email, password, heritage } })
-      : await logUser({ email, password });
-
     // Veryfing if the response isn't OK. (E.g. "User doesn't exist for logging").
 
-    response.heritageError && setHeritageError(true, response.errorMessage);
-    response.emailError && setEmailError(true, response.errorMessage);
-    response.passwordError && setPasswordError(true, response.errorMessage);
+    let errors;
+    if(render.email && render.password && render.heritage) {
+      errors = await registerUser({ email, password, heritage });
+    } else if(render.email && render.password) {
+      errors = await logUser({ email, password });
+    } else if(render.email) {
+      errors = await updateUser({ emailToBeLinked: email });
+    }
 
-    if (response.emailError || response.passwordError || response.heritageError) return;
+    if(errors) {
+      errors.heritageError && setHeritageError(true, errors.heritageError);
+      errors.emailError && setEmailError(true, errors.emailError);
+      errors.passwordError && setPasswordError(true, errors.passwordError);
+      return;
+    }
 
-    // If everything went well, storage user's data and navigate.
-    setUserData(response);
+    // If everything went well, navigate.
     navigate("/home");
   };
 
@@ -106,7 +87,7 @@ export default function UserForm({
               id="email"
             />
           </div>
-          {emailError.status && <p>{emailError.message}</p>}
+          {emailError && <p>{emailError}</p>}
         </>
       )}
       {render.password && (
@@ -123,7 +104,7 @@ export default function UserForm({
               value={password}
             />
           </div>
-          {passwordError.status && <p>{passwordError.message}</p>}
+          {passwordError && <p>{passwordError}</p>}
         </>
       )}
       {render.heritage && (
@@ -141,10 +122,10 @@ export default function UserForm({
               value={heritage}
             />
           </div>
-          {heritageError.status && <p>{heritageError.message}</p>}
+          {heritageError && <p>{heritageError}</p>}
         </>
       )}
-      {usage === "login" && <a>Forgot your password?</a>}
+      {(render.email && render.password && !render.heritage) && <a>Forgot your password?</a>}
       {note && (
         <p className="note"><span><TfiInfoAlt /></span> Note: {note}</p>
       )}

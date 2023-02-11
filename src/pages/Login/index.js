@@ -17,13 +17,13 @@ export default function Login() {
         </header>
       </div>
       <div className="section section-2">
-        <UserForm title="Log into your account" btnTitle="Log in" usage="login" />
+        <UserForm title="Log into your account" btnTitle="Log in" render={{ email: true, password: true }} />
         <div className="divider"></div>
         <button className="registerBtn" onClick={handleModal}>Create a new account</button>
       </div>
       {isModalActive && (
         <Modal onClose={handleModal}>
-          <UserForm title="Register" btnTitle="Create account" usage="register" />
+          <UserForm title="Register" btnTitle="Create account" render={{ email: true, password: true, heritage: true }} />
         </Modal>
       )}
     </StyledDiv>

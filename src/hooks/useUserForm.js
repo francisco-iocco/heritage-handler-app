@@ -4,9 +4,9 @@ const INITIAL_STATE = {
   email: "",
   password: "",
   heritage: "",
-  emailError: { status: false, message: "" },
-  passwordError: { status: false, message: "" },
-  heritageError: { status: false, message: "" },
+  emailError: "",
+  passwordError: "",
+  heritageError: "",
 };
 
 const ACTIONS = {
@@ -56,13 +56,13 @@ export default function useUserForm() {
     password,
     heritage,
     errors: { emailError, passwordError, heritageError },
-    setEmailError: (status, message) => {
-      dispatch({ type: ACTIONS.SET_EMAIL_ERROR, payload: { status, message } });
+    setEmailError: (message) => {
+      dispatch({ type: ACTIONS.SET_EMAIL_ERROR, payload: message });
     },
-    setPasswordError: (status, message) =>
-      dispatch({ type: ACTIONS.SET_PASSWORD_ERROR, payload: { status, message } }),
-    setHeritageError: (status, message) =>
-      dispatch({ type: ACTIONS.SET_HERITAGE_ERROR, payload: { status, message } }),
+    setPasswordError: (message) =>
+      dispatch({ type: ACTIONS.SET_PASSWORD_ERROR, payload: message }),
+    setHeritageError: (message) =>
+      dispatch({ type: ACTIONS.SET_HERITAGE_ERROR, payload: message }),
     updateEmail: (email) =>
       dispatch({ type: ACTIONS.UPDATE_EMAIL, payload: email }),
     updatePassword: (password) =>

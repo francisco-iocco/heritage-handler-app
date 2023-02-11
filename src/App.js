@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import { ResultsContextProvider } from "contexts/ResultsContext";
-import updateLastConection from "services/updateLastConnection";
+import updateUser from "services/updateUser";
 import UserDataContext from "contexts/UserDataContext";
 import Router from "Router";
 import "./App.css";
@@ -10,7 +10,7 @@ function App() {
 
   useEffect(() => {
     window.onclose = () => 
-      updateLastConection({ lastConnection: new Date(), JWT: userData.JWT });
+    updateUser({ data: { lastConnection: new Date() }, JWT: userData.JWT });
   }, []);
 
   return (

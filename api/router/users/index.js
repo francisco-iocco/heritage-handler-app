@@ -10,27 +10,36 @@ router.get("/", async (req, res) => {
   } = req;
 
   const isLogged = await User.findOne({ email });
-  
   if (!isLogged) {
     return res.status(400).json({
-      emailError: true,
-      errorMessage: "User isn't logged...",
+      errors: {
+        emailError: "User isn't logged..."
+      }
     });
   }
 
   const user = await User.findOne({ email, password });
-
   if (!user) {
     return res.status(400).json({
-      passwordError: true,
-      errorMessage: "Password is incorrect...",
+      errors: {
+        passwordError: "Password is incorrect..."
+      }
     });
   }
 
-  res.status(200).json({ 
-    JWT: user._id, 
-    email: user.email, 
-  });
+  res.status(200).json({ userId: user._id });
+});
+
+router.get("/:myId", async (req, res) => {
+  const { myId } = req.params;
+  const myUser = await User.findById(myId)
+    .populate("linkedAccounts")
+    .populate("linkRequests")
+    .populate("heritage");
+
+  const { _doc: { password, ...data } } = myUser;
+
+  res.status(200).send(data);
 });
 
 router.post("/", async (req, res) => {
@@ -46,16 +55,48 @@ router.post("/", async (req, res) => {
   });
   user.save();
 
-  res.status(201).json({ 
-    JWT: user._id, 
-    email: user.email, 
-  });
+  res.status(201).json({ userId: user._id });
 });
 
-router.put("/:id", async (req, res) => {
-  const { body, params: { id } } = req;
+router.put("/:myId", async (req, res) => {
+  const { body, params: { myId } } = req;
+  const data = {};
 
-  await User.findByIdAndUpdate(id, { body });
+  if(body.emailToBeLinked) {
+    const userToBeLinked = 
+      body.emailToBeLinked && await User.findOne({ email: body.emailToBeLinked });
+    
+    if (!userToBeLinked) {
+      return res.status(400).json({
+        emailError: true,
+        errorMessage: "User doesn't exist...",
+      });
+    }
+
+    await User.findByIdAndUpdate(userToBeLinked._id, { linkRequests: [...userToBeLinked.linkRequests, myId ]});
+  }
+
+  if(body.linkedUserResponse) {
+    const myUser = await User.findById(myId);
+    const anotherUser = await User.findById(body.linkedUserResponse.id);
+
+    data.linkRequests = myUser.linkRequests.filter((linkRequest) => {
+      return linkRequest != body.linkedUserResponse.id;
+    });
+
+    if(body.linkedUserResponse.accepted) {
+      data.linkedAccounts = [ body.linkedUserResponse.id, ...myUser.linkedAccounts ];
+      await User.findByIdAndUpdate(
+        body.linkedUserResponse.id, 
+        { linkedAccounts: [ myId, ...anotherUser.linkedAccounts ] }
+      );
+    }
+  }
+
+  if(body.lastConnection) data.lastConnection = body.lastConnection;
+
+  await User.findByIdAndUpdate(myId, data);
+
   res.status(200).send();
 })
 
