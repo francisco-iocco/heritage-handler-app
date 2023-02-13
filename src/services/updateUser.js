@@ -5,7 +5,8 @@ export default async function updateUser({
   heritage,
   lastConnection,
   emailToBeLinked,
-  linkedUserResponse
+  idToBeUnlinked,
+  linkUserResponse
 }) {
   await fetch(`http://localhost:4000/users/${userId}`, {
     method: "PUT",
@@ -18,7 +19,8 @@ export default async function updateUser({
       heritage,
       lastConnection,
       emailToBeLinked,
-      linkedUserResponse
+      idToBeUnlinked,
+      linkUserResponse
     })
   });
 }

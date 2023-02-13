@@ -32,7 +32,8 @@ export default function useHandleUser() {
       heritage,
       lastConnection,
       emailToBeLinked,
-      linkedUserResponse,
+      idToBeUnlinked,
+      linkUserResponse,
     }) => {
       await updateUser({  
         userId: _id,  
@@ -41,7 +42,8 @@ export default function useHandleUser() {
         heritage,
         lastConnection,
         emailToBeLinked,
-        linkedUserResponse
+        linkUserResponse,
+        idToBeUnlinked
       });
       const userData = await getUserData({ userId: _id });
       setUserData(userData);

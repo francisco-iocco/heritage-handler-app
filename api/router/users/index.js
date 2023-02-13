@@ -5,25 +5,19 @@ const Heritage = require("../heritage/schema");
 const router = Router();
 
 router.get("/", async (req, res) => {
-  const {
-    query: { email, password },
-  } = req;
+  const { email, password } = req.query;
 
   const isLogged = await User.findOne({ email });
   if (!isLogged) {
     return res.status(400).json({
-      errors: {
-        emailError: "User isn't logged..."
-      }
+      errors: { emailError: "User isn't logged..." }
     });
   }
 
   const user = await User.findOne({ email, password });
   if (!user) {
     return res.status(400).json({
-      errors: {
-        passwordError: "Password is incorrect..."
-      }
+      errors: { passwordError: "Password is incorrect..." }
     });
   }
 
@@ -58,7 +52,6 @@ router.get("/:myId", async (req, res) => {
     if(days) {
       lastConnection.push(days === 1 ? `${days} day` : `${days} days`);
       hours = parseInt(((currentDate - days * 86400000 - linkedAccount.lastConnection) / 3600000).toFixed(0));
-      
       if(months) {
         hours = 0;
         minutes = 0;
@@ -74,11 +67,10 @@ router.get("/:myId", async (req, res) => {
     if(minutes) {
       lastConnection.push(minutes === 1 ? `${minutes} minute` : `${minutes} minutes`);
     }
-
     
     lastConnection = lastConnection.length > 1
-    ? lastConnection.join(" and ")
-    : lastConnection.join("");
+      ? lastConnection.join(" and ")
+      : lastConnection.join("");
     
     lastConnection += " ago";
     
@@ -92,22 +84,26 @@ router.get("/:myId", async (req, res) => {
 
 router.post("/", async (req, res) => {
   const { body } = req;
-  
-  const heritage = await Heritage({ amount: body.heritage });
-  heritage.save();
+  const data = { lastConnection: new Date(), linkedRequests: [] };
 
-  const data = { 
-    email: body.email,
-    password: body.password,
-    heritage: heritage._id,
-    lastConnection: new Date(),
-    linkedRequests: [],
-    linkedAccounts: body.idToBeLinked ? [ body.idToBeLinked ] : []
+  if(body.email) data.email = body.email;
+
+  if(body.password) data.password = body.password;
+  
+  if(body.heritage) {
+    const heritage = await Heritage({ amount: body.heritage });
+    heritage.save();
+    data.heritage = heritage._id;
+  }
+
+  if(body.idToBeLinked) {
+    const userToBeLinked = await User.findById(body.idToBeLinked);
+    if(userToBeLinked) data.linkedAccounts = [ body.idToBeLinked ];
   }
 
   const newUser = await User(data);
   newUser.save();
-  
+
   if(body.idToBeLinked) {
     const userToBeLinked = await User.findById(body.idToBeLinked);
     await User.findByIdAndUpdate(
@@ -123,41 +119,50 @@ router.put("/:myId", async (req, res) => {
   const { body, params: { myId } } = req;
   const data = {};
 
+  if(body.lastConnection) data.lastConnection = body.lastConnection;
+
   if(body.emailToBeLinked) {
-    const userToBeLinked = await User.findOne({ email: body.emailToBeLinked });
-    
+    const userToBeLinked = await User.findOne({ email: body.emailToBeLinked }); 
     if (!userToBeLinked) {
       return res.status(400).json({
-        emailError: true,
-        errorMessage: "User doesn't exist...",
+        errors: { emailError: "User doesn't exist..." }
       });
     }
-
     await User.findByIdAndUpdate(userToBeLinked._id, { linkRequests: [...userToBeLinked.linkRequests, myId ]});
   }
 
-  if(body.linkedUserResponse) {
+  if(body.idToBeUnlinked) {
     const myUser = await User.findById(myId);
-    const anotherUser = await User.findById(body.linkedUserResponse.id);
+    const anotherUser = await User.findById(body.idToBeUnlinked);
+    data.linkedAccounts = myUser.linkedAccounts.filter(linkedAccount => 
+      linkedAccount._id != body.idToBeUnlinked
+    );
+    const anotherUserLinkedAccounts = anotherUser.linkedAccounts.filter(linkedAccount => 
+      linkedAccount._id != myId
+    );
+    await User.findByIdAndUpdate(body.idToBeUnlinked, { linkedAccounts: anotherUserLinkedAccounts });
+  }
+
+  if(body.linkUserResponse) {
+    const myUser = await User.findById(myId);
+    const anotherUser = await User.findById(body.linkUserResponse.id);
 
     data.linkRequests = myUser.linkRequests.filter((linkRequest) => {
-      return linkRequest != body.linkedUserResponse.id;
+      return linkRequest != body.linkUserResponse.id;
     });
 
-    if(body.linkedUserResponse.accepted) {
-      data.linkedAccounts = [ body.linkedUserResponse.id, ...myUser.linkedAccounts ];
+    if(body.linkUserResponse.accepted) {
+      data.linkedAccounts = [ ...myUser.linkedAccounts, body.linkUserResponse.id ];
       await User.findByIdAndUpdate(
-        body.linkedUserResponse.id, 
-        { linkedAccounts: [ myId, ...anotherUser.linkedAccounts ] }
+        body.linkUserResponse.id, 
+        { linkedAccounts: [ ...anotherUser.linkedAccounts, myId ] }
       );
     }
   }
 
-  if(body.lastConnection) data.lastConnection = body.lastConnection;
-
   await User.findByIdAndUpdate(myId, data);
 
   res.status(200).send();
-})
+});
 
 module.exports = router;

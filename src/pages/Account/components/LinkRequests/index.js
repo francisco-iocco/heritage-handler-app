@@ -8,11 +8,11 @@ export default function LinkRequests() {
   const { updateUser } = useHandleUser();
 
   const acceptRequest = (id) => {
-    updateUser({ linkedUserResponse: { id, accepted: true } });
+    updateUser({ linkUserResponse: { id, accepted: true } });
   }
 
   const denyRequest = (id) => {
-    updateUser({ linkedUserResponse: { id, accepted: false } });
+    updateUser({ linkUserResponse: { id, accepted: false } });
   }
 
   return (

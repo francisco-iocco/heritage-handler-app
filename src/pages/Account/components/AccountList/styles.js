@@ -4,13 +4,19 @@ const StyledAccountList = styled.div`
   table {
     width: 100%;
   }
-  
+
   tr {
+    position: relative;
     display: block;
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 0 15px -5px #bbb;
-    margin: 10px 0;
+    margin: 25px 0;
+  }
+
+  thead tr {
+    margin-bottom: 0;
+    margin-top: 0;
   }
 
   tr:active {
@@ -24,6 +30,18 @@ const StyledAccountList = styled.div`
     width: 60%;
     padding: 10px;
     border-right: 1px solid #bbb;
+  }
+
+  td:first-of-type button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(25%, -50%);
+    padding: 5px;
+    border-radius: 10px;
+    border: none;
+    color: #fff;
+    background-color: #f00;
   }
 
   td:first-of-type p {

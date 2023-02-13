@@ -9,21 +9,24 @@ import StyledAccountList from "./styles";
 export default function ChangeAccount({ myEmail }) {
   const { userData: { linkedAccounts } } = useContext(UserDataContext);
   const { changeUser, updateUser } = useHandleUser();
-
-  const changeAccount = async (userId) => {
-    await updateUser({ lastConnection: new Date() });
-    changeUser({ userId });
-  } 
-
   const [
     isLinkExistingModalActive, 
     setIsLinkExistingModalActive
   ] = useState(false);
-
   const [
     isLinkNewModalActive, 
     setIsLinkNewModalActive
   ] = useState(false);
+
+  const changeAccount = async (userId) => {
+    await updateUser({ lastConnection: new Date() });
+    changeUser({ userId });
+  }
+
+  const deleteAccount = async (e, userId) => {
+    e.stopPropagation();
+    await updateUser({ idToBeUnlinked: userId });
+  }
 
   const handleLinkExistingModal = () =>
     setIsLinkExistingModalActive(!isLinkExistingModalActive);
@@ -47,8 +50,11 @@ export default function ChangeAccount({ myEmail }) {
               <td>Active</td>
             </tr>
             {linkedAccounts.map((linkedAccount) => (
-              <tr key={linkedAccount._id} onClick={() => changeAccount(linkedAccount._id)}>
-                <td><p>{linkedAccount.email}</p></td>
+              <tr key={linkedAccount._id} onClick={() => {changeAccount(linkedAccount._id)}}>
+                <td>
+                  <button onClick={(e) => deleteAccount(e, linkedAccount._id)}>Unlink</button>
+                  <p>{linkedAccount.email}</p>
+                </td>
                 <td>{linkedAccount.lastConnection}</td>
               </tr>
             ))}

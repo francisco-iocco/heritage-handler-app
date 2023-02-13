@@ -6,8 +6,12 @@ width: 100%;
 tr {
   display: block;
   box-shadow: 0 0 15px -5px #bbb;
-  margin: 5px 0;
+  margin: 15px 0;
   border-radius: 10px;
+}
+
+thead tr {
+  margin: 0;
 }
 
 th, td {
