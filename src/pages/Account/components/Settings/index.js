@@ -11,7 +11,7 @@ export default function Settings() {
       </div>
       <div>
         <h3>Change Password</h3>
-        <p>Be careful! try to choose one you are able to remeber.</p>
+        <p>Be careful! try to choose one you will be able to remeber.</p>
         <button>Change password</button>
       </div>
       <div className="delete-container">

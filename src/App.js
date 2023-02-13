@@ -10,7 +10,7 @@ function App() {
 
   useEffect(() => {
     window.onclose = () => 
-    updateUser({ data: { lastConnection: new Date() }, JWT: userData.JWT });
+      updateUser({ lastConnection: new Date(), userId: userData._id });
   }, []);
 
   return (

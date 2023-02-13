@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import UserDataContext from "contexts/UserDataContext";
 import useUserForm from "hooks/useUserForm";
 import useHandleUser from "hooks/useHandleUser";
@@ -11,9 +10,9 @@ export default function UserForm({
   btnTitle = "",
   render = { email: false, password: false, heritage: false },
   note = "",
+  onClose = () => {}
 }) {
   const { userData } = useContext(UserDataContext);
-  const navigate = useNavigate();
   const {
     email,
     password,
@@ -51,7 +50,10 @@ export default function UserForm({
 
     let errors;
     if(render.email && render.password && render.heritage) {
-      errors = await registerUser({ email, password, heritage });
+      const data = note
+        ? { idToBeLinked: userData._id, email, password, heritage }
+        : { email, password, heritage };
+      errors = await registerUser(data);
     } else if(render.email && render.password) {
       errors = await logUser({ email, password });
     } else if(render.email) {
@@ -66,7 +68,7 @@ export default function UserForm({
     }
 
     // If everything went well, navigate.
-    navigate("/home");
+    onClose();
   };
 
   return (

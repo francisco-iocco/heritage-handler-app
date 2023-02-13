@@ -31,7 +31,7 @@ export default function Account() {
         <div className="content">
           {sectionToRender === "settings" && <Settings />}
           {sectionToRender === "account-list" && <AccountList myEmail={userData.email}/>}
-          {sectionToRender === "link-requests" && <LinkRequests myEmail={userData.email}/>}
+          {sectionToRender === "link-requests" && <LinkRequests />}
         </div>
       </div>
       <Nav />

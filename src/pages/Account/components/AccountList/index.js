@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import UserDataContext from "contexts/UserDataContext";
+import useHandleUser from "hooks/useHandleUser";
 import { FaHistory } from "react-icons/fa";
 import UserForm from "components/UserForm";
 import Modal from "components/Modal";
@@ -7,6 +8,12 @@ import StyledAccountList from "./styles";
 
 export default function ChangeAccount({ myEmail }) {
   const { userData: { linkedAccounts } } = useContext(UserDataContext);
+  const { changeUser, updateUser } = useHandleUser();
+
+  const changeAccount = async (userId) => {
+    await updateUser({ lastConnection: new Date() });
+    changeUser({ userId });
+  } 
 
   const [
     isLinkExistingModalActive, 
@@ -40,9 +47,9 @@ export default function ChangeAccount({ myEmail }) {
               <td>Active</td>
             </tr>
             {linkedAccounts.map((linkedAccount) => (
-              <tr key={linkedAccount._id}>
+              <tr key={linkedAccount._id} onClick={() => changeAccount(linkedAccount._id)}>
                 <td><p>{linkedAccount.email}</p></td>
-                <td>Active</td>
+                <td>{linkedAccount.lastConnection}</td>
               </tr>
             ))}
           </tbody>
@@ -64,6 +71,7 @@ export default function ChangeAccount({ myEmail }) {
             btnTitle="Send request"
             render={{ email: true }}
             note="You must wait for the other user to accept your request."
+            onClose={handleLinkExistingModal}
           />
         </Modal>
       )}
@@ -75,6 +83,7 @@ export default function ChangeAccount({ myEmail }) {
             btnTitle="Create and link"
             render={{ email: true, password: true, heritage: true }}
             note={`This account will be linked with ${myEmail}.`}
+            onClose={handleLinkNewModal}
           />
         </Modal>
       )}

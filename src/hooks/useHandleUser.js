@@ -20,9 +20,10 @@ export default function useHandleUser() {
       const userData = await getUserData({ userId });
       setUserData(userData);
     },
-    registerUser: async ({ email, password, heritage }) => {
-      const { userId } = await registerUser({ email, password, heritage });
+    registerUser: async ({ email, password, heritage, idToBeLinked }) => {
+      const { userId } = await registerUser({ email, password, heritage, idToBeLinked });
       const userData = await getUserData({ userId });
+      console.log(userData);
       setUserData(userData);
     },
     updateUser: async ({
@@ -45,5 +46,9 @@ export default function useHandleUser() {
       const userData = await getUserData({ userId: _id });
       setUserData(userData);
     },
+    changeUser: async ({ userId }) => {
+      const userData = await getUserData({ userId });
+      setUserData(userData);
+    }
   };
 }
