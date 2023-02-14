@@ -11,28 +11,37 @@ const StyledModal = styled.div`
   width: 100%;
   z-index: 2;
 
-  .modal-content {
-    align-items: center;
+  .modal {
+    padding: 5px;
     background-color: #fff;
     border-radius: 15px;
-    flex-direction: column;
-    height: 500px;
-    justify-content: space-around;
     position: relative;
     width: 80%;
   }
 
-  button.close {
+  .close-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .close-container button {
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
     background-color: #fff;
     border: none;
     color: #808080;
     font-size: 30px;
-    margin: 0;
-    padding: 0;
-    position: absolute;
-    right: 15px;
-    top: 5px;
   }
+
+  .content > *:first-of-type {
+    padding-top: 0;
+    margin-top: 0;
+  }
+
+
 `;
 
 export default StyledModal;

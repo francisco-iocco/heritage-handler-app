@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const Heritage = require("./schema");
+const User = require("../users/schema");
 const Income = require("../incomes/schema");
 const Remittance = require("../remittances/schema");
 
@@ -61,7 +62,9 @@ router.get("/:user_id/heritage", async (req, res) => {
   const permanentIncomesAmount = await sumPermanents(incomes, user_id);
   const permanentRemittancesAmount = await sumPermanents(remittances, user_id);
 
-  let heritage = await Heritage.findOne({ user_id });
+  let { heritage } = await User.findById(user_id);
+
+  heritage = await Heritage.findById(heritage);
 
   if(permanentIncomesAmount || permanentRemittancesAmount) {
     heritage = await Heritage.findByIdAndUpdate(heritage._id, {

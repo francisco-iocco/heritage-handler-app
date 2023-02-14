@@ -47,7 +47,6 @@ router.post("/:user_id/remittances", async (req, res) => {
     await Heritage.findByIdAndUpdate(outdatedHeritage._id, { amount: newAmount });
   }
 
-
   res.status(201).send();
 });
 

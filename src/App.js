@@ -1,16 +1,16 @@
 import { useContext, useEffect } from "react";
 import { ResultsContextProvider } from "contexts/ResultsContext";
-import updateLastConection from "services/updateLastConnection";
-import JWTContext from "contexts/JWTContext";
+import updateUser from "services/updateUser";
+import UserDataContext from "contexts/UserDataContext";
 import Router from "Router";
 import "./App.css";
 
 function App() {
-  const { JWT } = useContext(JWTContext);
+  const { userData } = useContext(UserDataContext);
 
   useEffect(() => {
-    window.onbeforeunload = () => 
-      updateLastConection({ lastConnection: new Date(), JWT });
+    window.onclose = () => 
+      updateUser({ lastConnection: new Date(), userId: userData._id });
   }, []);
 
   return (

@@ -1,4 +1,5 @@
 import { createPortal } from "react-dom";
+import { FaTimes } from "react-icons/fa";
 import StyledModal from "./styles";
 
 function Modal({ onClose, children }) {
@@ -9,11 +10,15 @@ function Modal({ onClose, children }) {
 
   return (
     <StyledModal>
-      <div className="modal-content">
-        <button className="close" onClick={handleSubmit}>
-          x
-        </button>
-        {children}
+      <div className="modal">
+        <div className="close-container">
+          <button onClick={handleSubmit}>
+            <FaTimes />
+          </button>
+        </div>
+        <div className="content">
+          {children}
+        </div>
       </div>
     </StyledModal>
   );

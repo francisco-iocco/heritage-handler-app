@@ -63,8 +63,18 @@ const StyledAccount = styled.div`
     content: "";
     display: inline-block;
     height: 1px;
-    left: ${(props) =>
-      props.sectionToRender === "settings" ? "10px" : "49.19px"};
+    left: ${(props) => {
+      switch (props.sectionToRender) {
+        case "settings":
+          return "10px;";
+        case "account-list":
+          return "calc(33.33% + 10px);";
+        case "link-requests":
+          return "calc(66.66% + 10px);;";
+        default:
+          break;
+      }
+    }}
     position: absolute;
     transition: all 0.5s;
     width: 19.19px;

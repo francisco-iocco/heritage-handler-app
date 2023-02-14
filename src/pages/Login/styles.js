@@ -58,7 +58,7 @@ const StyledDiv = styled.div`
   .divider {
     border-bottom: 1px solid #808080;
     height: 1px;
-    margin-bottom: 15px;
+    margin: 30px;
     position: relative;
     width: 65%;
   }
@@ -80,9 +80,8 @@ const StyledDiv = styled.div`
     border-radius: 15px;
     border: none;
     color: #fff;
-    margin: 15px 0;
     padding: 10px;
-    width: 75%;
+    width: 55%;
   }
 `;
 
