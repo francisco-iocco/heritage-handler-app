@@ -119,6 +119,8 @@ router.put("/:myId", async (req, res) => {
   const { body, params: { myId } } = req;
   const data = {};
 
+  if(body.email) data.email = body.email;
+  if(body.password) data.password = body.password;
   if(body.lastConnection) data.lastConnection = body.lastConnection;
 
   if(body.emailToBeLinked) {

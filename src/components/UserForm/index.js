@@ -9,8 +9,9 @@ export default function UserForm({
   title = "",
   btnTitle = "",
   render = { email: false, password: false, heritage: false },
+  usage = "",
   note = "",
-  onClose = () => {}
+  onSubmit = () => {},
 }) {
   const { userData } = useContext(UserDataContext);
   const {
@@ -43,32 +44,52 @@ export default function UserForm({
     render.email && !email && setEmailError("Email is required...");
     render.password && !password && setPasswordError("Password is required...");
     render.heritage && !heritage && setHeritageError("Heritage is required...");
-    
-    if (emailError || passwordError || heritageError) return;
-    
+    if (
+      render.email && !email ||
+      render.password && !password ||
+      render.heritage && !heritage
+    ) return;
+
     // Veryfing if the response isn't OK. (E.g. "User doesn't exist for logging").
 
     let errors;
-    if(render.email && render.password && render.heritage) {
-      const data = note
-        ? { idToBeLinked: userData._id, email, password, heritage }
-        : { email, password, heritage };
-      errors = await registerUser(data);
-    } else if(render.email && render.password) {
-      errors = await logUser({ email, password });
-    } else if(render.email) {
-      errors = await updateUser({ emailToBeLinked: email });
+    switch (usage) {
+      case "register":
+        errors = await registerUser({ email, password, heritage });
+        break;
+      case "register-and-link":
+        errors = await registerUser({
+          idToBeLinked: userData._id,
+          email,
+          password,
+          heritage,
+        });
+        break;
+      case "login":
+        errors = await logUser({ email, password });
+        break;
+      case "link-existing":
+        errors = await updateUser({ emailToBeLinked: email });
+        break;
+      case "change-email":
+        errors = await updateUser({ email });
+        break;
+      case "change-password":
+        errors = await updateUser({ password });
+        break;
+      default:
+        break;
     }
 
-    if(errors) {
-      errors.heritageError && setHeritageError(true, errors.heritageError);
-      errors.emailError && setEmailError(true, errors.emailError);
-      errors.passwordError && setPasswordError(true, errors.passwordError);
+    if (errors) {
+      errors.heritageError && setHeritageError(errors.heritageError);
+      errors.emailError && setEmailError(errors.emailError);
+      errors.passwordError && setPasswordError(errors.passwordError);
       return;
     }
 
-    // If everything went well, navigate.
-    onClose();
+    // If everything went well, execute the parent callback.
+    onSubmit();
   };
 
   return (
@@ -127,9 +148,13 @@ export default function UserForm({
           {heritageError && <p>{heritageError}</p>}
         </>
       )}
-      {(render.email && render.password && !render.heritage) && <a>Forgot your password?</a>}
       {note && (
-        <p className="note"><span><TfiInfoAlt /></span> Note: {note}</p>
+        <p className="note">
+          <span>
+            <TfiInfoAlt />
+          </span>{" "}
+          Note: {note}
+        </p>
       )}
       <button type="submit">{btnTitle}</button>
     </StyledForm>
