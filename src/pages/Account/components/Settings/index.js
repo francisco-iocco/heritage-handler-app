@@ -4,11 +4,19 @@ import Modal from "components/Modal";
 import UserForm from "components/UserForm";
 
 export default function Settings() {
-  const [ checkModal, setCheckModal ] = useState(false);
+  const [ checkModal, setCheckModal ] = useState({ active: false, callback: () => {} });
   const [ emailModal, setEmailModal ] = useState(false);
+  const [ passwordModal, setPasswordModal ] = useState(false);
 
-  const handleCheckModal = () => setCheckModal(!checkModal);
-  const handleEmailModal = () => setEmailModal(!emailModal);
+  const handleEmailModal = () => setCheckModal({ 
+    active: true, 
+    callback: () => setEmailModal(true) 
+  });
+
+  const handlePasswordModal = () => setCheckModal({ 
+    active: true, 
+    callback: () => setPasswordModal(true) 
+  });
 
   return (
     <>
@@ -17,39 +25,52 @@ export default function Settings() {
         <div>
           <h3>Change Email</h3>
           <p>Do it if you aren't satisfied with your current one!</p>
-          <button onClick={handleCheckModal}>Change email</button>
+          <button onClick={handleEmailModal}>Change email</button>
         </div>
         <div>
           <h3>Change Password</h3>
           <p>Be careful! try to choose one you will be able to remeber.</p>
-          <button onClick={handleCheckModal}>Change password</button>
+          <button onClick={handlePasswordModal}>Change password</button>
         </div>
         <div className="delete-container">
           <h3>Delete Account</h3>
           <p>Once you've deleted it, you can't go back.</p>
-          <button onClick={handleCheckModal}>Delete account</button>
+          <button>Delete account</button>
         </div>
       </StyledSettings>
 
-      {checkModal && (
-        <Modal onClose={handleCheckModal}>
+      {checkModal.active && (
+        <Modal onClose={() => setCheckModal({ active: false })}>
           <UserForm
             title="Checking credentials"
             btnTitle="Send"
+            usage="login"
             render={{ email: true, password: true }}
-            onSubmit={() => { handleEmailModal(); handleCheckModal() }}
+            onSubmit={() => {checkModal.callback(); setCheckModal({ active: false });}}
           />
         </Modal>
       )}
 
       {emailModal && (
-        <Modal onClose={handleEmailModal}>
+        <Modal onClose={() => setEmailModal(false)}>
           <UserForm
             title="New email"
             btnTitle="Change it"
             render={{ email: true }}
             usage="change-email"
-            onSubmit={() => { handleEmailModal() }}
+            onSubmit={() => setEmailModal(false)}
+          />
+        </Modal>
+      )}
+
+      {passwordModal && (
+        <Modal onClose={() => setPasswordModal(false)}>
+          <UserForm
+            title="New password"
+            btnTitle="Change it"
+            render={{ password: true }}
+            usage="change-password"
+            onSubmit={() => setPasswordModal(false)}
           />
         </Modal>
       )}
