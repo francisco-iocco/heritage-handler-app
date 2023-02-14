@@ -26,7 +26,7 @@ export default function UserForm({
     setPasswordError,
     setHeritageError,
   } = useUserForm();
-  const { logUser, registerUser, updateUser } = useHandleUser();
+  const { logUser, registerUser, updateUser, deleteUser } = useHandleUser();
 
   const handleEmailValue = ({ target: { value } }) => updateEmail(value);
   const handlePasswordValue = ({ target: { value } }) => updatePassword(value);
@@ -76,6 +76,8 @@ export default function UserForm({
         break;
       case "change-password":
         errors = await updateUser({ password });
+      case "delete-account":
+        errors = await deleteUser();
         break;
       default:
         break;
