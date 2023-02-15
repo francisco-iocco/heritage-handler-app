@@ -9,7 +9,7 @@ const StyledUserForm = styled.form`
 
   h3 {
     display: inline-block;
-    border-bottom: 1px solid #2424d2;
+    border-bottom: 1px solid ${props => props.title === "Delete account" ? "red" : "#2424d2"};
     text-align: center;
     font-size: 1.2em;
     margin: 15px auto;
@@ -51,7 +51,7 @@ const StyledUserForm = styled.form`
   }
 
   button {
-    background-color: #2424d2;
+    background-color: ${props => props.title === "Delete account" ? "red" : "#2424d2"};
     border-radius: 15px;
     border: none;
     color: #fff;
@@ -71,7 +71,7 @@ const StyledUserForm = styled.form`
 
   p.note {
     font-size: 15px;
-    color: #B0E0E6;
+    color: ${props => props.title === "Delete account" ? "red" : "#B0E0E6"};
   }
 `;
 

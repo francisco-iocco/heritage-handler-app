@@ -23,7 +23,8 @@ export default function Login() {
           title="Log into your account"
           btnTitle="Log in"
           render={{ email: true, password: true }}
-          onClose={() => navigate("/home")}
+          usage="login"
+          onSubmit={() => navigate("/home")}
         />
         <div className="divider"></div>
         <button className="registerBtn" onClick={handleModal}>
@@ -35,8 +36,9 @@ export default function Login() {
           <UserForm
             title="Register"
             btnTitle="Create account"
+            usage="register"
             render={{ email: true, password: true, heritage: true }}
-            onClose={() => navigate("/home")}
+            onSubmit={() => navigate("/home")}
           />
         </Modal>
       )}

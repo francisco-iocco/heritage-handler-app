@@ -4,6 +4,7 @@ import getUserData from "services/getUserData";
 import logUser from "services/logUser";
 import registerUser from "services/registerUser";
 import updateUser from "services/updateUser";
+import deleteUser from "services/deleteUser";
 
 export default function useHandleUser() {
   const {
@@ -23,7 +24,6 @@ export default function useHandleUser() {
     registerUser: async ({ email, password, heritage, idToBeLinked }) => {
       const { userId } = await registerUser({ email, password, heritage, idToBeLinked });
       const userData = await getUserData({ userId });
-      console.log(userData);
       setUserData(userData);
     },
     updateUser: async ({
@@ -47,6 +47,10 @@ export default function useHandleUser() {
       });
       const userData = await getUserData({ userId: _id });
       setUserData(userData);
+    },
+    deleteUser: async () => {
+      await deleteUser({ userId: _id });
+      setUserData({});
     },
     changeUser: async ({ userId }) => {
       const userData = await getUserData({ userId });
