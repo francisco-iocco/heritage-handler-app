@@ -43,7 +43,6 @@ export default function Settings() {
             title="Checking credentials"
             btnTitle="Send"
             usage="login"
-            render={{ email: true, password: true }}
             onSubmit={checkModalCallback}
           />
         </Modal>
@@ -54,7 +53,6 @@ export default function Settings() {
           <UserForm
             title="New email"
             btnTitle="Change it"
-            render={{ email: true }}
             usage="change-email"
             onSubmit={clearRenderModal}
           />
@@ -66,7 +64,6 @@ export default function Settings() {
           <UserForm
             title="New password"
             btnTitle="Change it"
-            render={{ password: true }}
             usage="change-password"
             onSubmit={clearRenderModal}
           />

@@ -50,7 +50,7 @@ export default function ChangeAccount({ myEmail }) {
               <td>Active</td>
             </tr>
             {linkedAccounts.map((linkedAccount) => (
-              <tr key={linkedAccount._id} onClick={() => {changeAccount(linkedAccount._id)}}>
+              <tr key={linkedAccount._id} onClick={() => changeAccount(linkedAccount._id)}>
                 <td>
                   <button onClick={(e) => deleteAccount(e, linkedAccount._id)}>Unlink</button>
                   <p>{linkedAccount.email}</p>
@@ -75,7 +75,6 @@ export default function ChangeAccount({ myEmail }) {
           <UserForm
             title="Link existing account"
             btnTitle="Send request"
-            render={{ email: true }}
             usage="link-existing"
             note="You must wait for the other user to accept your request."
             onSubmit={handleLinkExistingModal}
@@ -89,7 +88,6 @@ export default function ChangeAccount({ myEmail }) {
             title="Link new account"
             btnTitle="Create and link"
             usage="register-and-link"
-            render={{ email: true, password: true, heritage: true }}
             note={`This account will be linked with ${myEmail}.`}
             onSubmit={handleLinkNewModal}
           />

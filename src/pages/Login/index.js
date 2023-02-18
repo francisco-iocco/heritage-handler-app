@@ -22,7 +22,6 @@ export default function Login() {
         <UserForm
           title="Log into your account"
           btnTitle="Log in"
-          render={{ email: true, password: true }}
           usage="login"
           onSubmit={() => navigate("/home")}
         />
@@ -37,7 +36,6 @@ export default function Login() {
             title="Register"
             btnTitle="Create account"
             usage="register"
-            render={{ email: true, password: true, heritage: true }}
             onSubmit={() => navigate("/home")}
           />
         </Modal>
