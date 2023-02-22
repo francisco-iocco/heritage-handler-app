@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-  email: String,
+  username: String,
   password: String,
   heritage: { type: "ObjectId", ref: "heritages" },
   linkRequests: [ { type: "ObjectId", ref: "users" } ],

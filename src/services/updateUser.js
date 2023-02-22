@@ -1,10 +1,10 @@
 export default async function updateUser({
   userId,
-  email,
+  username,
   password,
   heritage,
   lastConnection,
-  emailToBeLinked,
+  usernameToBeLinked,
   idToBeUnlinked,
   linkUserResponse
 }) {
@@ -14,11 +14,11 @@ export default async function updateUser({
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ 
-      email,
+      username,
       password,
       heritage,
       lastConnection,
-      emailToBeLinked,
+      usernameToBeLinked,
       idToBeUnlinked,
       linkUserResponse
     })

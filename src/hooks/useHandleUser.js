@@ -18,13 +18,13 @@ export default function useHandleUser() {
     return newErrors;
   })
 
-  const inputsValidation = ({ email, password, heritage }) => {
+  const inputsValidation = ({ username, password, heritage }) => {
     let hasError = false;
 
-    if(email === "") {
+    if(username === "") {
       hasError = true;
       setErrors((prevErrors) => {
-        return { ...prevErrors, email: "Email is required..." };
+        return { ...prevErrors, username: "Username is required..." };
       });
     }
     if(password === "") {
@@ -46,11 +46,11 @@ export default function useHandleUser() {
   // The next functions return errors (in case there are)
   // otherwise they return nothing.
 
-  const logUser = async ({ email, password }) => {
-    const hasError = inputsValidation({ email, password });
+  const logUser = async ({ username, password }) => {
+    const hasError = inputsValidation({ username, password });
     if (hasError) return hasError;
 
-    const response = await logUserService({ email, password });
+    const response = await logUserService({ username, password });
     if (response.errors) {
       setErrors(response.errors);
       return true;
@@ -61,12 +61,12 @@ export default function useHandleUser() {
     setUserData(data);
   }
 
-  const registerUser = async ({ email, password, heritage, idToBeLinked }) => {
-    let hasError = inputsValidation({ email, password, heritage });
-    if(email && email.length < 6) {
+  const registerUser = async ({ username, password, heritage, idToBeLinked }) => {
+    let hasError = inputsValidation({ username, password, heritage });
+    if(username && username.length < 6) {
       hasError = true;
       setErrors((prevErrors) => {
-        return { ...prevErrors, email: "Email is too short..." };
+        return { ...prevErrors, username: "Username is too short..." };
       });
     }
     if(password && password.length < 6) {
@@ -78,7 +78,7 @@ export default function useHandleUser() {
     if (hasError) return hasError;
     
     const response = await registerUserService({
-      email,
+      username,
       password,
       heritage,
       idToBeLinked,
@@ -94,24 +94,24 @@ export default function useHandleUser() {
   }
 
   const updateUser = async ({
-    email,
+    username,
     password,
     lastConnection,
-    emailToBeLinked,
+    usernameToBeLinked,
     idToBeUnlinked,
     linkUserResponse,
   }) => {
-    const hasError = emailToBeLinked
-      ? inputsValidation({ email: emailToBeLinked })
-      : inputsValidation({ email, password });
+    const hasError = usernameToBeLinked
+      ? inputsValidation({ username: usernameToBeLinked })
+      : inputsValidation({ username, password });
     if (hasError) return hasError;
     
     const response = await updateUserService({ 
       userId: userData._id,
-      email, 
+      username, 
       password, 
       lastConnection, 
-      emailToBeLinked,
+      usernameToBeLinked,
       idToBeUnlinked,
       linkUserResponse
     });

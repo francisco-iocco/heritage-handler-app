@@ -19,7 +19,7 @@ export default function Account() {
           <span>
             <FaRegUserCircle />
           </span>
-          <p>{userData.email}</p>
+          <p>{userData.username}</p>
         </div>
       </div>
       <div className="account-configuration">
@@ -30,7 +30,7 @@ export default function Account() {
         </div>
         <div className="content">
           {sectionToRender === "settings" && <Settings />}
-          {sectionToRender === "account-list" && <AccountList myEmail={userData.email}/>}
+          {sectionToRender === "account-list" && <AccountList myUsername={userData.username}/>}
           {sectionToRender === "link-requests" && <LinkRequests />}
         </div>
       </div>

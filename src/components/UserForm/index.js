@@ -1,25 +1,25 @@
 import { useContext, useReducer, useEffect, useState } from "react";
 import UserDataContext from "contexts/UserDataContext";
 import useHandleUser from "hooks/useHandleUser";
-import { TfiLock, TfiMoney, TfiEmail, TfiInfoAlt } from "react-icons/tfi";
+import { TfiLock, TfiMoney, TfiUser, TfiInfoAlt } from "react-icons/tfi";
 import StyledForm from "./styles";
 
 const INITIAL_STATE = {
-  email: "",
+  username: "",
   password: "",
   heritage: "",
 };
 
 const ACTIONS = {
-  UPDATE_EMAIL: "UPDATE_EMAIL",
+  UPDATE_USERNAME: "UPDATE_USERNAME",
   UPDATE_PASSWORD: "UPDATE_PASSWORD",
   UPDATE_HERITAGE: "UPDATE_HERITAGE",
 };
 
 function reducer(state, action) {
   switch (action.type) {
-    case ACTIONS.UPDATE_EMAIL:
-      return { ...state, email: action.payload };
+    case ACTIONS.UPDATE_USERNAME:
+      return { ...state, username: action.payload };
     case ACTIONS.UPDATE_PASSWORD:
       return { ...state, password: action.payload };
     case ACTIONS.UPDATE_HERITAGE:
@@ -38,12 +38,12 @@ export default function UserForm({
 }) {
   const { userData } = useContext(UserDataContext);
   const [ inputs, setInputs ] = useState({
-    email: false,
+    username: false,
     password: false, 
     heritage: false
   });
   const [
-    { email, password, heritage }, 
+    { username, password, heritage }, 
     dispatch
   ] = useReducer(reducer, INITIAL_STATE);
   const {
@@ -59,14 +59,14 @@ export default function UserForm({
     switch (usage) {
       case "register":
       case "register-and-link":
-        setInputs({ email: true, password: true, heritage: true });
+        setInputs({ username: true, password: true, heritage: true });
         break;
       case "login":
-        setInputs({ email: true, password: true });
+        setInputs({ username: true, password: true });
         break;
       case "link-existing":
-      case "change-email":
-        setInputs({ email: true });
+      case "change-username":
+        setInputs({ username: true });
         break;
       case "change-password":
         setInputs({ password: true });
@@ -76,8 +76,8 @@ export default function UserForm({
     }
   }, []);
 
-  const handleEmailValue = ({ target: { value } }) => 
-    dispatch({ type: ACTIONS.UPDATE_EMAIL, payload: value });
+  const handleUsernameValue = ({ target: { value } }) => 
+    dispatch({ type: ACTIONS.UPDATE_USERNAME, payload: value });
   const handlePasswordValue = ({ target: { value } }) => 
     dispatch({ type: ACTIONS.UPDATE_PASSWORD, payload: value });
   const handleHeritageValue = ({ target: { value } }) => 
@@ -89,24 +89,24 @@ export default function UserForm({
     let hasError = false;
     switch (usage) {
       case "register":
-        hasError = await registerUser({ email, password, heritage });
+        hasError = await registerUser({ username, password, heritage });
         break;
       case "register-and-link":
         hasError = await registerUser({
           idToBeLinked: userData._id,
-          email,
+          username,
           password,
           heritage,
         });
         break;
       case "login":
-        hasError = await logUser({ email, password });
+        hasError = await logUser({ username, password });
         break;
       case "link-existing":
-        hasError = await updateUser({ emailToBeLinked: email });
+        hasError = await updateUser({ usernameToBeLinked: username });
         break;
-      case "change-email":
-        hasError = await updateUser({ email });
+      case "change-username":
+        hasError = await updateUser({ username });
         break;
       case "change-password":
         hasError = await updateUser({ password });
@@ -125,22 +125,22 @@ export default function UserForm({
   return (
     <StyledForm onSubmit={handleSubmit} title={title}>
       <h3>{title}</h3>
-      {inputs.email && (
+      {inputs.username && (
         <>
           <div className="input-container">
-            <label htmlFor="email">
-              <TfiEmail />
+            <label htmlFor="username">
+              <TfiUser />
             </label>
             <input
-              onChange={handleEmailValue}
-              onFocus={() => cleanError("email")}
-              placeholder="Email"
-              type="email"
-              value={email}
-              id="email"
+              onChange={handleUsernameValue}
+              onFocus={() => cleanError("username")}
+              placeholder="Username"
+              type="text"
+              value={username}
+              id="username"
             />
           </div>
-          {errors.email && <p>{errors.email}</p>}
+          {errors.username && <p>{errors.username}</p>}
         </>
       )}
       {inputs.password && (

@@ -21,9 +21,9 @@ export default function Settings() {
       <StyledSettings>
         <h2>Settings</h2>
         <div>
-          <h3>Change Email</h3>
+          <h3>Change Username</h3>
           <p>Do it if you aren't satisfied with your current one!</p>
-          <button onClick={() => handleCheckModal("email")}>Change email</button>
+          <button onClick={() => handleCheckModal("username")}>Change username</button>
         </div>
         <div>
           <h3>Change Password</h3>
@@ -48,12 +48,12 @@ export default function Settings() {
         </Modal>
       )}
 
-      {renderModal === "email" && (
+      {renderModal === "username" && (
         <Modal onClose={clearRenderModal}>
           <UserForm
-            title="New email"
+            title="New username"
             btnTitle="Change it"
-            usage="change-email"
+            usage="change-username"
             onSubmit={clearRenderModal}
           />
         </Modal>

@@ -5,12 +5,12 @@ const Heritage = require("../heritage/schema");
 const router = Router();
 
 router.get("/", async (req, res) => {
-  const { email, password } = req.query;
+  const { username, password } = req.query;
 
   // Checking inputs
 
-  if(!email) return res.status(400).send({
-    errors: { email: "Email is required..." },
+  if(!username) return res.status(400).send({
+    errors: { username: "Username is required..." },
   })
 
   if(!password) return res.status(400).send({
@@ -18,10 +18,10 @@ router.get("/", async (req, res) => {
   })
 
   // Checking if the user isn't logged.
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ username });
   if (!user) {
     return res.status(404).send({
-      errors: { email: "User isn't logged..." },
+      errors: { username: "User isn't logged..." },
     });
   }
 
@@ -129,19 +129,19 @@ router.post("/", async (req, res) => {
   const { body } = req;
   const userData = { lastConnection: new Date(), linkedRequests: [] };
 
-  // Checking email possible errors.
-  if(!body.email) return res.status(400).send({
-    errors: { email: "Email is required..." },
+  // Checking username possible errors.
+  if(!body.username) return res.status(400).send({
+    errors: { username: "Username is required..." },
   });
-  if(body.email.length < 6) return res.status(400).send({
-    errors: { email: "Email is too short..." },
+  if(body.username.length < 6) return res.status(400).send({
+    errors: { username: "Username is too short..." },
   });
-  userData.email = body.email;
+  userData.username = body.username;
 
   // 400 status code in case the user already exists.
-  const userAlreadyExists = await User.findOne({ email: body.email });
+  const userAlreadyExists = await User.findOne({ username: body.username });
   if(userAlreadyExists) return res.status(400).send({
-    errors: { email: "User already exists..." },
+    errors: { username: "User already exists..." },
   });
 
   // Checking password possible errors.
@@ -200,16 +200,16 @@ router.put("/:myId", async (req, res) => {
     errors: { id: "Id didn't match any user..." },
   });
 
-  if (body.email) {
-    const userAlreadyExists = await User.findOne({ email: body.email });
+  if (body.username) {
+    const userAlreadyExists = await User.findOne({ username: body.username });
     if(userAlreadyExists) return res.status(400).send({
-      errors: { email: "User already exists..." },
+      errors: { username: "User already exists..." },
     });
-    if(body.email.length < 6) return res.status(400).send({
-      errors: { email: "Email is too short..." },
+    if(body.username.length < 6) return res.status(400).send({
+      errors: { username: "Username is too short..." },
     });
-    // userData.email assignment in case there weren't any exceptions.
-    userData.email = body.email;
+    // userData.username assignment in case there weren't any exceptions.
+    userData.username = body.username;
   }
   if (body.password) {
     if(body.password.length < 6) return res.status(400).send({
@@ -220,26 +220,26 @@ router.put("/:myId", async (req, res) => {
   }
   if (body.lastConnection) userData.lastConnection = body.lastConnection;
 
-  if (body.emailToBeLinked) {
-    const userToBeLinked = await User.findOne({ email: body.emailToBeLinked });
+  if (body.usernameToBeLinked) {
+    const userToBeLinked = await User.findOne({ username: body.usernameToBeLinked });
 
     if (!userToBeLinked) return res.status(400).send({
-      errors: { email: "User doesn't exist..." },
+      errors: { username: "User doesn't exist..." },
     });
 
     if(userToBeLinked._id == myId) return res.status(400).send({
-      errors: { email: "You can't link your own account..." },
+      errors: { username: "You can't link your own account..." },
     });
 
     for(linkedAccount of userToBeLinked.linkedAccounts) {
       if(linkedAccount == myId) return res.status(400).send({
-        errors: { email: "You are already linked to this user..." },
+        errors: { username: "You are already linked to this user..." },
       });
     }
 
     for(linkRequest of userToBeLinked.linkRequests) {
       if(linkRequest == myId) return res.status(400).send({
-        errors: { email: "You have already tried to link to this user..." },
+        errors: { username: "You have already tried to link to this user..." },
       });
     }
 
