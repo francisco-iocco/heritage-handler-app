@@ -56,6 +56,10 @@ async function sumPermanents(results) {
 router.get("/:user_id/heritage", async (req, res) => {
   const { user_id } = req.params;
 
+  if(user_id === "undefined") return res.status(400).send({
+    errors: { id: "User's id is required..."}
+  });
+
   const incomes = await Income.find({ user_id });
   const remittances = await Remittance.find({ user_id });
 
@@ -67,10 +71,13 @@ router.get("/:user_id/heritage", async (req, res) => {
   heritage = await Heritage.findById(heritage);
 
   if(permanentIncomesAmount || permanentRemittancesAmount) {
-    heritage = await Heritage.findByIdAndUpdate(heritage._id, {
-      amount:
-        heritage.amount + permanentIncomesAmount + permanentRemittancesAmount,
-    }, { new: true });
+    heritage = await Heritage.findByIdAndUpdate(
+      heritage._id, 
+      {
+        amount: heritage.amount + permanentIncomesAmount + permanentRemittancesAmount,
+      },
+      { new: true }
+    );
   }
 
   res.status(200).json(heritage);

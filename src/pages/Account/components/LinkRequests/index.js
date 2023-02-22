@@ -27,7 +27,7 @@ export default function LinkRequests() {
         </thead>
         <tbody>
           {linkRequests && linkRequests.map((linkRequest) => (
-            <tr>
+            <tr key={linkRequest._id}>
               <td>
                 <p><span>{linkRequest.email}</span></p>
               </td>

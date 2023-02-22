@@ -15,7 +15,6 @@ app.use((req, res, next) => {
 });
 app.use(router);
 
-
 app.listen(PORT, () => {
   console.log(`API is listening on port ${PORT}!`);
 });

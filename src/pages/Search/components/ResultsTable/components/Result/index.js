@@ -9,9 +9,9 @@ import StyledResult from "./styles";
 export default function Result({
   amount,
   description,
-  isPermanent = false,
+  isPermanent,
   time,
-  id,
+  resultId,
 }) {
   const [showModal, setShowModal] = useState(false);
   const { 
@@ -25,7 +25,7 @@ export default function Result({
   const { deleteResult } = useHandleResult();
   
   const handleDelete = async () => {
-    await deleteResult({ type: amount > 0 ? "income" : "remittance", id });
+    await deleteResult({ type: amount > 0 ? "income" : "remittance", resultId });
   };
 
   const handleShowModal = () => {
@@ -33,7 +33,7 @@ export default function Result({
     changeAmount(amount < 0 ? amount * -1 : amount);
     isPermanent && toggleIsPermanent();
     changeTime(time);
-    changeId(id);
+    changeId(resultId);
     setShowModal(true);
   };
 

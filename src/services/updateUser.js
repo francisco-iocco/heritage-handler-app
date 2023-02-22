@@ -23,6 +23,8 @@ export default async function updateUser({
       linkUserResponse
     })
   });
-  data = await data.json();
-  return data;
+  if(data.status !== 204) {
+    data = await data.json();
+    return data;
+  }
 }

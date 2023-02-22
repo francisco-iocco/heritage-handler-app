@@ -9,8 +9,8 @@ export function ResultsContextProvider({ children }) {
   const { userData } = useContext(UserDataContext);
 
   const updateResults = async () => {
-    const incomes = await getResults({ type: "income", JWT: userData.JWT });
-    const remittances = await getResults({ type: "remittance", JWT: userData.JWT });
+    const incomes = await getResults({ type: "income", userId: userData._id });
+    const remittances = await getResults({ type: "remittance", userId: userData._id });
     let results = [ ...incomes, ...remittances ];
     results = results.sort((a, b) => {
       const firstDate = new Date(a.created_at).getTime();
@@ -25,7 +25,7 @@ export function ResultsContextProvider({ children }) {
     setResults(results);
   }
 
-  useEffect(() => { userData.JWT && updateResults() }, []);
+  useEffect(() => { userData._id && updateResults() }, []);
 
   return (
     <ResultsContext.Provider value={{ results, updateResults }}>

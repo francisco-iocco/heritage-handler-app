@@ -11,11 +11,11 @@ router.get("/", async (req, res) => {
 
   if(!email) return res.status(400).send({
     errors: { email: "Email is required..." },
-  });
+  })
 
   if(!password) return res.status(400).send({
     errors: { password: "Password is required..." },
-  });
+  })
 
   // Checking if the user isn't logged.
   const user = await User.findOne({ email });
@@ -28,20 +28,23 @@ router.get("/", async (req, res) => {
   // Checking if the password is incorrect.
   if(user.password != password) return res.status(404).send({
     errors: { password: "Password is incorrect..." },
-  });
+  })
 
   res.status(200).send({ userId: user._id });
 })
 
 router.get("/:myId", async (req, res) => {
   const { myId } = req.params;
+  if(myId === "undefined") return res.status(400).send({
+    errors: { id: "User's id is required..." }
+  })
   const myUser = await User.findById(myId)
     .populate("linkedAccounts")
     .populate("linkRequests")
     .populate("heritage");
 
   if(!myUser) return res.status(400).send({
-    error: { id: "Id didn't match any user..." }
+    errors: { id: "Id didn't match any user..." }
   });
 
   const userData = myUser._doc;
@@ -161,6 +164,9 @@ router.post("/", async (req, res) => {
   // idToBeLinked to link another user to my account. (if it exists)
   if (body.idToBeLinked) {
     const userToBeLinked = await User.findById(body.idToBeLinked);
+    if(!userToBeLinked) return res.status(404).send({
+      errors: { id: "Id to be linked didn't match any user..." }
+    })
     if (userToBeLinked) userData.linkedAccounts = [body.idToBeLinked];
   }
 
@@ -183,6 +189,10 @@ router.post("/", async (req, res) => {
 router.put("/:myId", async (req, res) => {
   const { body, params: { myId } } = req;
   const userData = {};
+
+  if(myId === "undefined") return res.status(400).send({
+    errors: { id: "User's id is required..." }
+  })
 
   const myUser = await User.findById(myId);
 
@@ -212,9 +222,30 @@ router.put("/:myId", async (req, res) => {
 
   if (body.emailToBeLinked) {
     const userToBeLinked = await User.findOne({ email: body.emailToBeLinked });
+
     if (!userToBeLinked) return res.status(400).send({
       errors: { email: "User doesn't exist..." },
     });
+
+    if(userToBeLinked._id == myId) return res.status(400).send({
+      errors: { email: "You can't link your own account..." },
+    });
+
+    for(linkedAccount of userToBeLinked.linkedAccounts) {
+      if(linkedAccount == myId) return res.status(400).send({
+        errors: { email: "You are already linked to this user..." },
+      });
+    }
+
+    for(linkRequest of userToBeLinked.linkRequests) {
+      if(linkRequest == myId) return res.status(400).send({
+        errors: { email: "You have already tried to link to this user..." },
+      });
+    }
+
+    // The link request is sent to the other user 
+    // in case there weren't any exceptions
+
     await User.findByIdAndUpdate(userToBeLinked._id, {
       linkRequests: [...userToBeLinked.linkRequests, myId],
     });
@@ -224,7 +255,7 @@ router.put("/:myId", async (req, res) => {
   if (body.idToBeUnlinked) {
     const anotherUser = await User.findById(body.idToBeUnlinked);
     if(!anotherUser) return res.status(400).send({
-      errors: { link: "User to unlink wasn`t found..." },
+      errors: { id: "User to unlink wasn`t found..." },
     });
 
     userData.linkedAccounts = myUser.linkedAccounts.filter(
@@ -242,7 +273,7 @@ router.put("/:myId", async (req, res) => {
   if (body.linkUserResponse) {
     const anotherUser = await User.findById(body.linkUserResponse.id);
     if(!anotherUser) return res.status(400).send({
-      errors: { link: "User's response to link wasn`t found..." },
+      errors: { id: "User to link wasn`t found..." },
     });
     
     userData.linkRequests = myUser.linkRequests.filter((linkRequest) => {
@@ -262,11 +293,14 @@ router.put("/:myId", async (req, res) => {
 
   await User.findByIdAndUpdate(myId, userData);
 
-  res.status(201).send({});
+  res.status(204).send();
 });
 
 router.delete("/:myId", async (req, res) => {
   const { myId } = req.params;
+  if(myId === "undefined") return res.status(400).send({
+    errors: { id: "User's id is required..." }
+  })
   const myDeletedUser = await User.findByIdAndDelete(myId);
   if(!myDeletedUser) return res.status(400).send({
     errors: { id: "Id didn't match any user..." }

@@ -36,13 +36,35 @@ router.post("/:user_id/incomes", async (req, res) => {
     body,
     params: { user_id },
   } = req;
+  let data = {};
 
-  const data = preparePermanentProperties(body, user_id);
+  if(user_id === "undefined") return res.status(400).send({
+    errors: { id: "User's id is required..." }
+  });
+
+  if(!body.description) return res.status(400).send({
+    errors: { description: "Description is required..." }
+  })
+  data.description = body.description;
+  if(!body.amount) return res.status(400).send({
+    errors: { amount: "Amount is required..." }
+  })
+  data.amount = body.amount;
+
+  if(body.isPermanent) {
+    data.isPermanent = true;
+    data.time = body.time;
+  }
+
+  data = preparePermanentProperties(data, user_id);
   const newIncome = new Income(data);
   newIncome.save();
 
   if(!data.isPermanent) {
     const outdatedHeritage = await Heritage.findOne({ user_id });
+    if(!outdatedHeritage) return res.status(404).send({
+      errors: { heritage: "No heritage is attached to the user..." }
+    })
     const newAmount = outdatedHeritage.amount + data.amount;
     await Heritage.findByIdAndUpdate(outdatedHeritage._id, { amount: newAmount });
   }
@@ -52,6 +74,9 @@ router.post("/:user_id/incomes", async (req, res) => {
 
 router.get("/:user_id/incomes", async (req, res) => {
   const { user_id } = req.params;
+  if(user_id === "undefined") return res.status(400).send({
+    errors: { id: "User's id is required..." }
+  })
   const incomes = await Income.find({ user_id });
   res.status(200).json(incomes);
 });
@@ -61,13 +86,41 @@ router.put("/:user_id/incomes/:id", async (req, res) => {
     body,
     params: { id, user_id },
   } = req;
+  let data = {};
+
+  if(user_id === "undefined") return res.status(400).send({
+    errors: { id: "User's id is required..."}
+  });
+  if(id === "undefined") return res.status(400).send({
+    errors: { id: "Result's id is required..."}
+  });
+
+  if(!body.description) return res.status(400).send({
+    errors: { description: "Description is required..." }
+  })
+  data.description = body.description;
+  if(!body.amount) return res.status(400).send({
+    errors: { amount: "Amount is required..." }
+  })
+  data.amount = body.amount;
+
+  if(body.isPermanent) {
+    data.isPermanent = true;
+    data.time = body.time;
+  }
 
   const oldIncome = await Income.findByIdAndUpdate(id, body);
+  if(!oldIncome) return res.status(404).send({
+    errors: { id: "Income's id didn't match any income..." }
+  })
 
-  const data = preparePermanentProperties(body, user_id);
+  data = preparePermanentProperties(data, user_id);
 
   const outdatedHeritage = await Heritage.findOne({ user_id });
-  
+  if(!outdatedHeritage) return res.status(404).send({
+    errors: { heritage: "No heritage is attached to the user..." }
+  })
+
   let newAmount;
   if(!data.isPermanent) {
     newAmount = oldIncome.lastAdd 
@@ -84,10 +137,24 @@ router.put("/:user_id/incomes/:id", async (req, res) => {
 router.delete("/:user_id/incomes/:id", async (req, res) => {
   const { id, user_id } = req.params;
 
+  if(user_id === "undefined") return res.status(400).send({
+    errors: { id: "User's id is required..."}
+  });
+
+  if(id === "undefined") return res.status(400).send({
+    errors: { id: "Income's id is required..." }
+  });
+
   const oldIncome = await Income.findByIdAndDelete(id);
+  if(!oldIncome) return res.status(404).send({
+    errors: { id: "Id didn't match any user..." }
+  });
 
   if(!oldIncome.isPermanent) {
     const outdatedHeritage = await Heritage.findOne({ user_id });
+    if(!outdatedHeritage) return res.status(404).send({
+      errors: { heritage: "No heritage is attached to the user..." }
+    })
     const newAmount = outdatedHeritage.amount - oldIncome.amount;
     await Heritage.findByIdAndUpdate(outdatedHeritage._id, { amount: newAmount });
   }

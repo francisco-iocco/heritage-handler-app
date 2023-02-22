@@ -1,12 +1,10 @@
 import styled from "@emotion/styled";
 
 const StyledCreateForm = styled.form`
-  align-items: center;
   display: flex;
   flex-direction: column;
   height: 100%;
-  justify-content: space-evenly;
-  padding: 10px;
+  padding: 25px;
 
   h2 {
     ${(props) => {
@@ -22,17 +20,28 @@ const StyledCreateForm = styled.form`
     text-align: center;
   }
 
+  p {
+    color: red;
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+
+  input {
+    margin: 15px 0;
+  }
+
   label {
     font-size: 20px;
+    margin-right: 15px;
   }
 
   input[type="checkbox"] {
-    margin: 0 15px;
     transform: scale(2);
   }
 
   input[type="text"], input[type="number"] {
-    margin: 15px 0 10px 0;
+    border-radius: 10px;
+    border: 1px solid #aaa;
     outline: none;
     padding: 10px;
   }
@@ -54,6 +63,7 @@ const StyledCreateForm = styled.form`
     color: #fff;
     font-size: 20px;
     padding: 15px;
+    margin: 15px 0;
   }
 `;
 

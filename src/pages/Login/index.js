@@ -7,7 +7,6 @@ import StyledDiv from "./styles";
 export default function Login() {
   const [isModalActive, setIsModalActive] = useState(false);
   const navigate = useNavigate();
-
   const handleModal = () => setIsModalActive(!isModalActive);
 
   return (

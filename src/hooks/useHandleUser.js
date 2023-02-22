@@ -27,27 +27,13 @@ export default function useHandleUser() {
         return { ...prevErrors, email: "Email is required..." };
       });
     }
-    if(email && email.length < 6) {
-      hasError = true;
-      setErrors((prevErrors) => {
-        return { ...prevErrors, email: "Email is too short..." };
-      });
-    }
-
     if(password === "") {
       hasError = true;
       setErrors((prevErrors) => {
         return { ...prevErrors, password: "Password is required..." };
       });
     }
-    if(password && password.length < 6) {
-      hasError = true;
-      setErrors((prevErrors) => {
-        return { ...prevErrors, password: "Password is too short..." };
-      });
-    }
-
-    if( heritage === "") {
+    if(heritage === "") {
       hasError = true;
       setErrors((prevErrors) => {
         return { ...prevErrors, heritage: "Heritage is required..." };
@@ -71,11 +57,24 @@ export default function useHandleUser() {
     }
 
     const data = await getUserDataService({ userId: response.userId });
+    if(data?.errors) return true;
     setUserData(data);
   }
 
   const registerUser = async ({ email, password, heritage, idToBeLinked }) => {
-    const hasError = inputsValidation({ email, password, heritage });
+    let hasError = inputsValidation({ email, password, heritage });
+    if(email && email.length < 6) {
+      hasError = true;
+      setErrors((prevErrors) => {
+        return { ...prevErrors, email: "Email is too short..." };
+      });
+    }
+    if(password && password.length < 6) {
+      hasError = true;
+      setErrors((prevErrors) => {
+        return { ...prevErrors, password: "Password is too short..." };
+      });
+    }
     if (hasError) return hasError;
     
     const response = await registerUserService({
@@ -90,6 +89,7 @@ export default function useHandleUser() {
     }
 
     const data = await getUserDataService({ userId: response.userId });
+    if(data?.errors) return true;
     setUserData(data);
   }
 
@@ -113,24 +113,27 @@ export default function useHandleUser() {
       lastConnection, 
       emailToBeLinked,
       idToBeUnlinked,
-      linkUserResponse 
+      linkUserResponse
     });
-    if (response.errors) {
+    if (response?.errors) {
       setErrors(response.errors);
       return true;
     }
 
     const data = await getUserDataService({ userId: userData._id });
+    if(data?.errors) return true;
     setUserData(data);
   }
 
   const deleteUser = async () => {
-    await deleteUserService({ userId: userData._id });
+    const data = await deleteUserService({ userId: userData._id });
+    if(data?.errors) return true;
     setUserData({});
   }
 
   const changeUser = async ({ userId }) => {
     const data = await getUserDataService({ userId });
+    if(data?.errors) return true;
     setUserData(data);
   }
 
