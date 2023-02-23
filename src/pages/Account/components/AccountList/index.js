@@ -6,7 +6,7 @@ import UserForm from "components/UserForm";
 import Modal from "components/Modal";
 import StyledAccountList from "./styles";
 
-export default function ChangeAccount({ myEmail }) {
+export default function ChangeAccount({ myUsername }) {
   const { userData: { linkedAccounts } } = useContext(UserDataContext);
   const { changeUser, updateUser } = useHandleUser();
   const [
@@ -46,14 +46,14 @@ export default function ChangeAccount({ myEmail }) {
           </thead>
           <tbody>
             <tr>
-              <td><p>{myEmail}</p></td>
+              <td><p>{myUsername}</p></td>
               <td>Active</td>
             </tr>
             {linkedAccounts.map((linkedAccount) => (
-              <tr key={linkedAccount._id} onClick={() => {changeAccount(linkedAccount._id)}}>
+              <tr key={linkedAccount._id} onClick={() => changeAccount(linkedAccount._id)}>
                 <td>
                   <button onClick={(e) => deleteAccount(e, linkedAccount._id)}>Unlink</button>
-                  <p>{linkedAccount.email}</p>
+                  <p>{linkedAccount.username}</p>
                 </td>
                 <td>{linkedAccount.lastConnection}</td>
               </tr>
@@ -75,7 +75,6 @@ export default function ChangeAccount({ myEmail }) {
           <UserForm
             title="Link existing account"
             btnTitle="Send request"
-            render={{ email: true }}
             usage="link-existing"
             note="You must wait for the other user to accept your request."
             onSubmit={handleLinkExistingModal}
@@ -89,8 +88,7 @@ export default function ChangeAccount({ myEmail }) {
             title="Link new account"
             btnTitle="Create and link"
             usage="register-and-link"
-            render={{ email: true, password: true, heritage: true }}
-            note={`This account will be linked with ${myEmail}.`}
+            note={`This account will be linked with ${myUsername}.`}
             onSubmit={handleLinkNewModal}
           />
         </Modal>

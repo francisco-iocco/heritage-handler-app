@@ -1,121 +1,149 @@
-import { useContext } from "react";
+import { useContext, useReducer, useEffect, useState } from "react";
 import UserDataContext from "contexts/UserDataContext";
-import useUserForm from "hooks/useUserForm";
 import useHandleUser from "hooks/useHandleUser";
-import { TfiLock, TfiMoney, TfiEmail, TfiInfoAlt } from "react-icons/tfi";
+import { TfiLock, TfiMoney, TfiUser, TfiInfoAlt } from "react-icons/tfi";
 import StyledForm from "./styles";
+
+const INITIAL_STATE = {
+  username: "",
+  password: "",
+  heritage: "",
+};
+
+const ACTIONS = {
+  UPDATE_USERNAME: "UPDATE_USERNAME",
+  UPDATE_PASSWORD: "UPDATE_PASSWORD",
+  UPDATE_HERITAGE: "UPDATE_HERITAGE",
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case ACTIONS.UPDATE_USERNAME:
+      return { ...state, username: action.payload };
+    case ACTIONS.UPDATE_PASSWORD:
+      return { ...state, password: action.payload };
+    case ACTIONS.UPDATE_HERITAGE:
+      return { ...state, heritage: action.payload };
+    default:
+      return state;
+  }
+}
 
 export default function UserForm({
   title = "",
   btnTitle = "",
-  render = { email: false, password: false, heritage: false },
   usage = "",
   note = "",
   onSubmit = () => {},
 }) {
   const { userData } = useContext(UserDataContext);
+  const [ inputs, setInputs ] = useState({
+    username: false,
+    password: false, 
+    heritage: false
+  });
+  const [
+    { username, password, heritage }, 
+    dispatch
+  ] = useReducer(reducer, INITIAL_STATE);
   const {
-    email,
-    password,
-    heritage,
-    updateEmail,
-    updatePassword,
-    updateHeritage,
-    errors: { emailError, passwordError, heritageError },
-    setEmailError,
-    setPasswordError,
-    setHeritageError,
-  } = useUserForm();
-  const { logUser, registerUser, updateUser, deleteUser } = useHandleUser();
+    logUser, 
+    registerUser, 
+    updateUser, 
+    deleteUser, 
+    errors, 
+    cleanError
+  } = useHandleUser();
 
-  const handleEmailValue = ({ target: { value } }) => updateEmail(value);
-  const handlePasswordValue = ({ target: { value } }) => updatePassword(value);
-  const handleHeritageValue = ({ target: { value } }) => updateHeritage(value);
+  useEffect(() => {
+    switch (usage) {
+      case "register":
+      case "register-and-link":
+        setInputs({ username: true, password: true, heritage: true });
+        break;
+      case "login":
+        setInputs({ username: true, password: true });
+        break;
+      case "link-existing":
+      case "change-username":
+        setInputs({ username: true });
+        break;
+      case "change-password":
+        setInputs({ password: true });
+        break;
+      default:
+        break;
+    }
+  }, []);
 
-  const cleanEmailError = () => setEmailError(false, "");
-  const cleanPasswordError = () => setPasswordError(false, "");
-  const cleanHeritageError = () => setHeritageError(false, "");
+  const handleUsernameValue = ({ target: { value } }) => 
+    dispatch({ type: ACTIONS.UPDATE_USERNAME, payload: value });
+  const handlePasswordValue = ({ target: { value } }) => 
+    dispatch({ type: ACTIONS.UPDATE_PASSWORD, payload: value });
+  const handleHeritageValue = ({ target: { value } }) => 
+    dispatch({ type: ACTIONS.UPDATE_HERITAGE, payload: value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Veryfing if all the inputs were filled.
-
-    render.email && !email && setEmailError("Email is required...");
-    render.password && !password && setPasswordError("Password is required...");
-    render.heritage && !heritage && setHeritageError("Heritage is required...");
-    if (
-      render.email && !email ||
-      render.password && !password ||
-      render.heritage && !heritage
-    ) return;
-
-    // Veryfing if the response isn't OK. (E.g. "User doesn't exist for logging").
-
-    let errors;
+    let hasError = false;
     switch (usage) {
       case "register":
-        errors = await registerUser({ email, password, heritage });
+        hasError = await registerUser({ username, password, heritage });
         break;
       case "register-and-link":
-        errors = await registerUser({
+        hasError = await registerUser({
           idToBeLinked: userData._id,
-          email,
+          username,
           password,
           heritage,
         });
         break;
       case "login":
-        errors = await logUser({ email, password });
+        hasError = await logUser({ username, password });
         break;
       case "link-existing":
-        errors = await updateUser({ emailToBeLinked: email });
+        hasError = await updateUser({ usernameToBeLinked: username });
         break;
-      case "change-email":
-        errors = await updateUser({ email });
+      case "change-username":
+        hasError = await updateUser({ username });
         break;
       case "change-password":
-        errors = await updateUser({ password });
+        hasError = await updateUser({ password });
+        break;
       case "delete-account":
-        errors = await deleteUser();
+        hasError = await deleteUser();
         break;
       default:
         break;
     }
 
-    if (errors) {
-      errors.heritageError && setHeritageError(errors.heritageError);
-      errors.emailError && setEmailError(errors.emailError);
-      errors.passwordError && setPasswordError(errors.passwordError);
-      return;
-    }
-
     // If everything went well, execute the parent callback.
-    onSubmit();
+    !hasError && onSubmit();
   };
 
   return (
     <StyledForm onSubmit={handleSubmit} title={title}>
       <h3>{title}</h3>
-      {render.email && (
+      {inputs.username && (
         <>
           <div className="input-container">
-            <label htmlFor="email">
-              <TfiEmail />
+            <label htmlFor="username">
+              <TfiUser />
             </label>
             <input
-              onChange={handleEmailValue}
-              onFocus={cleanEmailError}
-              placeholder="Email"
-              type="email"
-              value={email}
-              id="email"
+              onChange={handleUsernameValue}
+              onFocus={() => cleanError("username")}
+              placeholder="Username"
+              type="text"
+              value={username}
+              id="username"
             />
           </div>
-          {emailError && <p>{emailError}</p>}
+          {errors.username && <p>{errors.username}</p>}
         </>
       )}
-      {render.password && (
+      {inputs.password && (
         <>
           <div className="input-container">
             <label htmlFor="password">
@@ -123,16 +151,17 @@ export default function UserForm({
             </label>
             <input
               onChange={handlePasswordValue}
-              onFocus={cleanPasswordError}
+              onFocus={() => cleanError("password")}
               placeholder="Password"
               type="password"
               value={password}
+              id="password"
             />
           </div>
-          {passwordError && <p>{passwordError}</p>}
+          {errors.password && <p>{errors.password}</p>}
         </>
       )}
-      {render.heritage && (
+      {inputs.heritage && (
         <>
           <div className="input-container">
             <label htmlFor="heritage">
@@ -140,21 +169,19 @@ export default function UserForm({
             </label>
             <input
               onChange={handleHeritageValue}
-              onFocus={cleanHeritageError}
+              onFocus={() => cleanError("heritage")}
               placeholder="Your current heritage"
               type="number"
-              id="heritage"
               value={heritage}
+              id="heritage"
             />
           </div>
-          {heritageError && <p>{heritageError}</p>}
+          {errors.heritage && <p>{errors.heritage}</p>}
         </>
       )}
       {note && (
         <p className="note">
-          <span>
-            <TfiInfoAlt />
-          </span>{" "}
+          <span><TfiInfoAlt /></span>
           Note: {note}
         </p>
       )}

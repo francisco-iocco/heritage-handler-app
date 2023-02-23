@@ -15,9 +15,9 @@ export default function ListOfResults({ searchInputValue }) {
   useEffect(() => {
     let info = results;
 
-    isPermanent ? info = info.filter(result => result.isPermanent) : info = info;
-    isIncome ? info = info.filter(result => result.amount > 0) : info = info;
-    isRemittance ? info = info.filter(result => result.amount < 0) : info = info;
+    if(isPermanent) info = info.filter(result => result.isPermanent);
+    if(isIncome) info = info.filter(result => result.amount > 0);
+    if(isRemittance) info = info.filter(result => result.amount < 0);
 
     setRenderResults(info);
 
@@ -38,7 +38,7 @@ export default function ListOfResults({ searchInputValue }) {
         isPermanent={result.isPermanent}
         time={result.time}
         key={result._id}
-        id={result._id}
+        resultId={result._id}
       />
     );
   });

@@ -1,5 +1,5 @@
-export default async function deleteResult({ type, id, JWT }) {
-  await fetch(`http://localhost:4000/${JWT}/${type}s/${id}`, {
+export default async function deleteResult({ userId, type, resultId }) {
+  await fetch(`http://localhost:4000/${userId}/${type}s/${resultId}`, {
     method: "DELETE",
   });
 }

@@ -1,26 +1,30 @@
 export default async function updateUser({
   userId,
-  email,
+  username,
   password,
   heritage,
   lastConnection,
-  emailToBeLinked,
+  usernameToBeLinked,
   idToBeUnlinked,
   linkUserResponse
 }) {
-  await fetch(`http://localhost:4000/users/${userId}`, {
+  let data = await fetch(`http://localhost:4000/users/${userId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ 
-      email,
+      username,
       password,
       heritage,
       lastConnection,
-      emailToBeLinked,
+      usernameToBeLinked,
       idToBeUnlinked,
       linkUserResponse
     })
   });
+  if(data.status !== 204) {
+    data = await data.json();
+    return data;
+  }
 }

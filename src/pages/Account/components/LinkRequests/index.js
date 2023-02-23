@@ -27,9 +27,9 @@ export default function LinkRequests() {
         </thead>
         <tbody>
           {linkRequests && linkRequests.map((linkRequest) => (
-            <tr>
+            <tr key={linkRequest._id}>
               <td>
-                <p><span>{linkRequest.email}</span></p>
+                <p><span>{linkRequest.username}</span></p>
               </td>
               <td>
                 <button className="btn-accept" onClick={() => acceptRequest(linkRequest._id)}>Accept</button>

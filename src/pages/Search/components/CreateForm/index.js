@@ -16,27 +16,35 @@ export default function CreateForm({ onSubmit, title }) {
     changeTime,
     reset,
   } = useContext(CreateResultContext);
-  const { createResult, editResult } = useHandleResult();
+  const { createResult, editResult, errors, cleanError } = useHandleResult();
 
   const handleDescriptionValue = ({ target: { value } }) => {
     changeDescription(value);
   };
-
   const handleAmountValue = ({ target: { value } }) => changeAmount(parseInt(value));
-
   const handleTimeValue = ({ target: { value } }) => changeTime(value);
 
   const handleCloseForm = async (e) => {
     e.preventDefault();
-    const type = (title.includes("remittance")) ? "remittance" : "income";
-    const data = isPermanent
-      ? { description, amount, isPermanent, time }
-      : { description, amount, isPermanent, time: null };
-    id
-      ? await editResult({ data, id, type }) 
-      : await createResult({ data, type }); 
-    reset();
-    onSubmit();
+    const data = { description, amount };
+    if(isPermanent) {
+      data.isPermanent = true;
+      data.time = time;
+    }
+    data.type = (title.includes("remittance")) ? "remittance" : "income";
+
+
+    let hasError = false;
+    if(id) {
+      hasError = await editResult({ ...data, resultId: id }) 
+    } else {
+      hasError = await createResult({ ...data }); 
+    }
+
+    if(!hasError) {
+      reset();
+      onSubmit();
+    }
   };
 
   return (
@@ -47,13 +55,17 @@ export default function CreateForm({ onSubmit, title }) {
         type="text"
         value={description}
         onChange={handleDescriptionValue}
+        onFocus={() => cleanError("description")}
       />
+      {errors.description && <p>{errors.description}</p>}
       <input
         placeholder="Amount"
         type="number"
         value={amount}
         onChange={handleAmountValue}
+        onFocus={() => cleanError("amount")}
       />
+      {errors.amount && <p>{errors.amount}</p>}
       <div>
         <label htmlFor="permanent">Permanent</label>
         <input
