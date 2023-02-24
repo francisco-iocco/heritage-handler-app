@@ -39,7 +39,7 @@ export default function UserForm({
   const { userData } = useContext(UserDataContext);
   const [ inputs, setInputs ] = useState({
     username: false,
-    password: false, 
+    password: false,
     heritage: false
   });
   const [
@@ -47,11 +47,11 @@ export default function UserForm({
     dispatch
   ] = useReducer(reducer, INITIAL_STATE);
   const {
-    logUser, 
-    registerUser, 
-    updateUser, 
-    deleteUser, 
-    errors, 
+    logUser,
+    registerUser,
+    updateUser,
+    deleteUser,
+    errors,
     cleanError
   } = useHandleUser();
 
