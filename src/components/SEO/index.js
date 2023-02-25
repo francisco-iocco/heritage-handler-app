@@ -5,7 +5,7 @@ export default function SEO() {
   const { pathname } = useLocation();
 
   let title = "Heritage-Handler-App | Manage your money";
-  let description = "Heritage-Handler-App is an app which allows you to calculate your heritage through incomes and remittances.";
+  let description = "Heritage-Handler-App is an app which allows you to calculate your heritage through incomes and remittances";
   let keywords = "handle your heritage, manage remittances and incomes, calculate remittances and incomes";
 
   switch (pathname) {
@@ -30,6 +30,9 @@ export default function SEO() {
       keywords = "handle incomes, handle remittances and incomes, search remittances";
       break;
     default:
+      title = `Error | ${title}`;
+      description = `${description} | Error: page doesn't exist...`;
+      keywords = "error, unavailable, doesn't exist, heritage-handler-app";
       break;
   }
 

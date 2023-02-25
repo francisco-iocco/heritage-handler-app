@@ -3,6 +3,7 @@ import Home from "pages/Home";
 import Login from "pages/Login";
 import Search from "pages/Search";
 import Account from "pages/Account";
+import Error from "pages/Error";
 
 export default function Router() {
   return (
@@ -12,6 +13,7 @@ export default function Router() {
         <Route path="/home" element={<Home />} />
         <Route path="/search" element={<Search />} />
         <Route path="/account" element={<Account />} />
+        <Route path="*" element={<Error />} />
       </Routes>
     </BrowserRouter>
   )
