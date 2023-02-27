@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import UserDataContext from "contexts/UserDataContext";
 import StyledSettings from "./styles";
 import Modal from "components/Modal";
 import UserForm from "components/UserForm";
@@ -7,6 +8,7 @@ import UserForm from "components/UserForm";
 export default function Settings() {
   const [ renderModal, setRenderModal ] = useState("");
   const [ checkModalCallback, setCheckModalCallback ] = useState(() => {});
+  const { setUserData } = useContext(UserDataContext);
   const navigate = useNavigate();
 
   const clearRenderModal = () => setRenderModal("");
@@ -14,6 +16,12 @@ export default function Settings() {
   const handleCheckModal = (nextModal) => {
     setRenderModal("check"); 
     setCheckModalCallback(() => () => setRenderModal(nextModal));
+  }
+
+  const logout = () => {
+    localStorage.removeItem("userId");
+    setUserData({});
+    navigate("/");
   }
 
   return (
@@ -34,6 +42,9 @@ export default function Settings() {
           <h3>Delete Account</h3>
           <p>Once you've deleted it, you can't go back.</p>
           <button onClick={() => handleCheckModal("delete")}>Delete account</button>
+        </div>
+        <div>
+          <p>Are you looking for <span onClick={logout}>logging out</span>?</p>
         </div>
       </StyledSettings>
 
@@ -77,7 +88,7 @@ export default function Settings() {
             btnTitle="Delete"
             note="You won't be able to rescue it!"
             usage="delete-account"
-            onSubmit={() => navigate("/")}
+            onSubmit={logout}
           />
         </Modal>
       )}

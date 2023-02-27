@@ -56,6 +56,8 @@ export default function useHandleUser() {
       return true;
     }
 
+    localStorage.setItem("userId", response.userId);
+
     const data = await getUserDataService({ userId: response.userId });
     if(data?.errors) return true;
     setUserData(data);
@@ -87,6 +89,8 @@ export default function useHandleUser() {
       setErrors(response.errors);
       return true;
     }
+
+    localStorage.setItem("userId", response.userId);
 
     const data = await getUserDataService({ userId: response.userId });
     if(data?.errors) return true;

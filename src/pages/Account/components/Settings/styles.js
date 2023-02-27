@@ -17,6 +17,16 @@ const StyledSettings = styled.div`
     margin: 10px 0;
   }
 
+  p span {
+    display: inline-block;
+    margin-right: 5px;
+    color: #2424d2;
+  }
+  
+  p span:hover {
+    text-decoration: underline;
+  }
+
   button {
     background-color: #2424d2;
     border-radius: 10px;

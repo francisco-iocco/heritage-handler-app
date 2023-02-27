@@ -44,11 +44,6 @@ const StyledAccountList = styled.div`
     background-color: #f00;
   }
 
-  td:first-of-type p {
-    position: relative;
-    animation: 5s linear infinite alternate slide-and-show;
-  }
-
   th:last-of-type,
   td:last-of-type {
     text-align: center;
@@ -104,21 +99,6 @@ const StyledAccountList = styled.div`
   div.buttons-container button:last-of-type {
     align-self: flex-end;
     background-color: #1ac31a;
-  }
-
-  @keyframes slide-and-show {
-    0% {
-      left: 0%;
-    }
-    10% {
-      left: 0%;
-    }
-    90% {
-      left: -50%;
-    }
-    100% {
-      left: -50%;
-    }
   }
 `;
 

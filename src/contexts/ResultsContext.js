@@ -5,10 +5,12 @@ import UserDataContext from "./UserDataContext";
 const ResultsContext = createContext({});
 
 export function ResultsContextProvider({ children }) {
-  const [ results, setResults ] = useState([]);
   const { userData } = useContext(UserDataContext);
+  const [ results, setResults ] = useState([]);
+  const [ isLoading, setIsLoading ] = useState(true);
 
   const updateResults = async () => {
+    setIsLoading(true);
     const incomes = await getResults({ type: "income", userId: userData._id });
     const remittances = await getResults({ type: "remittance", userId: userData._id });
     let results = [ ...incomes, ...remittances ];
@@ -23,12 +25,15 @@ export function ResultsContextProvider({ children }) {
       return 0;
     });
     setResults(results);
+    setIsLoading(false);
   }
 
-  useEffect(() => { userData._id && updateResults() }, []);
+  useEffect(() => {
+    userData._id && updateResults();
+  }, [ userData._id ]);
 
   return (
-    <ResultsContext.Provider value={{ results, updateResults }}>
+    <ResultsContext.Provider value={{ results, updateResults, isLoading }}>
       {children}
     </ResultsContext.Provider>
   )
