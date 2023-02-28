@@ -1,5 +1,5 @@
-import { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useContext } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import UserDataContext from "contexts/UserDataContext";
 import Spinner from "components/Spinner";
 import Modal from "components/Modal";
@@ -8,13 +8,11 @@ import StyledDiv from "./styles";
 
 export default function Login() {
   const [isModalActive, setIsModalActive] = useState(false);
-  const handleModal = () => setIsModalActive(!isModalActive);
   const { userData, isLoading } = useContext(UserDataContext);
   const navigate = useNavigate();
+  const handleModal = () => setIsModalActive(!isModalActive);
 
-  useEffect(() => {
-    userData._id && navigate("/home", { replace: true });
-  }, [userData._id]);
+  if(userData._id) return <Navigate to="/home" />
 
   return (
     <>

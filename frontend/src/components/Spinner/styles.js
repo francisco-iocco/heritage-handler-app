@@ -65,13 +65,13 @@ const StyledSpinner = styled.div`
     0% {
       content: "";
     }
-    30% {
+    25% {
       content: ".";
     }
     50% {
       content: "..";
     }
-    70% {
+    75% {
       content: "...";
     }
   }  
