@@ -7,7 +7,7 @@ export default async function createResult({
   userId
 }) {
   if(type === "remittance") amount = amount * -1;
-  await fetch(`http://localhost:4000/${userId}/${type}s`, {
+  await fetch(`${process.env.REACT_APP_API_URL}/${userId}/${type}s`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
