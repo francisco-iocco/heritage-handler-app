@@ -10,7 +10,6 @@ export function ResultsContextProvider({ children }) {
   const [ isLoading, setIsLoading ] = useState(true);
 
   const updateResults = async () => {
-    setIsLoading(true);
     const incomes = await getResults({ type: "income", userId: userData._id });
     const remittances = await getResults({ type: "remittance", userId: userData._id });
     let results = [ ...incomes, ...remittances ];
@@ -28,9 +27,7 @@ export function ResultsContextProvider({ children }) {
     setIsLoading(false);
   }
 
-  useEffect(() => {
-    userData._id && updateResults();
-  }, [ userData._id ]);
+  useEffect(() => { userData._id && updateResults() }, [ userData._id ]);
 
   return (
     <ResultsContext.Provider value={{ results, updateResults, isLoading }}>

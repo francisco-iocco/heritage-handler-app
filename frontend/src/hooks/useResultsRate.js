@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useReducer, useEffect } from "react";
 
 const INITIAL_STATE = {
   incomesAmount: 0,
@@ -39,6 +39,8 @@ export default function useResultsRate(results) {
     },
     dispatch,
   ] = useReducer(reducer, INITIAL_STATE);
+  useEffect(() => { setResultsTime({ target: { value: "This day" }})}, []);
+  
   const currentDate = new Date();
 
   const prevMondayDate = (date) => {
@@ -64,6 +66,8 @@ export default function useResultsRate(results) {
         break;
       case 6:
         difference = 5;
+        break;
+      default:
         break;
     }
     return new Date(date.getTime() - difference * 86400000);
@@ -126,7 +130,7 @@ export default function useResultsRate(results) {
     );
   };
 
-  const setResultsTime = ({ target: { value } }) => {
+  function setResultsTime ({ target: { value } }) {
     const remittancesSum =
       filterResultsByTime(
         value,

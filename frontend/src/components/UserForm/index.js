@@ -2,6 +2,7 @@ import { useContext, useReducer } from "react";
 import { TfiLock, TfiMoney, TfiUser, TfiInfoAlt } from "react-icons/tfi";
 import UserDataContext from "contexts/UserDataContext";
 import useHandleUser from "hooks/useHandleUser";
+import Spinner from "components/Spinner";
 import StyledForm from "./styles";
 
 const INITIAL_STATE = {
@@ -37,11 +38,9 @@ export default function UserForm({
   inputs = { username: false, password: false, heritage: false },
   onSubmit = () => {},
 }) {
-  const { userData } = useContext(UserDataContext);
-  const [
-    { username, password, heritage }, 
-    dispatch
-  ] = useReducer(reducer, INITIAL_STATE);
+  const { userData, setIsLoading, isLoading } = useContext(UserDataContext);
+  const [ { username, password, heritage }, dispatch ] 
+   = useReducer(reducer, INITIAL_STATE);
   const {
     logUser,
     registerUser,
@@ -61,6 +60,7 @@ export default function UserForm({
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setIsLoading(true);
     let hasError = false;
     switch (usage) {
       case "register":
@@ -92,10 +92,13 @@ export default function UserForm({
       default:
         break;
     }
+    setIsLoading(false);
 
     // If everything went well, execute the parent callback.
-    !hasError && onSubmit();
+    if(!isLoading && !hasError) onSubmit();
   };
+
+  if(isLoading) return <StyledForm title={title}><Spinner /></StyledForm>;
 
   return (
     <StyledForm onSubmit={handleSubmit} title={title}>
