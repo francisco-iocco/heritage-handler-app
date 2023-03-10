@@ -40,8 +40,6 @@ const StyledModal = styled.div`
     padding-top: 0;
     margin-top: 0;
   }
-
-
 `;
 
 export default StyledModal;

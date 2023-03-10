@@ -9,26 +9,13 @@ const StyledSpinner = styled.div`
   width: 100%;
 
   div {
-    display: flex;
-    position: relative;
-    align-items: center;
-    justify-content: center;
+    height: 75px;
+    width: 75px;
     border-radius: 50%;
-  }
-
-  div::after {
-    content: "";
-    position: absolute;
-    display: inline-block;
-    height: 100%;
-    width: 100%;
-    border-radius: 50%;
-    outline: 1px solid #bbb;
-    animation: 1s ease-out 0s infinite load;
-  }
-
-  img {
-    animation: 1s ease-out 0s infinite alternate getSmall;
+    border: 2px solid #bbb;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+    animation: 1s linear 0s infinite load;
   }
 
   p {
@@ -43,12 +30,10 @@ const StyledSpinner = styled.div`
 
   @keyframes load {
     from {
-      outline-offset: 0;
-      outline-color: #bbb;
+      transform: rotate(0deg);
     }
     to {
-      outline-offset: 25px;
-      outline-color: transparent;
+      transform: rotate(360deg);
     }
   }
 

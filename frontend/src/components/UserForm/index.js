@@ -1,4 +1,4 @@
-import { useContext, useReducer } from "react";
+import { useContext, useReducer, useState } from "react";
 import { TfiLock, TfiMoney, TfiUser, TfiInfoAlt } from "react-icons/tfi";
 import UserDataContext from "contexts/UserDataContext";
 import useHandleUser from "hooks/useHandleUser";
@@ -38,7 +38,8 @@ export default function UserForm({
   inputs = { username: false, password: false, heritage: false },
   onSubmit = () => {},
 }) {
-  const { userData, setIsLoading, isLoading } = useContext(UserDataContext);
+  const { userData } = useContext(UserDataContext);
+  const [ isLoading, setIsLoading ] = useState(false);
   const [ { username, password, heritage }, dispatch ] 
    = useReducer(reducer, INITIAL_STATE);
   const {
@@ -46,6 +47,7 @@ export default function UserForm({
     registerUser,
     updateUser,
     deleteUser,
+    validateCredentials,
     errors,
     cleanError
   } = useHandleUser();
@@ -88,6 +90,9 @@ export default function UserForm({
         break;
       case "delete-account":
         hasError = await deleteUser();
+        break;
+      case "validate-account":
+        hasError = await validateCredentials({ password });
         break;
       default:
         break;
