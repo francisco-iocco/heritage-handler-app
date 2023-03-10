@@ -1,12 +1,18 @@
 import { ResultsContextProvider } from "contexts/ResultsContext";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import Nav from "components/Nav";
 
 export default function PrivateRoute({ component: Component }) {
-  return localStorage.getItem("userId")
-    ? <ResultsContextProvider>
+  const { pathname } = useLocation();
+
+  if(!localStorage.getItem("userId")) return <Navigate to="/" />; 
+  return pathname === "/account"
+    ? <>
+        <Component />
+        <Nav />
+      </>
+    : <ResultsContextProvider>
         <Component />
         <Nav />
       </ResultsContextProvider>
-    : <Navigate to="/" />
 }
