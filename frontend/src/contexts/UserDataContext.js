@@ -9,21 +9,17 @@ export function UserDataContextProvider({ children }) {
 
   useEffect(() => {
     (async () => {
-      const userId = localStorage.getItem("userId");
-      !userId && setIsLoading(false);
-      userId && setUserData(await getUserData({ userId }));
+      if (!userData._id) {
+        const userId = localStorage.getItem("userId");
+        userId && setUserData(await getUserData({ userId }));
+      }
+      setIsLoading(false);
     })();
   }, []);
 
-  useEffect(() => { userData._id && setIsLoading(false) }, [ userData ]);
-
   return (
     <UserDataContext.Provider
-      value={{
-        userData,
-        setUserData,
-        isLoading
-      }}
+      value={{ userData, setUserData, isLoading, setIsLoading }}
     >
       {children}
     </UserDataContext.Provider>

@@ -43,7 +43,7 @@ const StyledResult = styled.tr`
   }
 
   td.amount {
-    color: ${props => props.amount >= 0 ? "#1ac31a" : "#dc1616"};
+    color: ${props => props.type === "income" ? "#1ac31a" : "#dc1616"};
     border-left: 1px solid #999;
     border-right: 1px solid #999;
     height: 80%;

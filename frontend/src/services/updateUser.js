@@ -8,7 +8,7 @@ export default async function updateUser({
   idToBeUnlinked,
   linkUserResponse
 }) {
-  let data = await fetch(`http://localhost:4000/users/${userId}`, {
+  let data = await fetch(`${process.env.REACT_APP_API_URL}/users/${userId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
