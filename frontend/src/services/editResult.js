@@ -7,7 +7,6 @@ export default async function editResult({
   type,
   userId
 }) {
-  if (type === "remittance") amount = amount * -1;
   await fetch(`${process.env.REACT_APP_API_URL}/${userId}/${type}s/${resultId}`, {
     method: "PUT",
     headers: {

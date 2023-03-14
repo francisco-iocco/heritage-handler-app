@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const Remittance = require("./schema");
-const Heritage = require("../heritage/schema");
+const Heritage = require("../users/heritageSchema");
+const User = require("../users/schema");
 
 const router = Router();
 
@@ -61,11 +62,12 @@ router.post("/:user_id/remittances", async (req, res) => {
   newRemittance.save();
 
   if(!data.isPermanent) {
-    const outdatedHeritage = await Heritage.findOne({ user_id });
+    const { heritage } = await User.findById(user_id);
+    const outdatedHeritage = await Heritage.findById(heritage);
     if(!outdatedHeritage) return res.status(404).send({
       errors: { heritage: "No heritage is attached to the user..." }
     })
-    const newAmount = outdatedHeritage.amount + body.amount;
+    const newAmount = outdatedHeritage.amount - body.amount;
     await Heritage.findByIdAndUpdate(outdatedHeritage._id, { amount: newAmount });
   }
 
@@ -116,20 +118,16 @@ router.put("/:user_id/remittances/:id", async (req, res) => {
 
   data = preparePermanentProperties(body, user_id);
 
-  const outdatedHeritage = await Heritage.findOne({ user_id });
-  if(!outdatedHeritage) return res.status(404).send({
-    errors: { heritage: "No heritage is attached to the user..." }
-  })
-
-  let newAmount;
+  
   if(!data.isPermanent) {
-    newAmount = oldRemittance.lastAdd
-    ? outdatedHeritage.amount + body.amount
-    : outdatedHeritage.amount - oldRemittance.amount + body.amount;
-  } else {
-    newAmount = outdatedHeritage.amount - oldRemittance.amount;
+    const { heritage } = await User.findById(user_id);
+    const outdatedHeritage = await Heritage.findById(heritage);
+    if(!outdatedHeritage) return res.status(404).send({
+      errors: { heritage: "No heritage is attached to the user..." }
+    })
+    const newAmount = outdatedHeritage.amount + oldRemittance.amount - body.amount;
+    await Heritage.findByIdAndUpdate(outdatedHeritage._id, { amount: newAmount });
   }
-  await Heritage.findByIdAndUpdate(outdatedHeritage._id, { amount: newAmount });
 
   res.status(200).send();
 });
@@ -151,11 +149,12 @@ router.delete("/:user_id/remittances/:id", async (req, res) => {
   });
   
   if(!oldRemittance.isPermanent) {
-    const outdatedHeritage = await Heritage.findOne({ user_id });
+    const { heritage } = await User.findById(user_id);
+    const outdatedHeritage = await Heritage.findById(heritage);
     if(!outdatedHeritage) return res.status(404).send({
       errors: { heritage: "No heritage is attached to the user..." }
     })
-    const newAmount = outdatedHeritage.amount - oldRemittance.amount;
+    const newAmount = outdatedHeritage.amount + oldRemittance.amount;
     await Heritage.findByIdAndUpdate(outdatedHeritage._id, { amount: newAmount });
   }
   
