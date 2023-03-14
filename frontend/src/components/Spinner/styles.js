@@ -9,8 +9,8 @@ const StyledSpinner = styled.div`
   width: 100%;
 
   div {
-    height: 75px;
-    width: 75px;
+    height: ${props => props.size ? props.size : "75px"};
+    width: ${props => props.size ? props.size : "75px"};
     border-radius: 50%;
     border: 2px solid #bbb;
     border-top-color: transparent;
@@ -19,7 +19,7 @@ const StyledSpinner = styled.div`
   }
 
   p {
-    color: #bbb;
+    color: #bbb !important;
     margin-top: 30px;
   }
   

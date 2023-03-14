@@ -9,10 +9,6 @@ export default function ListOfResults({ searchInputValue }) {
   const [ renderResults, setRenderResults ] = useState(results);
   
   useEffect(() => {
-    setRenderResults(results)
-  }, [ results ]);
-
-  useEffect(() => {
     let info = results;
 
     if(isPermanent) info = info.filter(result => result.isPermanent);
@@ -37,8 +33,9 @@ export default function ListOfResults({ searchInputValue }) {
         description={result.description}
         isPermanent={result.isPermanent}
         time={result.time}
+        type={result.type}
         key={result._id}
-        resultId={result._id}
+        id={result._id}
       />
     );
   });

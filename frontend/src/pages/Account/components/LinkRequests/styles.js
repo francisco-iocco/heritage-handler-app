@@ -1,7 +1,11 @@
 import styled from "@emotion/styled";
 
-const StyledLinkRequests = styled.table`
+const StyledLinkRequests = styled.div`
 width: 100%;
+
+table {
+  width: 100%;
+}
 
 tr {
   display: block;
@@ -54,6 +58,12 @@ td:last-of-type button {
   border-radius: 15px;
   border: none;
   color: #fff;
+}
+
+p.no-req {
+  text-align: center;
+  color: #bbb;
+  margin: 20px;
 }
 
 .btn-accept {

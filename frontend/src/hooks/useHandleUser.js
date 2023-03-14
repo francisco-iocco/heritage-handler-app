@@ -16,7 +16,7 @@ export default function useHandleUser() {
       newErrors[prevError] = prevErrors[prevError];
     }
     return newErrors;
-  })
+  });
 
   const inputsValidation = ({ username, password, heritage }) => {
     let hasError = false;

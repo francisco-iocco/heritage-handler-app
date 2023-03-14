@@ -1,10 +1,10 @@
 import StyledSpinner from "./styles";
 
-export default function Spinner() {
+export default function Spinner({ size, showText = true }) {
   return (
-    <StyledSpinner>
+    <StyledSpinner size={size}>
       <div></div>
-      <p>Just wait for a moment</p>
+      {showText && <p>Just wait for a moment</p>}
     </StyledSpinner>
   )
 }
