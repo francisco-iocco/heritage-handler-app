@@ -16,29 +16,35 @@ export default function LinkRequests() {
   }
 
   return (
-    <>
+    <StyledLinkRequests>
       <h2>Link Requests</h2>
-      <StyledLinkRequests>
-        <thead>
-          <tr>
-            <th>Link request from</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {linkRequests && linkRequests.map((linkRequest) => (
-            <tr key={linkRequest._id}>
-              <td>
-                <p><span>{linkRequest.username}</span></p>
-              </td>
-              <td>
-                <button className="btn-accept" onClick={() => acceptRequest(linkRequest._id)}>Accept</button>
-                <button className="btn-deny" onClick={() => denyRequest(linkRequest._id)}>Deny</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </StyledLinkRequests>
-    </>
+      {linkRequests.length
+        ? (
+          <table>
+            <thead>
+              <tr>
+                <th>Link request from</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {linkRequests && linkRequests.map((linkRequest) => (
+                <tr key={linkRequest._id}>
+                  <td>
+                    <p><span>{linkRequest.username}</span></p>
+                  </td>
+                  <td>
+                    <button className="btn-accept" onClick={() => acceptRequest(linkRequest._id)}>Accept</button>
+                    <button className="btn-deny" onClick={() => denyRequest(linkRequest._id)}>Deny</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )
+        : <p className="no-req">There aren't any link requests!</p>
+      }
+
+    </StyledLinkRequests>
   );
 }

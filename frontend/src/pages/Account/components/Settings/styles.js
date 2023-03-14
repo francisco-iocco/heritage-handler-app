@@ -4,6 +4,10 @@ const StyledSettings = styled.div`
   div {
     margin: 30px 0;
   }
+
+  div:first-of-type, div:first-of-type h3 {
+    margin-top: 0;
+  } 
   
   h3 {
     border-bottom: 1px solid #2424d2;
@@ -18,8 +22,6 @@ const StyledSettings = styled.div`
   }
 
   p span {
-    display: inline-block;
-    margin-right: 5px;
     color: #2424d2;
   }
   

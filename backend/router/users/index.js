@@ -1,8 +1,59 @@
 const { Router } = require("express");
 const User = require("./schema");
-const Heritage = require("../heritage/schema");
+const Heritage = require("./heritageSchema");
+const Income = require("../incomes/schema");
+const Remittance = require("../remittances/schema");
 
 const router = Router();
+
+async function sumPermanents(results, type) {
+
+  const permanents = results.filter((result) => result.isPermanent);
+
+  let amount = 0;
+  let updateResult = false;
+  permanents.forEach(async (permanent) => {
+    const currentDate = new Date();
+    const lastAdd = new Date(permanent.lastAdd);
+    const difference = Math.floor(((currentDate - lastAdd) / 86400000));
+
+    switch (permanent.time) {
+      case "per day":
+        if (difference) {
+          amount += permanent.amount * difference;
+          currentDate.setHours(00, 00, 00);
+          updateResult = true;
+        }
+        break;
+      case "per month":
+        if (difference >= 30) {
+          amount += permanent.amount * Math.floor((difference / 30));
+          currentDate.setHours(00, 00, 00);
+          currentDate.setDate(1);
+          updateResult = true;
+        }
+        break;
+      case "per year":
+        if (difference >= 365) {
+          amount += permanent.amount * Math.floor((difference / 365));
+          currentDate.setHours(00, 00, 00);
+          currentDate.setDate(1);
+          currentDate.setMonth(0);
+          updateResult = true;
+        }
+        break;
+    }
+
+    const updatedLastAdd = new Date(currentDate);
+
+    if(updateResult) {
+      type === "income"
+        ? await Income.findByIdAndUpdate(permanent._id, { lastAdd: updatedLastAdd })
+        : await Remittance.findByIdAndUpdate(permanent._id, { lastAdd: updatedLastAdd });
+    }
+  });
+  return amount;
+}
 
 router.get("/", async (req, res) => {
   const { username, password } = req.query;
@@ -46,6 +97,24 @@ router.get("/:myId", async (req, res) => {
   if(!myUser) return res.status(400).send({
     errors: { id: "Id didn't match any user..." }
   });
+
+  const incomes = await Income.find({ user_id: myId });
+  const remittances = await Remittance.find({ user_id: myId });
+
+  const permanentIncomesAmount = await sumPermanents(incomes, "income");
+  const permanentRemittancesAmount = await sumPermanents(remittances, "remittance");
+
+  let heritage = await Heritage.findById(myUser.heritage._id);
+
+  if(permanentIncomesAmount || permanentRemittancesAmount) {
+    heritage = await Heritage.findByIdAndUpdate(
+      heritage._id,
+      {
+        amount: heritage.amount + permanentIncomesAmount - permanentRemittancesAmount,
+      },
+      { new: true }
+    );
+  }
 
   const userData = myUser._doc;
 

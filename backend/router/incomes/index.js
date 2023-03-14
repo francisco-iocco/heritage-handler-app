@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const Income = require("./schema");
-const Heritage = require("../heritage/schema");
+const Heritage = require("../users/heritageSchema");
+const User = require("../users/schema");
 
 const router = Router();
 
@@ -61,7 +62,8 @@ router.post("/:user_id/incomes", async (req, res) => {
   newIncome.save();
 
   if(!data.isPermanent) {
-    const outdatedHeritage = await Heritage.findOne({ user_id });
+    const { heritage } = await User.findById(user_id);
+    const outdatedHeritage = await Heritage.findById(heritage);
     if(!outdatedHeritage) return res.status(404).send({
       errors: { heritage: "No heritage is attached to the user..." }
     })
@@ -116,20 +118,16 @@ router.put("/:user_id/incomes/:id", async (req, res) => {
 
   data = preparePermanentProperties(data, user_id);
 
-  const outdatedHeritage = await Heritage.findOne({ user_id });
-  if(!outdatedHeritage) return res.status(404).send({
-    errors: { heritage: "No heritage is attached to the user..." }
-  })
-
-  let newAmount;
+  
   if(!data.isPermanent) {
-    newAmount = oldIncome.lastAdd 
-     ? outdatedHeritage.amount + body.amount
-     : outdatedHeritage.amount - oldIncome.amount + body.amount;
-  } else {
-    newAmount = outdatedHeritage.amount - oldIncome.amount;
+    const { heritage } = await User.findById(user_id);
+    const outdatedHeritage = await Heritage.findById(heritage);
+    if(!outdatedHeritage) return res.status(404).send({
+      errors: { heritage: "No heritage is attached to the user..." }
+    })
+    const newAmount = outdatedHeritage.amount - oldIncome.amount + body.amount;
+    await Heritage.findByIdAndUpdate(outdatedHeritage._id, { amount: newAmount });
   }
-  await Heritage.findByIdAndUpdate(outdatedHeritage._id, { amount: newAmount });
 
   res.status(200).send();
 });
@@ -151,7 +149,8 @@ router.delete("/:user_id/incomes/:id", async (req, res) => {
   });
 
   if(!oldIncome.isPermanent) {
-    const outdatedHeritage = await Heritage.findOne({ user_id });
+    const { heritage } = await User.findById(user_id);
+    const outdatedHeritage = await Heritage.findById(heritage);
     if(!outdatedHeritage) return res.status(404).send({
       errors: { heritage: "No heritage is attached to the user..." }
     })

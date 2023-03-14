@@ -66,6 +66,7 @@ const StyledUserForm = styled.form`
   }
 
   p.note span {
+    margin-right: 5px;
     font-size: 10px;
   }
 

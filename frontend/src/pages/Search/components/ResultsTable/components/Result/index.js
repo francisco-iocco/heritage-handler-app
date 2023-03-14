@@ -1,55 +1,39 @@
-import { useState, useContext } from "react";
+import { useState, memo } from "react";
 import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
-import CreateResultContext from "contexts/CreateResultContext";
 import useHandleResult from "hooks/useHandleResult";
+import Spinner from "components/Spinner";
 import Modal from "components/Modal";
 import CreateForm from "pages/Search/components/CreateForm";
 import StyledResult from "./styles";
 
-export default function Result({
+function Result({
   amount,
   description,
   isPermanent,
   time,
-  resultId,
+  type,
+  id,
 }) {
-  const [showModal, setShowModal] = useState(false);
-  const { 
-    changeDescription,
-    changeAmount,
-    toggleIsPermanent,
-    changeTime,
-    changeId,
-    reset 
-  } = useContext(CreateResultContext);
+  const [ showSpinner, setShowSpinner ] = useState(false);
+  const [ showModal, setShowModal ] = useState(false);
   const { deleteResult } = useHandleResult();
-  
-  const handleDelete = async () => {
-    await deleteResult({ type: amount > 0 ? "income" : "remittance", resultId });
+
+  const handleDelete = () => {
+    setShowSpinner(true);
+    deleteResult({ type, resultId: id })
   };
 
-  const handleShowModal = () => {
-    changeDescription(description);
-    changeAmount(amount < 0 ? amount * -1 : amount);
-    isPermanent && toggleIsPermanent();
-    changeTime(time);
-    changeId(resultId);
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    reset();
-    setShowModal(false);
-  };
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
 
   return (
-    <StyledResult amount={amount}>
+    <StyledResult type={type}>
       <td>
         {isPermanent && <div className="permanent">Permanent</div>}
         {description}
       </td>
       <td className="amount">
-        <p>${amount}</p>
+        <p>${type === "remittance" ? `-${amount}` : amount}</p>
         <p>{isPermanent && `(${time})`}</p>
       </td>
       <td>
@@ -57,14 +41,23 @@ export default function Result({
           <FaPencilAlt />
         </button>
         <button className="delete" onClick={handleDelete}>
-          <FaTrashAlt />
+          {showSpinner
+            ? <Spinner size="15px" showText={false} /> 
+            : <FaTrashAlt />
+          }
         </button>
       </td>
       {showModal && (
         <Modal onClose={handleCloseModal}>
-          <CreateForm onSubmit={handleCloseModal} title={amount > 0 ? "Edit income" : "Edit remittance"} />
+          <CreateForm
+            onSubmit={handleCloseModal}
+            title={type === "income" ? "Edit income" : "Edit remittance"}
+            resultToUpdate={{ description, amount, isPermanent, time, id }}
+          />
         </Modal>
       )}
     </StyledResult>
   );
 }
+
+export default memo(Result);

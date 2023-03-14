@@ -1,51 +1,38 @@
-import { useContext } from "react";
-import CreateResultContext from "contexts/CreateResultContext";
 import useHandleResult from "hooks/useHandleResult";
+import Spinner from "components/Spinner";
 import StyledCreateForm from "./styles";
+import { useState } from "react";
 
-export default function CreateForm({ onSubmit, title }) {
+export default function CreateForm({ onSubmit, title, resultToUpdate }) {
   const {
-    description,
-    amount,
-    isPermanent,
-    time,
-    id,
+    data: { description, amount, isPermanent, time },
     changeDescription,
     changeAmount,
     toggleIsPermanent,
     changeTime,
-    reset,
-  } = useContext(CreateResultContext);
-  const { createResult, editResult, errors, cleanError } = useHandleResult();
+    createResult,
+    editResult,
+    errors,
+    cleanError
+  } = useHandleResult(resultToUpdate);
+  const [ isLoading, setIsLoading ] = useState(false);
 
-  const handleDescriptionValue = ({ target: { value } }) => {
-    changeDescription(value);
-  };
-  const handleAmountValue = ({ target: { value } }) => changeAmount(parseInt(value));
-  const handleTimeValue = ({ target: { value } }) => changeTime(value);
-
-  const handleCloseForm = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = { description, amount };
-    if(isPermanent) {
-      data.isPermanent = true;
-      data.time = time;
-    }
+    const data = { description, amount, isPermanent, time };
     data.type = (title.includes("remittance")) ? "remittance" : "income";
 
-
+    setIsLoading(true);
     let hasError = false;
-    if(id) {
-      hasError = await editResult({ ...data, resultId: id }) 
-    } else {
-      hasError = await createResult({ ...data }); 
-    }
+    hasError = resultToUpdate?.id
+      ? await editResult({ ...data, resultId: resultToUpdate.id })
+      : await createResult({ ...data });
+    setIsLoading(false);
 
-    if(!hasError) {
-      reset();
-      onSubmit();
-    }
+    !hasError && onSubmit();
   };
+
+  if(isLoading) return <StyledCreateForm><Spinner /></StyledCreateForm>;
 
   return (
     <StyledCreateForm title={title}>
@@ -54,16 +41,16 @@ export default function CreateForm({ onSubmit, title }) {
         placeholder="Title"
         type="text"
         value={description}
-        onChange={handleDescriptionValue}
-        onFocus={() => cleanError("description")}
+        onChange={({ target: { value } }) => changeDescription(value)}
+        onFocus={() => errors.description && cleanError("description")}
       />
       {errors.description && <p>{errors.description}</p>}
       <input
         placeholder="Amount"
         type="number"
         value={amount}
-        onChange={handleAmountValue}
-        onFocus={() => cleanError("amount")}
+        onChange={({ target: { value } }) => changeAmount(value)}
+        onFocus={() => errors.amount && cleanError("amount")}
       />
       {errors.amount && <p>{errors.amount}</p>}
       <div>
@@ -74,18 +61,17 @@ export default function CreateForm({ onSubmit, title }) {
           onChange={toggleIsPermanent}
           value={isPermanent}
           checked={isPermanent}
+          disabled={resultToUpdate}
         />
       </div>
       {isPermanent && (
-        <select value={time} onChange={handleTimeValue}>
+        <select value={time} onChange={({ target: { value } }) => changeTime(value)} disabled={resultToUpdate}>
           <option>per day</option>
           <option>per month</option>
           <option>per year</option>
         </select>
       )}
-      <button onClick={handleCloseForm} type="submit">
-        OK
-      </button>
+      <button onClick={handleSubmit} type="submit">OK</button>
     </StyledCreateForm>
   );
 }

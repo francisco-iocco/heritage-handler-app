@@ -28,7 +28,7 @@ const StyledSearchForm = styled.form`
 
   input[type="checkbox"],
   input[type="radio"] {
-    margin: 0 15px;
+    margin: 20px 10px;
     transform: scale(2);
   }
 
@@ -43,7 +43,7 @@ const StyledSearchForm = styled.form`
     border: none;
     color: #fff;
     font-size: 20px;
-    margin: 0 10px;
+    margin: 10px;
     padding: 15px;
   }
 

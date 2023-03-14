@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
-const StyledDiv = styled.div`
-  .section-1::before {
+const StyledLogin = styled.div`
+  & > div:first-of-type::before {
     background-color: #fff;
     border-radius: 0 50px 50px 0;
     content: "";
@@ -13,14 +13,14 @@ const StyledDiv = styled.div`
     width: 100%;
   }
 
-  .section-1 {
+  & > div:first-of-type {
     align-items: center;
     background-color: #2424d2;
     display: flex;
     justify-content: center;
   }
 
-  .section-1 header {
+  & > div:first-of-type header {
     align-items: center;
     display: flex;
     flex-direction: column;
@@ -29,13 +29,13 @@ const StyledDiv = styled.div`
     width: 90%;
   }
 
-  .section-1 header > * {
+  & > div:first-of-type header > * {
     background-color: #fff;
     border-radius: 15px;
     padding: 10px;
   }
 
-  .section-2::before {
+  & > div:last-of-type::before {
     background-color: #fff;
     border-radius: 0 50px 50px 0;
     content: "";
@@ -47,7 +47,7 @@ const StyledDiv = styled.div`
     width: 100%;
   }
 
-  .section-2 {
+  & > div:last-of-type {
     align-items: center;
     display: flex;
     flex-direction: column;
@@ -75,7 +75,7 @@ const StyledDiv = styled.div`
     transform: translateX(-50%) translateY(-50%);
   }
 
-  .section-2 .registerBtn {
+  div:last-of-type .registerBtn {
     background-color: #1ac31a;
     border-radius: 15px;
     border: none;
@@ -85,4 +85,4 @@ const StyledDiv = styled.div`
   }
 `;
 
-export default StyledDiv;
+export default StyledLogin;

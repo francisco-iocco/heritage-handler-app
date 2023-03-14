@@ -1,5 +1,5 @@
 export default async function deleteResult({ userId, type, resultId }) {
-  await fetch(`http://localhost:4000/${userId}/${type}s/${resultId}`, {
+  await fetch(`${process.env.REACT_APP_API_URL}/${userId}/${type}s/${resultId}`, {
     method: "DELETE",
   });
 }

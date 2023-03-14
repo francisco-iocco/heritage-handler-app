@@ -8,9 +8,9 @@ const StyledCreateForm = styled.form`
 
   h2 {
     ${(props) => {
-      if (props.title.includes("income")) {
+      if (props.title?.includes("income")) {
         return "color: #1ac31a;";
-      } else if (props.title.includes("remittance")) {
+      } else if (props.title?.includes("remittance")) {
         return "color: #dc1616;"; 
       }
     }}

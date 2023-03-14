@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 const StyledAccount = styled.div`
-  .account-presentation {
+  .presentation {
     height: 35%;
     position: relative;
   }
@@ -13,7 +13,7 @@ const StyledAccount = styled.div`
     width: 100%;
   }
 
-  .account-info {
+  .info {
     align-items: center;
     display: flex;
     flex-direction: column;
@@ -24,7 +24,7 @@ const StyledAccount = styled.div`
     transform: translate(-50%, -50%);
   }
 
-  .account-info span {
+  .info span {
     align-items: center;
     background-color: #fff;
     border-radius: 45%;
@@ -36,7 +36,7 @@ const StyledAccount = styled.div`
     z-index: 1;
   }
 
-  .account-info p {
+  .info p {
     background-color: #fff;
     border-radius: 15px;
     box-shadow: 0 0 30px 10px #eee;
@@ -46,18 +46,18 @@ const StyledAccount = styled.div`
     transform: translateY(-30%);
   }
 
-  .account-configuration {
-    padding-bottom: 10%;
+  .configuration {
+    padding-bottom: 100px;
   }
 
-  .icons-bar {
+  .menu {
     border-top: 1px solid #bbb;
     display: inline-block;
     margin: 0 0 20px 20px;
     position: relative;
   }
 
-  .icons-bar::after {
+  .menu::after {
     border-bottom: 1px solid #2424d2;
     bottom: 0;
     content: "";
@@ -67,7 +67,7 @@ const StyledAccount = styled.div`
       switch (props.sectionToRender) {
         case "settings":
           return "10px;";
-        case "account-list":
+        case "list":
           return "calc(33.33% + 10px);";
         case "link-requests":
           return "calc(66.66% + 10px);;";
@@ -80,7 +80,7 @@ const StyledAccount = styled.div`
     width: 19.19px;
   }
 
-  .icons-bar button {
+  .menu button {
     background-color: transparent;
     border: none;
     color: #bbb;
@@ -90,16 +90,10 @@ const StyledAccount = styled.div`
     margin: 10px;
   }
 
-  .account-configuration .content {
+  .configuration > div {
     border: 1px solid #bbb;
-    height: 70%;
-    margin-bottom: 75px;
-    padding: 15px 20px;
-  }
-
-  .content div:first-of-type h3 {
-    margin-top: 0;
-    padding-top: 0;
+    padding: 0 15px;
+    margin-bottom: 10px; 
   }
 
   h2 {
