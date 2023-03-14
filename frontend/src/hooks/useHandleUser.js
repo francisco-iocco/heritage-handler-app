@@ -16,7 +16,7 @@ export default function useHandleUser() {
       newErrors[prevError] = prevErrors[prevError];
     }
     return newErrors;
-  })
+  });
 
   const inputsValidation = ({ username, password, heritage }) => {
     let hasError = false;
@@ -124,6 +124,8 @@ export default function useHandleUser() {
       return true;
     }
 
+    if(lastConnection || usernameToBeLinked) return;
+
     const data = await getUserDataService({ userId: userData._id });
     if(data?.errors) return true;
     setUserData(data);
@@ -141,12 +143,22 @@ export default function useHandleUser() {
     setUserData(data);
   }
 
+  const validateCredentials = async ({ password }) => {
+    if(password !== userData.password) {
+      setErrors({ password: "Password is incorrect..."});
+      return true;
+    }
+    const data = await getUserDataService({ userId: userData._id });
+    if(data?.errors) return true;
+  }
+
   return {
     logUser,
     registerUser,
     updateUser,
     deleteUser,
     changeUser,
+    validateCredentials,
     errors,
     cleanError
   };

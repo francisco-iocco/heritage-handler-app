@@ -1,7 +1,8 @@
-import { useContext, useReducer, useEffect, useState } from "react";
+import { useContext, useReducer, useState } from "react";
+import { TfiLock, TfiMoney, TfiUser, TfiInfoAlt } from "react-icons/tfi";
 import UserDataContext from "contexts/UserDataContext";
 import useHandleUser from "hooks/useHandleUser";
-import { TfiLock, TfiMoney, TfiUser, TfiInfoAlt } from "react-icons/tfi";
+import Spinner from "components/Spinner";
 import StyledForm from "./styles";
 
 const INITIAL_STATE = {
@@ -34,47 +35,22 @@ export default function UserForm({
   btnTitle = "",
   usage = "",
   note = "",
+  inputs = { username: false, password: false, heritage: false },
   onSubmit = () => {},
 }) {
   const { userData } = useContext(UserDataContext);
-  const [ inputs, setInputs ] = useState({
-    username: false,
-    password: false,
-    heritage: false
-  });
-  const [
-    { username, password, heritage }, 
-    dispatch
-  ] = useReducer(reducer, INITIAL_STATE);
+  const [ isLoading, setIsLoading ] = useState(false);
+  const [ { username, password, heritage }, dispatch ] 
+   = useReducer(reducer, INITIAL_STATE);
   const {
     logUser,
     registerUser,
     updateUser,
     deleteUser,
+    validateCredentials,
     errors,
     cleanError
   } = useHandleUser();
-
-  useEffect(() => {
-    switch (usage) {
-      case "register":
-      case "register-and-link":
-        setInputs({ username: true, password: true, heritage: true });
-        break;
-      case "login":
-        setInputs({ username: true, password: true });
-        break;
-      case "link-existing":
-      case "change-username":
-        setInputs({ username: true });
-        break;
-      case "change-password":
-        setInputs({ password: true });
-        break;
-      default:
-        break;
-    }
-  }, []);
 
   const handleUsernameValue = ({ target: { value } }) => 
     dispatch({ type: ACTIONS.UPDATE_USERNAME, payload: value });
@@ -86,6 +62,7 @@ export default function UserForm({
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setIsLoading(true);
     let hasError = false;
     switch (usage) {
       case "register":
@@ -114,13 +91,19 @@ export default function UserForm({
       case "delete-account":
         hasError = await deleteUser();
         break;
+      case "validate-account":
+        hasError = await validateCredentials({ password });
+        break;
       default:
         break;
     }
+    setIsLoading(false);
 
     // If everything went well, execute the parent callback.
-    !hasError && onSubmit();
+    if(!isLoading && !hasError) onSubmit();
   };
+
+  if(isLoading) return <StyledForm title={title}><Spinner /></StyledForm>;
 
   return (
     <StyledForm onSubmit={handleSubmit} title={title}>
@@ -133,7 +116,7 @@ export default function UserForm({
             </label>
             <input
               onChange={handleUsernameValue}
-              onFocus={() => cleanError("username")}
+              onFocus={() => errors.username && cleanError("username")}
               placeholder="Username"
               type="text"
               value={username}
@@ -151,7 +134,7 @@ export default function UserForm({
             </label>
             <input
               onChange={handlePasswordValue}
-              onFocus={() => cleanError("password")}
+              onFocus={() => errors.password && cleanError("password")}
               placeholder="Password"
               type="password"
               value={password}
@@ -169,7 +152,7 @@ export default function UserForm({
             </label>
             <input
               onChange={handleHeritageValue}
-              onFocus={() => cleanError("heritage")}
+              onFocus={() => errors.heritage && cleanError("heritage")}
               placeholder="Your current heritage"
               type="number"
               value={heritage}

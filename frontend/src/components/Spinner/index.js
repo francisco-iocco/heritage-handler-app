@@ -1,13 +1,10 @@
 import StyledSpinner from "./styles";
-import Logo from "assets/logo.png";
 
-export default function Spinner() {
+export default function Spinner({ size, showText = true }) {
   return (
-    <StyledSpinner>
-      <div>
-        <img src={Logo}></img>
-      </div>
-      <p>Just wait for a moment</p>
+    <StyledSpinner size={size}>
+      <div></div>
+      {showText && <p>Just wait for a moment</p>}
     </StyledSpinner>
   )
 }

@@ -76,6 +76,7 @@ export default function ChangeAccount({ myUsername }) {
             title="Link existing account"
             btnTitle="Send request"
             usage="link-existing"
+            inputs={{ username: true }}
             note="You must wait for the other user to accept your request."
             onSubmit={handleLinkExistingModal}
           />
@@ -88,6 +89,7 @@ export default function ChangeAccount({ myUsername }) {
             title="Link new account"
             btnTitle="Create and link"
             usage="register-and-link"
+            inputs={{ username: true, password: true, heritage: true }}
             note={`This account will be linked with ${myUsername}.`}
             onSubmit={handleLinkNewModal}
           />

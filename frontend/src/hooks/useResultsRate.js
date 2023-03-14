@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useReducer, useEffect } from "react";
 
 const INITIAL_STATE = {
   incomesAmount: 0,
@@ -39,6 +39,8 @@ export default function useResultsRate(results) {
     },
     dispatch,
   ] = useReducer(reducer, INITIAL_STATE);
+  useEffect(() => { setResultsTime({ target: { value: "This day" } }) }, []);
+  
   const currentDate = new Date();
 
   const prevMondayDate = (date) => {
@@ -65,15 +67,14 @@ export default function useResultsRate(results) {
       case 6:
         difference = 5;
         break;
+      default:
+        break;
     }
     return new Date(date.getTime() - difference * 86400000);
   };
 
   const filterResultsByTime = (time, results) => {
-    let filteredResults = results.filter((result) => {
-      return !(new Date(result.updated_at).getDate() ===
-      new Date(result.created_at).getDate())}
-    );
+    let filteredResults = results.filter(result => !result.isPermanent);
     switch (time) {
       case "This day":
         filteredResults = filteredResults.filter((result) => {
@@ -126,16 +127,16 @@ export default function useResultsRate(results) {
     );
   };
 
-  const setResultsTime = ({ target: { value } }) => {
-    const remittancesSum =
-      filterResultsByTime(
-        value,
-        results.filter((result) => result.amount < 0)
-      ) * -1;
+  function setResultsTime ({ target: { value } }) {
+    const remittancesSum = filterResultsByTime(
+      value,
+      results.filter((result) => result.type === "remittance")
+    );
     const incomesSum = filterResultsByTime(
       value,
-      results.filter((result) => result.amount > 0)
+      results.filter((result) => result.type === "income")
     );
+
     const totalSum = incomesSum + remittancesSum;
 
     dispatch({
