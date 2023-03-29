@@ -2,7 +2,6 @@ import { useContext, useEffect } from "react";
 import updateUser from "services/updateUser";
 import UserDataContext from "contexts/UserDataContext";
 import Router from "Router";
-import "./App.css";
 
 function App() {
   const { userData } = useContext(UserDataContext);

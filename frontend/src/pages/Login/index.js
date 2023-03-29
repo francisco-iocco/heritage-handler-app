@@ -2,24 +2,25 @@ import { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import Modal from "components/Modal";
 import UserForm from "components/UserForm";
+import Presentation from "./components/Presentation";
 import StyledLogin from "./styles";
 
 export default function Login() {
-  const [isModalActive, setIsModalActive] = useState(false);
-  const handleModal = () => setIsModalActive(!isModalActive);
+  const [showModal, setShowModal] = useState(false);
+  const [animation, setAnimation] = useState("");
   const navigate = useNavigate();
+  const handleModal = () => setShowModal(!showModal);
+  const handleClick = () => {
+    setAnimation("click");
+    handleModal();
+  }
 
   if (localStorage.getItem("userId")) return <Navigate to="/home" />;
 
   return (
-    <StyledLogin>
-      <div className="section">
-        <header>
-          <h1>Heritage Handler App</h1>
-          <h2>Quick, smart, easy to use... All in one place!</h2>
-        </header>
-      </div>
-      <div className="section">
+    <StyledLogin animation={animation}>
+      <Presentation showModal={showModal} />
+      <div>
         <UserForm
           title="Log into your account"
           btnTitle="Log in"
@@ -28,11 +29,11 @@ export default function Login() {
           onSubmit={() => navigate("/home")}
         />
         <div className="divider"></div>
-        <button className="registerBtn" onClick={handleModal}>
+        <button onClick={handleClick} onAnimationEnd={() => setAnimation("")}>
           Create a new account
         </button>
       </div>
-      {isModalActive && (
+      {showModal && (
         <Modal onClose={handleModal}>
           <UserForm
             title="Register"

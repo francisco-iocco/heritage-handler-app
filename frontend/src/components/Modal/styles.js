@@ -2,43 +2,94 @@ import styled from "@emotion/styled";
 
 const StyledModal = styled.div`
   align-items: center;
-  backdrop-filter: blur(2px);
-  background-color: rgba(0, 0, 0, 0.8);
+  ${({ onClose }) => !onClose
+    ? "animation: getDarker 1s ease 0s forwards"
+    : "animation: getLigther 1s ease .5s reverse backwards"
+  };
+  background-color: rgba(0, 0, 0, .5);
   display: flex;
-  height: 100vh;
+  height: 3px;
   justify-content: center;
+  left: 50%;
   position: fixed;
-  width: 100%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 0%;
   z-index: 2;
-
+  
   .modal {
-    padding: 5px;
+    ${({ onClose }) => !onClose
+      ? "animation: showUp .5s ease 1s forwards"
+      : "animation: hide .5s ease 0s reverse"
+    };
     background-color: #fff;
     border-radius: 15px;
+    max-width: 350px;
+    padding: 5px;
     position: relative;
+    transform: scale(0);
     width: 80%;
   }
 
   .close-container {
-    display: flex;
     align-items: center;
+    display: flex;
     justify-content: flex-end;
   }
 
   .close-container button {
-    padding: 5px;
-    display: flex;
     align-items: center;
-    justify-content: flex-end;
     background-color: #fff;
     border: none;
     color: #808080;
-    font-size: 30px;
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-end;
+    padding: 5px;
   }
 
   .content > *:first-of-type {
-    padding-top: 0;
     margin-top: 0;
+    padding-top: 0;
+  }
+  
+  @keyframes ${({ onClose }) => !onClose ? "getDarker" : "getLigther"} {
+    0% {
+      height: 3px;
+      width: 0%;
+    }
+    25% {
+      height: 3px;
+      width: 100%;
+    }
+    75% {
+      height: 3px;
+      width: 100%;
+    }
+    99.99% {
+      overflow: hidden;
+    }
+    100% {
+      height: 100vh;
+      overflow: auto;
+      width: 100%;
+    }
+  }
+
+  @keyframes ${({ onClose }) => !onClose ? "showUp" : "hide"} {
+    from {
+      transform: scale(0);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+
+  @media (max-height: 480px) and (orientation: landscape) {
+    .modal {
+      align-self: flex-start;
+      justify-self: flex-start;
+    }
   }
 `;
 

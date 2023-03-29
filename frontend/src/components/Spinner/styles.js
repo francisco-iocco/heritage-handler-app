@@ -9,11 +9,12 @@ const StyledSpinner = styled.div`
   width: 100%;
 
   div {
-    height: ${props => props.size ? props.size : "75px"};
-    width: ${props => props.size ? props.size : "75px"};
+    height: 4em;
+    width: 4em;
     border-radius: 50%;
     border: 2px solid #bbb;
-    border-top-color: transparent;
+    border-left: none;
+    border-right-color: transparent;
     border-bottom-color: transparent;
     animation: 1s linear 0s infinite load;
   }
