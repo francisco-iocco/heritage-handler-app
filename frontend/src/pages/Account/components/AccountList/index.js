@@ -8,7 +8,7 @@ import StyledAccountList from "./styles";
 
 export default function ChangeAccount({ myUsername }) {
   const { userData: { linkedAccounts } } = useContext(UserDataContext);
-  const { changeUser, updateUser } = useHandleUser();
+  const { changeUser, updateLastConnection, unlinkUser } = useHandleUser();
   const [
     isLinkExistingModalActive, 
     setIsLinkExistingModalActive
@@ -19,13 +19,13 @@ export default function ChangeAccount({ myUsername }) {
   ] = useState(false);
 
   const changeAccount = async (userId) => {
-    await updateUser({ lastConnection: new Date() });
+    await updateLastConnection({ lastConnection: new Date() });
     changeUser({ userId });
   }
 
   const deleteAccount = async (e, userId) => {
     e.stopPropagation();
-    await updateUser({ idToBeUnlinked: userId });
+    await unlinkUser({ idToBeUnlinked: userId });
   }
 
   const handleLinkExistingModal = () =>

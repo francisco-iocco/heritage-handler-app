@@ -5,14 +5,14 @@ import useHandleUser from "hooks/useHandleUser";
 
 export default function LinkRequests() {
   const { userData: { linkRequests } } = useContext(UserDataContext);
-  const { updateUser } = useHandleUser();
+  const { handleUserResponse } = useHandleUser();
 
   const acceptRequest = (id) => {
-    updateUser({ linkUserResponse: { id, accepted: true } });
+    handleUserResponse({ linkUserResponse: { id, accepted: true } });
   }
 
   const denyRequest = (id) => {
-    updateUser({ linkUserResponse: { id, accepted: false } });
+    handleUserResponse({ linkUserResponse: { id, accepted: false } });
   }
 
   return (

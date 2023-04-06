@@ -19,7 +19,7 @@ function Modal({ onClose, children }) {
   }, []);
 
   return (
-    <StyledModal onClose={animation}>
+    <StyledModal close={animation}>
       <div className="modal">
         <div className="close-container">
           <button onClick={handleSubmit}>

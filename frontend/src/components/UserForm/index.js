@@ -44,7 +44,6 @@ export default function UserForm({
   onSubmit = () => {},
 }) {
   const { userData } = useContext(UserDataContext);
-  const [isLoading, setIsLoading] = useState(false);
   const [animation, setAnimation] = useState("");
   const [{ username, password, heritage }, dispatch] = useReducer(
     reducer,
@@ -53,9 +52,12 @@ export default function UserForm({
   const {
     logUser,
     registerUser,
-    updateUser,
+    changeUsername,
+    changePassword,
+    linkUser,
     deleteUser,
     validateCredentials,
+    isLoading,
     errors,
     cleanError,
   } = useHandleUser();
@@ -76,9 +78,6 @@ export default function UserForm({
   const handleSubmit = async (e) => {
     e.preventDefault();
     setAnimation("click");
-    if(Object.keys(errors).length) return;
-
-    setIsLoading(true);
     let hasError = false;
     switch (usage) {
       case "register":
@@ -96,13 +95,13 @@ export default function UserForm({
         hasError = await logUser({ username, password });
         break;
       case "link-existing":
-        hasError = await updateUser({ usernameToBeLinked: username });
+        hasError = await linkUser({ usernameToBeLinked: username });
         break;
       case "change-username":
-        hasError = await updateUser({ username });
+        hasError = await changeUsername({ username });
         break;
       case "change-password":
-        hasError = await updateUser({ password });
+        hasError = await changePassword({ password });
         break;
       case "delete-account":
         hasError = await deleteUser();
@@ -113,7 +112,6 @@ export default function UserForm({
       default:
         break;
     }
-    setIsLoading(false);
 
     // If everything went well, execute the parent callback.
     if (!isLoading && !hasError) onSubmit();

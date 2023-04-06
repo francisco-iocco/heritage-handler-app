@@ -61,22 +61,6 @@ export const StyledForm = styled.form`
       background-color: #fff;
       color: ${({ theme }) => theme.colors.primary};
     }
-
-    @keyframes click {
-      0% {
-        background-color: #fff;
-        color: ${({ theme }) => theme.colors.primary};
-        transform: scale(1);
-      }
-      50% {
-        transform: scale(1.05);
-      }
-      100% {
-        background-color: #fff;
-        color: ${({ theme }) => theme.colors.primary};
-        transform: scale(1);
-      }
-    }
   }
 `;
 
@@ -120,6 +104,7 @@ export const StyledInput = styled.div`
   
   input[type=number] {
     -moz-appearance: textfield;
+    appearance: textfield;
   }
 
   input:focus {
@@ -155,6 +140,10 @@ export const StyledInput = styled.div`
     margin-top: 10px;
     opacity: 0;
     transform: translateY(-50%);
+  }
+
+  p:first-letter {
+    text-transform: capitalize;
   }
 
   @keyframes ${({ hideText }) => !hideText ? "showText" : "hideText"} {

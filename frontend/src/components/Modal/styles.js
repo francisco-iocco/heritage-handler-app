@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 
 const StyledModal = styled.div`
   align-items: center;
-  ${({ onClose }) => !onClose
+  ${({ close }) => !close
     ? "animation: getDarker 1s ease 0s forwards"
     : "animation: getLigther 1s ease .5s reverse backwards"
   };
@@ -18,7 +18,7 @@ const StyledModal = styled.div`
   z-index: 2;
   
   .modal {
-    ${({ onClose }) => !onClose
+    ${({ close }) => !close
       ? "animation: showUp .5s ease 1s forwards"
       : "animation: hide .5s ease 0s reverse"
     };
@@ -53,7 +53,7 @@ const StyledModal = styled.div`
     padding-top: 0;
   }
   
-  @keyframes ${({ onClose }) => !onClose ? "getDarker" : "getLigther"} {
+  @keyframes ${({ close }) => !close ? "getDarker" : "getLigther"} {
     0% {
       height: 3px;
       width: 0%;
@@ -76,7 +76,7 @@ const StyledModal = styled.div`
     }
   }
 
-  @keyframes ${({ onClose }) => !onClose ? "showUp" : "hide"} {
+  @keyframes ${({ close }) => !close ? "showUp" : "hide"} {
     from {
       transform: scale(0);
     }
