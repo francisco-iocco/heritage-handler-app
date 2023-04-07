@@ -1,3 +1,4 @@
+import { IconArrowsSort } from "@tabler/icons-react";
 import StyledPercentajes from "./styles";
 
 export default function Percentajes({
@@ -9,21 +10,24 @@ export default function Percentajes({
     <StyledPercentajes>
       <div>
         <div className="title">
-          <h4>Results in porcentaje</h4>
-          <select onChange={setResultsTime}>
-            <option>This day</option>
-            <option>This week</option>
-            <option>This month</option>
-            <option>This year</option>
-          </select>
+          <h3>Results in porcentaje</h3>
+          <div>
+            <select onChange={setResultsTime}>
+              <option>This day</option>
+              <option>This week</option>
+              <option>This month</option>
+              <option>This year</option>
+            </select>
+            <IconArrowsSort className="arrow" stroke={1} size="1.2rem" />
+          </div>
         </div>
         <div className="data">
           <div className="remittances-data">
-            <h5>Remittances</h5>
+            <h4>Remittances</h4>
             <p>{remittancesPercentaje}%</p>
           </div>
           <div className="incomes-data">
-            <h5>Incomes</h5>
+            <h4>Incomes</h4>
             <p>{incomesPercentaje}%</p>
           </div>
         </div>

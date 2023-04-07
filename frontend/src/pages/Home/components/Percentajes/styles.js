@@ -1,52 +1,74 @@
 import styled from "@emotion/styled";
 
 const StyledPercentajes = styled.div`
-  align-items: center;
-  display: flex;
+  display: grid;
   height: 50%;
-  justify-content: center;
+  place-items: center;
 
-  & > div {
+  > div {
     align-items: center;
     border-radius: 15px;
-    box-shadow: 0 0 30px -5px #808080;
+    box-shadow: 0 0 30px 0 #eee;
     display: flex;
     flex-direction: column;
     height: 90%;
     width: 90%;
   }
 
-  div .title {
+  .title {
     align-items: center;
     display: flex;
     flex-direction: column;
     height: 50%;
     justify-content: space-evenly;
-    padding: 30px;
+    padding: 10px;
     width: 100%;
   }
 
-  div h4 {
-    border-bottom: 1px solid lightblue;
-    font-size: 20px;
-    padding: 5px;
+  h3 {
+    border-bottom: 1px solid ${({ theme }) => theme.colors.secondary};
+    font-size: ${({ theme }) => theme.fontSizes.l};
+    padding-bottom: 5px;
+    text-align: center;
   }
 
-  div .title select {
+  .title div {
+    color: ${({ theme }) => theme.colors.secondary};
+    position: relative;
+  }
+  
+  select {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    border: 1px solid ${({ theme }) => theme.colors.secondary};
+    box-shadow: inset 0 0 1000px 0 #fff;
+    color: ${({ theme }) => theme.colors.secondary};
+    font-size: ${({ theme }) => theme.fontSizes.m};
     outline: none;
     padding: 10px;
+    padding-right: 30px;
   }
 
-  div .data {
+  .arrow {
+    margin-right: 5px;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform .5s;
+  }
+
+  .data {
     align-items: center;
     display: flex;
     height: 50%;
-    justify-content: space-evenly;
     padding: 30px 0;
     width: 100%;
   }
 
-  div .data div {
+  .data div {
     align-items: center;
     display: flex;
     flex-direction: column;
@@ -56,21 +78,35 @@ const StyledPercentajes = styled.div`
     width: 50%;
   }
 
-  div .data .remittances-data {
-    color: #f00;
+  .remittances-data {
+    color: ${({ theme }) => theme.colors.remittance};
   }
 
-  div .data .incomes-data {
-    border-left: 1px solid #999999;
-    color: #1ac31a;
+  .incomes-data {
+    border-left: 1px solid ${({ theme }) => theme.colors.tertiary};
+    color: ${({ theme }) => theme.colors.income};
   }
 
-  div .data div h5 {
-    font-size: 20px;
+  h4 {
+    font-size: ${({ theme }) => theme.fontSizes.m};
   }
 
-  div .data div p {
-    font-size: 16px;
+  p {
+    font-size: ${({ theme }) => theme.fontSizes.m};
+  }
+
+  ${({ theme }) => theme.bps.laptops} {
+    height: 100%;
+    width: 50%;
+
+    select {
+      cursor: pointer;
+    }
+
+    .current-heritage-container {
+      height: 100%;
+      width: 25%;
+    }
   }
 `;
 

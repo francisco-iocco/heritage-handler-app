@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 const StyledInformation = styled.div`
-  border-bottom: 1px solid #999;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.tertiary};
   display: flex;
   height: 15%;
 
@@ -11,12 +11,11 @@ const StyledInformation = styled.div`
     height: 100%;
     justify-content: space-around;
     padding: 15px;
-    text-align: center;
     width: 50%;
   }
 
   div h4 {
-    font-size: 18px;
+    font-size: ${({ theme }) => theme.fontSizes.m};
   }
 
   div select {
@@ -26,16 +25,33 @@ const StyledInformation = styled.div`
   }
 
   div p {
-    font-size: 20px;
+    font-size: ${({ theme }) => theme.fontSizes.m};
   }
 
   .incomes-container {
-    color: #1ac31a;
+    color: ${({ theme }) => theme.colors.income};
   }
 
   .remittances-container {
-    border-right: 1px solid #999;
-    color: #dc1616;
+    border-right: 1px solid ${({ theme }) => theme.colors.tertiary};
+    color: ${({ theme }) => theme.colors.remittance};
+  }
+
+  ${({ theme }) => theme.bps.laptops} {
+    flex-direction: column;
+    height: 100%;
+    width: 25%;
+    border-right: 1px solid ${({ theme }) => theme.colors.tertiary};
+
+    div {
+      height: 50%;
+      width: 100%;
+    }
+
+    .remittances-container {
+      border: none;
+      border-bottom: 1px solid ${({ theme }) => theme.colors.tertiary};
+    }
   }
 `;
 

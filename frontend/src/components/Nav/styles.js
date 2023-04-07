@@ -1,75 +1,102 @@
 import styled from "@emotion/styled";
 
 const StyledNav = styled.nav`
-  align-items: center;
   background-color: #fff;
-  border-top: 1px solid #999;
+  border-top: 1px solid ${({ theme }) => theme.colors.tertiary};
   bottom: 0;
-  display: flex;
+  font-size: 30px;
   height: 100px;
-  justify-content: space-evenly;
   position: fixed;
   width: 100%;
   z-index: 1;
 
-  div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  .select-window {
+    display: grid;
+    place-items: center;
+    position: absolute;
+    transition: transform 0.5s;
+    transform: translateX(
+      ${({ location }) => {
+        switch (location) {
+          case "/search":
+            return "0";
+          case "/home":
+            return "100%";
+          case "/account":
+            return "200%";
+        }
+      }}
+    );
+    width: 33.33%;
+    z-index: -1;
   }
 
-  div div {
-    background-color: #fff;
+  .purple-bar {
+    background-color: ${({ theme }) => theme.colors.primary};
     border-radius: 15px;
-    box-shadow: 0 0 30px -5px #808080;
-    font-size: 30px;
-    padding: 15px 20px;
+    height: 1em;
+    padding: 30px;
+    width: 1em;
   }
 
-  div div a {
+  > div {
     align-items: center;
-    color: #2424d2;
-    display: flex;
+    display: inline-flex;
+    height: 100%;
+    justify-content: center;
+    width: 33.33%;
   }
 
-  div div.active {
-    background-color: #2424d2;
-  }
-
-  div div.active a {
-    color: #fff;
-  }
-
-  div p {
-    margin: 0;
-    padding-top: 5px;
-    position: relative;
-    display: flex;
+  a {
+    color: ${({ theme }) => theme.colors.tertiary};
+    display: inline-flex;
+    font-size: ${({ theme }) => theme.fontSizes.m};
     justify-content: center;
   }
 
-  div p::after {
-    position: absolute;
-    bottom: 0;
-    transform: translateY(200%);
-    content: "";
-    display: inline-block;
-    height: 1px;
-    width: 1px;
-    background-color: #2424d2;
-    animation: 1s ease expand forwards;
+  a[href="${({ location }) => location}"] {
+    color: ${({ theme }) => theme.colors.quaternary};
   }
 
-  @keyframes expand {
-    from {
-      width: 1px;
-    }
-    to {
+  ${({ theme }) => theme.bps.laptops} {
+    height: 100vh;
+    width: 150px;
+    left: 0;
+    border-right: 1px solid ${({ theme }) => theme.colors.tertiary};
+
+    > div {
+      height: 33.33%;
       width: 100%;
     }
+    
+    > div a {
+      transition: color, font-size .5s;
+    }
+
+    > div a:not([href="${({ location }) => location}"]):hover {
+      color: ${({ theme }) => theme.colors.primary};
+      font-size: ${({ theme }) => theme.fontSizes.l};
+    }
+
+    .select-window {
+      width: 100%;
+      position: absolute;
+      transition: transform 0.5s;
+      transform: translateY(
+        ${({ location }) => {
+          switch (location) {
+            case "/search":
+              return "0";
+            case "/home":
+              return "100%";
+            case "/account":
+              return "200%";
+          }
+        }}
+      );
+      z-index: -1;
+    }
   }
-
-
 `;
 
 export default StyledNav;

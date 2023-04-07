@@ -120,7 +120,7 @@ export default function UserForm({
   if (isLoading)
     return (
       <StyledForm title={title}>
-        <Spinner />
+        <Spinner size="100%" />
       </StyledForm>
     );
 

@@ -20,10 +20,11 @@ export default function Home() {
     setResultsTime,
   } = useResultsRate(results);
 
-  if (isUserDataLoading || areResultsLoading) return <Spinner />;
+  if (isUserDataLoading || areResultsLoading)
+    return <StyledHome><Spinner /></StyledHome>;
 
   return (
-    <StyledHome className="section">
+    <StyledHome amount={userData.heritage.amount}>
       <Information
         remittancesAmount={remittancesAmount}
         incomesAmount={incomesAmount}

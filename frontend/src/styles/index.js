@@ -11,9 +11,9 @@ export const theme = {
     l: "25px",
   },
   fontSizes: {
-    s: "1rem",
-    m: "1.2rem",
-    l: "1.5rem",
+    s: "0.618em",
+    m: "1em",
+    l: "1.618em",
   },
   btnSizes: {
     s: "150px",
@@ -24,5 +24,7 @@ export const theme = {
     secondary: "#20b9fc",
     tertiary: "#b7bbc7",
     quaternary: "#f5f5f7",
+    income: "#1ac31a",
+    remittance: "#ef0107"
   },
 };
