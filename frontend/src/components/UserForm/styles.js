@@ -2,19 +2,21 @@ import styled from "@emotion/styled";
 
 export const StyledForm = styled.form`
   ${({ title }) => title === "Log into your account" && "box-shadow: 0 0 20px 0 #eee"};
-  align-items: center;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   padding: 25px;
 
   h3 {
-    border-bottom: 1px solid ${({ theme }) => theme.colors.primary};
     display: inline-block;
     font-size: ${({ theme }) => theme.fontSizes.l};
     margin: 15px 0;
     padding-bottom: 10px;
     text-align: center;
+    ${({ titleColor }) => titleColor && `color: ${titleColor};`}
+    ${({ titleColor, theme }) => 
+      !titleColor && `border-bottom: 1px solid ${theme.colors.primary};`
+    }
   }
 
   button {
@@ -58,8 +60,8 @@ export const StyledForm = styled.form`
     }
 
     button:hover {
-      background-color: #fff;
-      color: ${({ theme }) => theme.colors.primary};
+      border-color: transparent;
+      background-color: ${({ theme }) => theme.colors.primary + "cc"};
     }
   }
 `;
@@ -156,3 +158,76 @@ export const StyledInput = styled.div`
     }
   }
 `;
+
+export const StyledCheckbox = styled.div`
+  align-items: center;
+  display: flex;
+  margin-bottom: 15px;
+
+  label {
+    font-size: ${({ theme }) => theme.fontSizes.m};
+  }
+
+  input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    border: 2px solid #000;
+    display: grid;
+    height: 25px;
+    margin: 0 10px;
+    place-items: center;
+    width: 25px;
+  }
+
+  input[type="checkbox"]:disabled {
+    background-color: ${({ theme }) => theme.colors.tertiary};
+    border-color:${({ theme }) => theme.colors.tertiary};
+    color: gray;
+  }
+
+  input[type="checkbox"]:disabled:checked::before {
+    background-color: gray;
+  }
+
+  input[type="checkbox"]:disabled + label {
+    color: gray;
+  }
+  
+  input[type="checkbox"]::before {
+    border-radius: 2px;
+    content: "";
+    height: 70%;
+    transform: scale(0);
+    transition: transform .5s;
+    width: 70%;
+  }
+
+  input[type="checkbox"]:checked::before {
+    background-color: #5632fa;
+    transform: scale(1);
+  }
+
+  ${({ theme }) => theme.bps.laptops} {
+    input[type="checkbox"] {
+      cursor: pointer;
+    }
+  }
+`;
+
+export const StyledSelect = styled.select`
+  background-color: #fff;
+  border: 1px solid ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.primary};
+  outline: none;
+  padding: 10px;
+
+  :disabled {
+    background-color: ${({ theme }) => theme.colors.tertiary};
+    border-color:${({ theme }) => theme.colors.tertiary};
+    color: gray;
+  }
+
+  ${({ theme }) => theme.bps.laptops} {
+    cursor: pointer;
+  }
+`

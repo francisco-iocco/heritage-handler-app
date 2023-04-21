@@ -1,6 +1,7 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import SearchResultContext from "contexts/SearchResultContext";
 import StyledSearchForm from "./styles";
+import { StyledCheckbox } from "components/UserForm/styles";
 
 export default function SearchForm({ title, onSubmit }) {
   const {
@@ -13,17 +14,29 @@ export default function SearchForm({ title, onSubmit }) {
     isRemittance,
     reset,
   } = useContext(SearchResultContext);
+  const [animation, setAnimation] = useState("");
 
-  const handleSearchButton = (e) => {
+  const handleSearch = (e) => {
     e.preventDefault();
+    setAnimation("click-search");
     onSubmit(e);
     toggleSearchInput();
   };
 
+  const handleClear = (e) => {
+    e.preventDefault();
+    setAnimation("click-clear");
+    reset();
+  };
+
   return (
-    <StyledSearchForm title={title} onSubmit={handleSearchButton}>
+    <StyledSearchForm 
+      title={title} 
+      animation={animation}
+      onAnimationEnd={() => setAnimation("")}
+    >
       <h2>{title}</h2>
-      <div>
+      <StyledCheckbox>
         <label htmlFor="permanent">Permanent</label>
         <input
           checked={isPermanent}
@@ -31,7 +44,7 @@ export default function SearchForm({ title, onSubmit }) {
           onChange={toggleIsPermanent}
           type="checkbox"
         />
-      </div>
+      </StyledCheckbox>
       <div>
         <label htmlFor="incomes">Incomes</label>
         <input
@@ -53,10 +66,10 @@ export default function SearchForm({ title, onSubmit }) {
         />
       </div>
       <div>
-        <button type="button" onClick={reset}>
+        <button className="clear" onClick={handleClear}>
           Clear
         </button>
-        <button type="submit">Search</button>
+        <button onClick={handleSearch}>Search</button>
       </div>
     </StyledSearchForm>
   );

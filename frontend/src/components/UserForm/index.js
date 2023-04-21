@@ -117,12 +117,11 @@ export default function UserForm({
     if (!isLoading && !hasError) onSubmit();
   };
 
-  if (isLoading)
-    return (
-      <StyledForm title={title}>
-        <Spinner size="100%" />
-      </StyledForm>
-    );
+  if (isLoading) {
+    return <StyledForm>
+      <Spinner height="100%" size="2.618em" />
+    </StyledForm>
+  }
 
   return (
     <StyledForm

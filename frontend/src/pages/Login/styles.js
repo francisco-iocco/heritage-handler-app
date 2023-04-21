@@ -4,6 +4,7 @@ const StyledLogin = styled.div`
   form {
     max-width: 350px;
     width: 80%;
+    box-shadow: 0 0 20px 0 #eee;
   }
 
   > div:last-of-type {
@@ -75,8 +76,7 @@ const StyledLogin = styled.div`
     }
 
     > div:last-of-type > button:hover {
-      background-color: ${({ theme }) => theme.colors.primary};
-      color: #fff;
+      background-color: ${({ theme }) => theme.colors.primary + "30"};
     }
   }
 `;

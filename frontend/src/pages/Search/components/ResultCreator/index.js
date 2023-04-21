@@ -1,4 +1,4 @@
-import { FaListUl } from "react-icons/fa";
+import { IconAdjustments, IconAdjustmentsExclamation } from "@tabler/icons-react";
 import { useState, useContext } from "react";
 import SearchResultContext from "contexts/SearchResultContext";
 import Modal from "components/Modal";
@@ -7,51 +7,61 @@ import SearchForm from "../SearchForm";
 import StyledResultCreator from "./styles";
 
 export default function ResultCreator() {
-  const [isCreateModalActive, setIsCreateModalActive] = useState(false);
-  const [isSearchModalActive, setIsSearchModalActive] = useState(false);
-  const [formTitle, setFormTitle] = useState("");
+  const { 
+    isPermanent,
+    isIncome,
+    isRemittance
+  } = useContext(SearchResultContext);
 
-  const { toggleSearchInput, isSearchInputActive } = useContext(SearchResultContext);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showSearchModal, setShowSearchModal] = useState(false);
+  const [formTitle, setFormTitle] = useState("");
+  const [animation, setAnimation] = useState("");
 
   const handleShowCreateModal = ({ target: { innerText } }) => {
+    setAnimation(innerText.includes("income") ? "click-income" : "click-remittance");
     setFormTitle(innerText);
-    setIsCreateModalActive(true);
+    setShowCreateModal(true);
   };
-  const handleCloseCreateModal = () => setIsCreateModalActive(false);
+  const handleCloseCreateModal = () => setShowCreateModal(false);
 
   const handleShowSearchModal = () => {
-    isSearchInputActive && toggleSearchInput();
+    setAnimation("click-search")
     setFormTitle("Filters");
-    setIsSearchModalActive(true);
+    setShowSearchModal(true);
   };
-  
-  const handleCloseSearchModal = () => {
-    setIsSearchModalActive(false);
-  };
+  const handleCloseSearchModal = () => setShowSearchModal(false);
 
   return (
-    <StyledResultCreator>
+    <StyledResultCreator
+      animation={animation}
+      onAnimationEnd={() => setAnimation("")}
+      searchFilters={isIncome || isRemittance || isPermanent}
+    >
       <div className="filter-container">
-        <button className="filter" onClick={handleShowSearchModal}>
-          <FaListUl />
+        <button onClick={handleShowSearchModal}>
+          <span><IconAdjustmentsExclamation size="1.5rem" /></span>
+          <span><IconAdjustments size="1.5rem" /></span>
         </button>
       </div>
-      <button className="income" onClick={handleShowCreateModal}>
-        New income
-      </button>
-      <button className="remittance" onClick={handleShowCreateModal}>
-        New remittance
-      </button>
+      <div className="buttons-container">
+        <button onClick={handleShowCreateModal}>
+          New income
+        </button>
+        <button onClick={handleShowCreateModal}>
+          New remittance
+        </button>
+      </div>
 
-      {isCreateModalActive && (
+      {showCreateModal && (
         <Modal onClose={handleCloseCreateModal}>
           <CreateForm onSubmit={handleCloseCreateModal} title={formTitle} />
         </Modal>
       )}
 
-      {isSearchModalActive && (
+      {showSearchModal && (
         <Modal onClose={handleCloseSearchModal}>
-          <SearchForm onSubmit={() => setIsSearchModalActive(false)} title={formTitle} />
+          <SearchForm onSubmit={handleCloseSearchModal} title={formTitle} />
         </Modal>
       )}
     </StyledResultCreator>

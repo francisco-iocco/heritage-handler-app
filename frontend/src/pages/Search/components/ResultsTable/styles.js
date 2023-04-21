@@ -1,12 +1,20 @@
 import styled from "@emotion/styled";
 
-const StyledResultsDiv = styled.div`
-  width: 100%;
-  overflow: auto;
-  height: calc(100% - 175px);
-  
-  table {
-    width: 100%;
+export const StyledTable = styled.table`
+  display: block;
+  height: calc(100% - 100px);
+  overflow-y: auto;
+
+  thead, tbody, tr {
+    display: block;
+  }
+
+  thead {
+    position: sticky;
+    top: 0px;
+    transform: ${({ direction }) => direction === "down" ? "translateY(-100%)" : "translateY(0)"};
+    transition: transform .5s;
+    z-index: 10;
   }
 
   thead > tr.head-row {
@@ -21,7 +29,7 @@ const StyledResultsDiv = styled.div`
   }
 
   th span {
-    border-bottom: 1px solid lightblue;
+    border-bottom: 1px solid ${({ theme }) => theme.colors.secondary};
     padding-bottom: 5px;
   }
 
@@ -54,4 +62,30 @@ const StyledResultsDiv = styled.div`
   }
 `;
 
-export default StyledResultsDiv;
+export const StyledInput = styled.div`
+  bottom: 20%;
+  display: flex;
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
+
+  input {
+    border-bottom: 2px solid ${({ theme }) => theme.colors.secondary};
+    border: none;
+    outline: none;
+    padding: 15px;
+  }
+
+  button {
+    background-color: #fff;
+    border-radius: 5px;
+    border: none;
+    color: ${({ theme }) => theme.colors.secondary};
+    display: grid;
+    margin-left: 20px;
+    padding: 5px;
+    place-items: center;
+  }
+`;
+
+export default StyledTable;

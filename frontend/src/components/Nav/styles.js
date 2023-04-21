@@ -39,7 +39,7 @@ const StyledNav = styled.nav`
     width: 1em;
   }
 
-  > div {
+  div {
     align-items: center;
     display: inline-flex;
     height: 100%;
@@ -54,15 +54,12 @@ const StyledNav = styled.nav`
     justify-content: center;
   }
 
-  a[href="${({ location }) => location}"] {
-    color: ${({ theme }) => theme.colors.quaternary};
-  }
-
   ${({ theme }) => theme.bps.laptops} {
-    height: 100vh;
-    width: 150px;
-    left: 0;
+    border: none;
     border-right: 1px solid ${({ theme }) => theme.colors.tertiary};
+    height: 100%;
+    left: 0;
+    width: 150px;
 
     > div {
       height: 33.33%;
@@ -79,9 +76,9 @@ const StyledNav = styled.nav`
     }
 
     .select-window {
-      width: 100%;
       position: absolute;
       transition: transform 0.5s;
+      width: 100%;
       transform: translateY(
         ${({ location }) => {
           switch (location) {

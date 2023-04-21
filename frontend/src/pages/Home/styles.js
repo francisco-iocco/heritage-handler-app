@@ -1,10 +1,10 @@
 import styled from "@emotion/styled";
 
-const StyledHome = styled.div`
+export const StyledHome = styled.div`
   display: flex;
   flex-direction: column;
-  font-size: 20px;
-  height: 100vmax;
+  font-size: 18px;
+  height: calc(100% - 100px);
   text-align: center;
 
   .current-heritage-container {
@@ -12,7 +12,7 @@ const StyledHome = styled.div`
     border-top: 1px solid ${({ theme }) => theme.colors.tertiary};
     display: flex;
     flex-direction: column;
-    height: 25%;
+    height: 30%;
     justify-content: space-evenly;
     padding: 10px;
   }
@@ -29,6 +29,11 @@ const StyledHome = styled.div`
     margin: 20px;
   }
 
+  @media (max-height: 480px) and (orientation: landscape) {
+    height: calc(100vw - 100px);
+    padding-bottom: 100px;
+  }
+
   ${({ theme }) => theme.bps.tablets} {
     font-size: 22px;
   }
@@ -36,7 +41,7 @@ const StyledHome = styled.div`
   ${({ theme }) => theme.bps.laptops} {
     flex-direction: row;
     font-size: 24px;
-    height: 100vh;
+    height: 100%;
     margin-left: 150px;
     width: calc(100vw - 150px);
 

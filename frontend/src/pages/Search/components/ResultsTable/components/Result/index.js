@@ -14,23 +14,26 @@ function Result({
   type,
   id,
 }) {
-  const [ showSpinner, setShowSpinner ] = useState(false);
   const [ showModal, setShowModal ] = useState(false);
-  const { deleteResult } = useHandleResult();
+  const [ animation, setAnimation ] = useState("");
+  const { deleteResult, isLoading } = useHandleResult();
 
   const handleDelete = () => {
-    setShowSpinner(true);
+    setAnimation("delete-click");
     deleteResult({ type, resultId: id })
   };
 
-  const handleShowModal = () => setShowModal(true);
+  const handleShowModal = () => {
+    setAnimation("edit-click");
+    setShowModal(true);
+  }
   const handleCloseModal = () => setShowModal(false);
 
   return (
-    <StyledResult type={type}>
+    <StyledResult type={type} animation={animation} onAnimationEnd={() => setAnimation("")}>
       <td>
         {isPermanent && <div className="permanent">Permanent</div>}
-        {description}
+        <p>{description}</p>
       </td>
       <td className="amount">
         <p>${type === "remittance" ? `-${amount}` : amount}</p>
@@ -41,8 +44,13 @@ function Result({
           <FaPencilAlt />
         </button>
         <button className="delete" onClick={handleDelete}>
-          {showSpinner
-            ? <Spinner size="15px" showText={false} /> 
+          {isLoading
+            ? <Spinner 
+                showText={false} 
+                color="inherit" 
+                height="100%"
+                size="1em"
+              /> 
             : <FaTrashAlt />
           }
         </button>

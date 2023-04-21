@@ -1,11 +1,11 @@
 import styled from "@emotion/styled";
 
 const StyledModal = styled.div`
-  align-items: center;
   ${({ close }) => !close
     ? "animation: getDarker 1s ease 0s forwards"
     : "animation: getLigther 1s ease .5s reverse backwards"
   };
+  align-items: center;
   background-color: rgba(0, 0, 0, .5);
   display: flex;
   height: 3px;
@@ -15,7 +15,7 @@ const StyledModal = styled.div`
   top: 50%;
   transform: translate(-50%, -50%);
   width: 0%;
-  z-index: 2;
+  z-index: 999;
   
   .modal {
     ${({ close }) => !close
@@ -38,6 +38,7 @@ const StyledModal = styled.div`
   }
 
   .close-container button {
+    -webkit-tap-highlight-color: transparent;
     align-items: center;
     background-color: #fff;
     border: none;

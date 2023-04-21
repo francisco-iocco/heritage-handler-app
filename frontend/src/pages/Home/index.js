@@ -5,7 +5,7 @@ import useResultsRate from "hooks/useResultsRate";
 import Spinner from "components/Spinner";
 import Information from "./components/Information";
 import Percentajes from "./components/Percentajes";
-import StyledHome from "./styles";
+import { StyledHome, StyledSpinnerContainer } from "./styles";
 
 export default function Home() {
   const { userData, isLoading: isUserDataLoading } =
@@ -20,8 +20,14 @@ export default function Home() {
     setResultsTime,
   } = useResultsRate(results);
 
-  if (isUserDataLoading || areResultsLoading)
-    return <StyledHome><Spinner /></StyledHome>;
+  if(isUserDataLoading || areResultsLoading) {
+    return <StyledHome>
+      <Spinner
+        size="2.618em"
+        height="100%"
+      />
+    </StyledHome>
+  }
 
   return (
     <StyledHome amount={userData.heritage.amount}>

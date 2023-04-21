@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 const StyledInformation = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.tertiary};
   display: flex;
-  height: 15%;
+  height: 20%;
 
   div {
     display: flex;

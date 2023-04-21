@@ -4,23 +4,25 @@ const StyledSpinner = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: ${props => props.height};
   justify-content: center;
   width: 100%;
 
   div {
     animation: 1s linear 0s infinite load;
-    border: 2px solid #bbb;
+    border: 2px solid;
+    border-color: ${({ color }) => color ? color : "#bbb"};
     border-bottom-color: transparent;
     border-left: none;
     border-radius: 50%;
     border-right-color: transparent;
-    height: 4em;
-    width: 4em;
+    height: ${props => props.size};
+    width: ${props => props.size};
   }
 
   p {
-    color: #bbb !important;
+    color: ${({ color }) => color ? color : "#bbb"} !important;
+    font-size: ${props => props.size / 2};
     margin-top: 30px;
   }
   
