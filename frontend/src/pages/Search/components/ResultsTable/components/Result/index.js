@@ -15,22 +15,19 @@ function Result({
   id,
 }) {
   const [ showModal, setShowModal ] = useState(false);
-  const [ animation, setAnimation ] = useState("");
   const { deleteResult, isLoading } = useHandleResult();
 
   const handleDelete = () => {
-    setAnimation("delete-click");
     deleteResult({ type, resultId: id })
   };
 
   const handleShowModal = () => {
-    setAnimation("edit-click");
     setShowModal(true);
   }
   const handleCloseModal = () => setShowModal(false);
 
   return (
-    <StyledResult type={type} animation={animation} onAnimationEnd={() => setAnimation("")}>
+    <StyledResult type={type}>
       <td>
         {isPermanent && <div className="permanent">Permanent</div>}
         <p>{description}</p>

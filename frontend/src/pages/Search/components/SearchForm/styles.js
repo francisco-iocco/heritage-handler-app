@@ -67,11 +67,6 @@ const StyledSearchForm = styled.form`
     transition: background-color .5s;
   }
 
-  button.clear {
-    ${({ animation }) => animation === "click-clear" &&
-      "animation: click .1s linear 0s"};
-  }
-
   ${({ theme }) => theme.bps.laptops} {
     button:hover {
       background-color: ${({ theme }) => theme.colors.primary + "30"};

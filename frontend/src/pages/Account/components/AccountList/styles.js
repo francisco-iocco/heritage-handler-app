@@ -6,99 +6,158 @@ const StyledAccountList = styled.div`
   }
 
   tr {
-    position: relative;
-    display: block;
-    padding: 10px;
     border-radius: 10px;
-    box-shadow: 0 0 15px -5px #bbb;
+    box-shadow: 0 0 30px 0 #eee;
+    display: block;
     margin: 25px 0;
+    padding: 10px;
+    position: relative;
   }
 
   thead tr {
-    margin-bottom: 0;
-    margin-top: 0;
+    margin: 0;
   }
 
-  tr:active {
+  tr:not(:first-of-type):not(:has(button:active)):active {
     background-color: rgba(0, 0, 0, 0.1);
+    transform: scale(1.01);
+  }
+  
+  tbody tr:first-of-type {
+    background-color: ${({ theme }) => theme.colors.secondary};
+    color: #fff;
+  }
+
+  th:last-of-type {
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+  }
+
+  th:last-of-type span {
+    margin-right: 5px;
   }
   
   th:first-of-type,
   td:first-of-type {
+    border-right: 1px solid ${({ theme }) => theme.colors.tertiary};
     display: inline-block;
     overflow: hidden;
-    width: 60%;
     padding: 10px;
-    border-right: 1px solid #bbb;
-  }
-
-  td:first-of-type button {
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform: translate(25%, -50%);
-    padding: 5px;
-    border-radius: 10px;
-    border: none;
-    color: #fff;
-    background-color: #f00;
+    width: 60%;
   }
 
   th:last-of-type,
   td:last-of-type {
-    text-align: center;
     display: inline-block;
-    width: 40%;
     padding: 10px;
+    text-align: center;
+    width: 40%;
   }
 
-  tbody tr:first-of-type {
-    background-color: #1ac31a;
+  tbody tr:first-of-type td:first-of-type {
+    border-right: 1px solid #fff;
   }
 
-  div.buttons-container {
-    padding: 15px;
-    box-shadow: none;
-  }
-
-  div.buttons-container {
-    box-shadow: 0 0 15px -5px #bbb;
+  td button {
+    background-color: #f00;
     border-radius: 10px;
-    height: 125px;
+    border: none;
+    color: #fff;
+    left: 10px;
+    padding: 5px;
+    position: absolute;
+    top: 0;
+    transform: translateY(-50%);
+  }
+
+  td button:active {
+    transform: translateY(-50%) scale(1.05);
+  }
+
+  td p {
+    display: inline-block;
+  }
+
+  td .spinner {
+    float: right;
+  }
+
+  .buttons-container {
+    border-radius: 10px;
+    box-shadow: 0 0 30px 0 #eee;
     display: flex;
-    justify-content: space-between;
+    height: 125px;
+    justify-content: space-around;
+    margin: auto;
+    max-width: 800px;
     padding: 15px;
     position: relative;
   }
-
-  div.buttons-container::after {
+  
+  .buttons-container::after {
+    background-color: ${({ theme }) => theme.colors.tertiary};
     content: "";
-    height: 70%;
-    width: 1px;
     display: inline-block;
-    position: absolute;
-    background-color: #808080;
+    height: 70%;
     left: 50%;
+    position: absolute;
     top: 50%;
-    transform: translate(-50%, -50%) rotate(40deg);
+    transform: translate(-50%, -50%);
+    width: 1px;
   }
 
-  div.buttons-container button {
-    color: #fff;
-    padding: 10px;
-    border-radius: 15px;
+  .buttons-container button {
+    background-color: ${({ theme }) => theme.colors.primary};
     border: none;
-    width: 40%;
+    color: #fff;
+    font-size: ${({ theme }) => theme.fontSizes.m};
+    max-width: 40%;
+    padding: 10px;
   }
 
-  div.buttons-container button:first-of-type {
+  .buttons-container button:first-of-type {
     align-self: flex-start;
-    background-color: #2424d2;
   }
 
-  div.buttons-container button:last-of-type {
+  .buttons-container button:last-of-type {
     align-self: flex-end;
-    background-color: #1ac31a;
+    background-color: transparent;
+    border: 2px solid ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.primary};
+  }
+
+  ${({ theme }) => theme.bps.laptops} {
+    tr:not(:first-of-type) {
+      transition: background-color .5s;
+    }
+
+    tr:not(:first-of-type):not(:has(button:hover)):hover {
+      cursor: pointer;
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    tr button {
+      border: 2px solid ${({ theme }) => theme.colors.remittance};
+      transition: all .5s;
+    }
+
+    tr button:hover {
+      background-color: #fff;
+      color: ${({ theme }) => theme.colors.remittance};
+    }
+
+    .buttons-container button {
+      transition: background-color .5s;
+    }
+
+    .buttons-container button:first-of-type:hover {
+      background-color: ${({ theme }) => theme.colors.primary + "cc"};
+    }
+
+    .buttons-container button:last-of-type:hover {
+      background-color: ${({ theme }) => theme.colors.primary + "30"};
+    }
   }
 `;
 

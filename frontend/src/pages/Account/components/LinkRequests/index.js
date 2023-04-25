@@ -1,17 +1,21 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import UserDataContext from "contexts/UserDataContext";
 import StyledLinkRequests from "./styles";
 import useHandleUser from "hooks/useHandleUser";
+import Spinner from "components/Spinner";
 
 export default function LinkRequests() {
   const { userData: { linkRequests } } = useContext(UserDataContext);
-  const { handleUserResponse } = useHandleUser();
+  const { handleUserResponse, isLoading } = useHandleUser();
+  const [btnLoad, setBtnLoad] = useState("");
 
   const acceptRequest = (id) => {
+    setBtnLoad("accept");
     handleUserResponse({ linkUserResponse: { id, accepted: true } });
   }
 
   const denyRequest = (id) => {
+    setBtnLoad("deny");
     handleUserResponse({ linkUserResponse: { id, accepted: false } });
   }
 
@@ -31,11 +35,21 @@ export default function LinkRequests() {
               {linkRequests && linkRequests.map((linkRequest) => (
                 <tr key={linkRequest._id}>
                   <td>
-                    <p><span>{linkRequest.username}</span></p>
+                    <p>{linkRequest.username}</p>
                   </td>
                   <td>
-                    <button className="btn-accept" onClick={() => acceptRequest(linkRequest._id)}>Accept</button>
-                    <button className="btn-deny" onClick={() => denyRequest(linkRequest._id)}>Deny</button>
+                    <button className="accept" onClick={() => acceptRequest(linkRequest._id)}>
+                      {btnLoad === "accept"
+                        ? <Spinner height="100%" size="1em" showText={false} color="#inherit" />
+                        : "Accept"
+                      }
+                    </button>
+                    <button className="deny" onClick={() => denyRequest(linkRequest._id)}>
+                      {btnLoad === "deny"
+                        ? <Spinner height="100%" size="1em" showText={false} color="inherit" />
+                        : "Deny"
+                      }
+                    </button>
                   </td>
                 </tr>
               ))}

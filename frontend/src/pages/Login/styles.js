@@ -38,7 +38,6 @@ const StyledLogin = styled.div`
   }
 
   > div:last-of-type > button {
-    ${({ animation }) => animation === "click" && "animation: scaleUp .1s linear 0s;"}
     background-color: transparent;
     outline: none;
     border: 2px solid ${({ theme }) => theme.colors.primary};

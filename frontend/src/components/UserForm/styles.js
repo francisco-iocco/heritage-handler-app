@@ -13,55 +13,62 @@ export const StyledForm = styled.form`
     margin: 15px 0;
     padding-bottom: 10px;
     text-align: center;
-    ${({ titleColor }) => titleColor && `color: ${titleColor};`}
-    ${({ titleColor, theme }) => 
-      !titleColor && `border-bottom: 1px solid ${theme.colors.primary};`
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    ${({ title, theme }) => 
+      title === "Delete account" 
+        ? `border-bottom-color: ${theme.colors.remittance};
+           color: ${theme.colors.remittance};
+          `
+        : `border-bottom-color: ${theme.colors.primary};`
     }
   }
 
   button {
-    ${({ animation }) => animation === "click" && "animation: click .1s linear 0s;"}
-    background-color: ${({ theme }) => theme.colors.primary};
-    border: 2px solid ${({ theme }) => theme.colors.primary};
+    background-color: ${({ title, theme }) => 
+      title === "Delete account"
+        ? theme.colors.remittance
+        : theme.colors.primary
+    };
+    border: 2px solid ${({ title, theme }) => 
+      title === "Delete account"
+        ? theme.colors.remittance
+        : theme.colors.primary
+    };
     color: #fff;
     font-size: 1.2rem;
     margin: 15px 0;
     padding: 10px;
-    transition: all .5s;
     width: 100%;
   }
   
   p.note {
-    color: ${(props) => (props.title === "Delete account" ? "red" : "#B0E0E6")};
+    color: ${({ title, theme }) => 
+      title === "Delete account"
+        ? theme.colors.remittance
+        : theme.colors.tertiary
+    };
     font-size: 15px;
+    line-height: 0.8;
+    margin-bottom: 15px;
   }
 
   p.note span {
-    font-size: 10px;
-    margin-right: 5px;
-  }
-
-  @keyframes click {
-    0% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.05);
-    }
-    100% {
-      transform: scale(1);
-    }
+    vertical-align: middle;
   }
 
   ${({ theme }) => theme.bps.laptops} {
     button {
       cursor: pointer;
-      transition: all .5s;
     }
 
     button:hover {
       border-color: transparent;
-      background-color: ${({ theme }) => theme.colors.primary + "cc"};
+      background-color: ${({ title, theme }) => 
+        (title === "Delete account"
+          ? theme.colors.remittance
+          : theme.colors.primary) + "cc"
+      };
     }
   }
 `;

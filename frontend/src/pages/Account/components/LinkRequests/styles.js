@@ -8,10 +8,10 @@ table {
 }
 
 tr {
-  display: block;
-  box-shadow: 0 0 15px -5px #bbb;
-  margin: 15px 0;
   border-radius: 10px;
+  box-shadow: 0 0 30px 0 #eee;
+  display: block;
+  margin: 15px 0;
 }
 
 thead tr {
@@ -19,8 +19,8 @@ thead tr {
 }
 
 th, td {
-  width: 50%;
   padding: 20px;
+  width: 50%;
 }
 
 th {
@@ -42,50 +42,46 @@ td:first-of-type p {
   width: 100%;
 }
 
-td:first-of-type p span {
-  display: inline-block;
-  width: 100%;
-  position: relative;
-  animation: 7s linear infinite alternate slide-and-show;
-}
-
 td:last-of-type {
   justify-content: space-evenly;
 }
 
 td:last-of-type button {
+  background-color: transparent;
+  max-width: 200px;
   padding: 10px;
-  border-radius: 15px;
-  border: none;
-  color: #fff;
+  width: 45%;
 }
 
 p.no-req {
-  text-align: center;
   color: #bbb;
   margin: 20px;
+  text-align: center;
 }
 
-.btn-accept {
-  background-color: #1ac31a;
+button.accept {
+  border: 2px solid ${({ theme }) => theme.colors.income};
+  color: ${({ theme }) => theme.colors.income};
 }
 
-.btn-deny {
-  background-color: #dc1616;
+button.deny {
+  border: 2px solid ${({ theme }) => theme.colors.remittance};
+  color: ${({ theme }) => theme.colors.remittance};
 }
 
-@keyframes slide-and-show {
-  0% {
-    left: 0%;
+${({ theme }) => theme.bps.laptops} {
+  button {
+    transition: all .5s;
   }
-  20% {
-    left: 0%;
+  
+  button.accept:hover {
+    background-color: ${({ theme }) => theme.colors.income};
+    color: #fff;
   }
-  80% {
-    left: -100%;
-  }
-  100% {
-    left: -100%;
+
+  button.deny:hover {
+    background-color: ${({ theme }) => theme.colors.remittance};
+    color: #fff;
   }
 }
 `

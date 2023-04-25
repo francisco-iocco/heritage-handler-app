@@ -73,7 +73,6 @@ export default function CreateForm({ onSubmit, title, resultToUpdate }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setAnimation("click");
     const data = {
       description,
       amount,

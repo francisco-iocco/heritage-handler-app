@@ -7,18 +7,16 @@ import StyledLogin from "./styles";
 
 export default function Login() {
   const [showModal, setShowModal] = useState(false);
-  const [animation, setAnimation] = useState("");
   const navigate = useNavigate();
   const handleModal = () => setShowModal(!showModal);
   const handleClick = () => {
-    setAnimation("click");
     handleModal();
   }
 
   if (localStorage.getItem("userId")) return <Navigate to="/home" />;
 
   return (
-    <StyledLogin animation={animation}>
+    <StyledLogin>
       <Presentation showModal={showModal} />
       <div>
         <UserForm
@@ -29,9 +27,7 @@ export default function Login() {
           onSubmit={() => navigate("/home")}
         />
         <div className="divider"></div>
-        <button onClick={handleClick} onAnimationEnd={() => setAnimation("")}>
-          Create a new account
-        </button>
+        <button onClick={handleClick}>Create a new account</button>
       </div>
       {showModal && (
         <Modal onClose={handleModal}>

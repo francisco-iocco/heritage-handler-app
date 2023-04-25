@@ -64,14 +64,12 @@ const StyledResult = styled.tr`
   }
 
   button.edit {
-    ${({ animation }) => animation === "edit-click" && "animation: click .1s linear 0s;"}
     background-color: inherit;
     border: 2px solid ${({ theme }) => theme.colors.secondary};
     color: ${({ theme }) => theme.colors.secondary};
   }
 
   button.delete {
-    ${({ animation }) => animation === "delete-click" && "animation: click .1s linear 0s;"}
     background-color: inherit;
     border: 2px solid ${({ theme }) => theme.colors.remittance};
     color: ${({ theme }) => theme.colors.remittance};

@@ -10,7 +10,7 @@ const StyledSettings = styled.div`
   } 
   
   h3 {
-    border-bottom: 1px solid #2424d2;
+    border-bottom: 1px solid ${({ theme }) => theme.colors.primary};
     display: inline-block;
     margin: 15px 0;
     padding: 10px 0;
@@ -20,17 +20,9 @@ const StyledSettings = styled.div`
     color: #111;
     margin: 10px 0;
   }
-
-  p span {
-    color: #2424d2;
-  }
   
-  p span:hover {
-    text-decoration: underline;
-  }
-
-  button {
-    background-color: #2424d2;
+  div > button {
+    background-color: ${({ theme }) => theme.colors.primary};
     border-radius: 10px;
     border: none;
     color: #fff;
@@ -38,13 +30,38 @@ const StyledSettings = styled.div`
     padding: 15px;
   }
 
+  p button {
+    background-color: transparent;
+    border: none;
+    color: ${({ theme }) => theme.colors.secondary};
+    font-size: 1em;
+  }
+
   .delete-container h3 {
-    border-bottom-color: #f85149;
-    color: #f85149;
+    border-bottom-color: ${({ theme }) => theme.colors.remittance};
+    color: ${({ theme }) => theme.colors.remittance};
   } 
   
   .delete-container button {
-    background-color: #f85149;
+    background-color: ${({ theme }) => theme.colors.remittance};
+  }
+
+  ${({ theme }) => theme.bps.laptops} {
+    div > button {
+      transition: background-color .5s;
+    }
+
+    div > button:hover {
+      background-color: ${({ theme }) => theme.colors.primary + "cc"};
+    }
+
+    .delete-container button:hover {
+      background-color: ${({ theme }) => theme.colors.remittance + "cc"};
+    }
+
+    p button:hover {
+      text-decoration: underline;
+    }
   }
 `;
 

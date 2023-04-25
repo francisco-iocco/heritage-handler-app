@@ -18,7 +18,6 @@ const StyledResultCreator = styled.div`
   }
 
   .filter-container button {
-    ${({ animation }) => animation === "click-search" && "animation: click .1s linear 0s;"}  
     ${({ theme, searchFilters }) => searchFilters
       ? `background-color: transparent;
         box-shadow: 0 0 30px 0 #eee;`
@@ -76,14 +75,6 @@ const StyledResultCreator = styled.div`
     color: ${({ theme }) => theme.colors.primary};
     font-size: ${({ theme }) => theme.fontSizes.m};
     padding: 10px;
-  }
-
-  .buttons-container button:first-of-type {
-    ${({ animation }) => animation === "click-income" && "animation: click .1s linear 0s;"}
-  }
-
-  .buttons-container button:last-of-type {
-    ${({ animation }) => animation === "click-remittance" && "animation: click .1s linear 0s;"}    
   }
 
   ${({ theme }) => theme.bps.laptops} {

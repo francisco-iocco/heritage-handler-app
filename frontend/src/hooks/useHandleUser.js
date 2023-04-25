@@ -21,15 +21,18 @@ export default function useHandleUser() {
 
   const inputsValidation = async (inputs = {}, callback) => {
     let err = false;
-    for(const input in inputs) {
+    for(let input in inputs) {
+      inputs[input] = inputs[input].trim();
       if(!inputs[input]) {
+        if(input.includes("username")) input = "username";
         err = true;
         setErrors((prevErrors) =>
           ({ ...prevErrors, [input]: `${input} is required...` }));
         continue;
       }
-      if(input === "username" || input === "password") {
+      if(input.includes("username") || input === "password") {
         if(inputs[input].length < 6) {
+          if(input.includes("username")) input = "username";
           err = true;
           setErrors(prevErrors =>
             ({ ...prevErrors, [input]: `${input} is too short...`}));

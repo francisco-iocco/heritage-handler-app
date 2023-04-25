@@ -1,11 +1,13 @@
 import { useState, useContext, useRef } from "react";
 import SearchResultContext from "contexts/SearchResultContext";
+import ResultsContext from "contexts/ResultsContext";
 import { IconX } from "@tabler/icons-react";
 import ListOfResults from "./components/ListOfResults";
-import { StyledTable, StyledInput } from "./styles";
+import { StyledTable, StyledInput, StyledWarning } from "./styles";
 
 export default function ResultsTable() {
   const { showSearchInput, toggleSearchInput } = useContext(SearchResultContext);
+  const { results } = useContext(ResultsContext);
   const [inputValue, setInputValue] = useState("");
   const [direction, setDirection] = useState("");
   const lastScrollY = useRef(0);
@@ -25,6 +27,12 @@ export default function ResultsTable() {
     setInputValue("");
     toggleSearchInput();
   };
+
+  if(!results.length) {
+    return <StyledWarning>
+      <p>There are neither incomes nor remittances yet!</p>
+    </StyledWarning>
+  }
 
   return (
     <>

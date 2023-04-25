@@ -88,4 +88,14 @@ export const StyledInput = styled.div`
   }
 `;
 
-export default StyledTable;
+export const StyledWarning = styled.div`
+  display: grid;
+  place-items: center;
+  height: calc(100% - 100px);
+
+  p {
+    color: ${({ theme }) => theme.colors.tertiary};
+    text-align: center;
+    font-size: ${({ theme }) => theme.fontSizes.m};
+  }
+`;

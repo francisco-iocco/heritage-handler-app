@@ -14,27 +14,20 @@ export default function SearchForm({ title, onSubmit }) {
     isRemittance,
     reset,
   } = useContext(SearchResultContext);
-  const [animation, setAnimation] = useState("");
 
   const handleSearch = (e) => {
     e.preventDefault();
-    setAnimation("click-search");
     onSubmit(e);
     toggleSearchInput();
   };
 
   const handleClear = (e) => {
     e.preventDefault();
-    setAnimation("click-clear");
     reset();
   };
 
   return (
-    <StyledSearchForm 
-      title={title} 
-      animation={animation}
-      onAnimationEnd={() => setAnimation("")}
-    >
+    <StyledSearchForm title={title}>
       <h2>{title}</h2>
       <StyledCheckbox>
         <label htmlFor="permanent">Permanent</label>

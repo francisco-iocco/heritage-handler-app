@@ -16,17 +16,14 @@ export default function ResultCreator() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showSearchModal, setShowSearchModal] = useState(false);
   const [formTitle, setFormTitle] = useState("");
-  const [animation, setAnimation] = useState("");
 
   const handleShowCreateModal = ({ target: { innerText } }) => {
-    setAnimation(innerText.includes("income") ? "click-income" : "click-remittance");
     setFormTitle(innerText);
     setShowCreateModal(true);
   };
   const handleCloseCreateModal = () => setShowCreateModal(false);
 
   const handleShowSearchModal = () => {
-    setAnimation("click-search")
     setFormTitle("Filters");
     setShowSearchModal(true);
   };
@@ -34,8 +31,6 @@ export default function ResultCreator() {
 
   return (
     <StyledResultCreator
-      animation={animation}
-      onAnimationEnd={() => setAnimation("")}
       searchFilters={isIncome || isRemittance || isPermanent}
     >
       <div className="filter-container">
