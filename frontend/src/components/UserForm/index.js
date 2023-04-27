@@ -1,9 +1,14 @@
 import { useContext, useReducer, useState } from "react";
-import { TfiLock, TfiMoney, TfiUser, TfiInfoAlt } from "react-icons/tfi";
+import {
+  IconUser,
+  IconLock,
+  IconCoins,
+  IconInfoSquareRounded,
+} from "@tabler/icons-react";
 import UserDataContext from "contexts/UserDataContext";
 import useHandleUser from "hooks/useHandleUser";
 import Spinner from "components/Spinner";
-import StyledForm from "./styles";
+import { StyledForm, StyledInput } from "./styles";
 
 const INITIAL_STATE = {
   username: "",
@@ -39,30 +44,40 @@ export default function UserForm({
   onSubmit = () => {},
 }) {
   const { userData } = useContext(UserDataContext);
-  const [ isLoading, setIsLoading ] = useState(false);
-  const [ { username, password, heritage }, dispatch ] 
-   = useReducer(reducer, INITIAL_STATE);
+  const [animation, setAnimation] = useState("");
+  const [{ username, password, heritage }, dispatch] = useReducer(
+    reducer,
+    INITIAL_STATE
+  );
   const {
     logUser,
     registerUser,
-    updateUser,
+    changeUsername,
+    changePassword,
+    linkUser,
     deleteUser,
     validateCredentials,
+    isLoading,
     errors,
-    cleanError
+    cleanError,
   } = useHandleUser();
 
-  const handleUsernameValue = ({ target: { value } }) => 
+  const handleUsernameValue = ({ target: { value } }) =>
     dispatch({ type: ACTIONS.UPDATE_USERNAME, payload: value });
-  const handlePasswordValue = ({ target: { value } }) => 
+  const handlePasswordValue = ({ target: { value } }) =>
     dispatch({ type: ACTIONS.UPDATE_PASSWORD, payload: value });
-  const handleHeritageValue = ({ target: { value } }) => 
+  const handleHeritageValue = ({ target: { value } }) =>
     dispatch({ type: ACTIONS.UPDATE_HERITAGE, payload: value });
+
+  const cleanMessage = async (error) => {
+    setAnimation(error);
+    await new Promise((res) => setTimeout(res, 500));
+    cleanError(error);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    setIsLoading(true);
+    setAnimation("click");
     let hasError = false;
     switch (usage) {
       case "register":
@@ -80,13 +95,13 @@ export default function UserForm({
         hasError = await logUser({ username, password });
         break;
       case "link-existing":
-        hasError = await updateUser({ usernameToBeLinked: username });
+        hasError = await linkUser({ usernameToBeLinked: username });
         break;
       case "change-username":
-        hasError = await updateUser({ username });
+        hasError = await changeUsername({ username });
         break;
       case "change-password":
-        hasError = await updateUser({ password });
+        hasError = await changePassword({ password });
         break;
       case "delete-account":
         hasError = await deleteUser();
@@ -97,74 +112,94 @@ export default function UserForm({
       default:
         break;
     }
-    setIsLoading(false);
 
     // If everything went well, execute the parent callback.
-    if(!isLoading && !hasError) onSubmit();
+    if (!isLoading && !hasError) onSubmit();
   };
 
-  if(isLoading) return <StyledForm title={title}><Spinner /></StyledForm>;
+  if (isLoading) {
+    return <StyledForm>
+      <Spinner height="100%" size="2.618em" />
+    </StyledForm>
+  }
 
   return (
-    <StyledForm onSubmit={handleSubmit} title={title}>
+    <StyledForm
+      autoComplete={usage === "login" ? "on" : "off"}
+      onSubmit={handleSubmit}
+      title={title}
+      animation={animation}
+      onAnimationEnd={() => setAnimation("")}
+    >
       <h3>{title}</h3>
       {inputs.username && (
-        <>
-          <div className="input-container">
+        <StyledInput
+          hasValue={!!username}
+          hideText={animation === "username" && animation}
+        >
+          <div>
             <label htmlFor="username">
-              <TfiUser />
+              <IconUser stroke={1} size="1.5rem" />
             </label>
             <input
               onChange={handleUsernameValue}
-              onFocus={() => errors.username && cleanError("username")}
-              placeholder="Username"
+              onFocus={() => errors.username && cleanMessage("username")}
               type="text"
               value={username}
               id="username"
             />
+            <span>Username</span>
           </div>
           {errors.username && <p>{errors.username}</p>}
-        </>
+        </StyledInput>
       )}
       {inputs.password && (
-        <>
-          <div className="input-container">
+        <StyledInput
+          hasValue={!!password}
+          hideText={animation === "password" && animation}
+        >
+          <div>
             <label htmlFor="password">
-              <TfiLock />
+              <IconLock stroke={1} size="1.5rem" />
             </label>
             <input
               onChange={handlePasswordValue}
-              onFocus={() => errors.password && cleanError("password")}
-              placeholder="Password"
+              onFocus={() => errors.password && cleanMessage("password")}
               type="password"
               value={password}
               id="password"
             />
+            <span>Password</span>
           </div>
           {errors.password && <p>{errors.password}</p>}
-        </>
+        </StyledInput>
       )}
       {inputs.heritage && (
-        <>
-          <div className="input-container">
+        <StyledInput
+          hasValue={!!heritage}
+          hideText={animation === "heritage" && animation}
+        >
+          <div>
             <label htmlFor="heritage">
-              <TfiMoney />
+              <IconCoins stroke={1} size="1.5rem" />
             </label>
             <input
               onChange={handleHeritageValue}
-              onFocus={() => errors.heritage && cleanError("heritage")}
-              placeholder="Your current heritage"
+              onFocus={() => errors.heritage && cleanMessage("heritage")}
               type="number"
               value={heritage}
               id="heritage"
             />
+            <span>Heritage</span>
           </div>
           {errors.heritage && <p>{errors.heritage}</p>}
-        </>
+        </StyledInput>
       )}
       {note && (
         <p className="note">
-          <span><TfiInfoAlt /></span>
+          <span>
+            <IconInfoSquareRounded stroke={1} size="1.5rem" />
+          </span>
           Note: {note}
         </p>
       )}

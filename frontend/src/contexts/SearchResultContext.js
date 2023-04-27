@@ -3,7 +3,7 @@ import { createContext, useReducer } from "react";
 const SearchResultContext = createContext({});
 
 const INITIAL_STATE = {
-  isSearchInputActive: false,
+  showSearchInput: false,
   isPermanent: false,
   isIncome: false,
   isRemittance: false,
@@ -20,7 +20,7 @@ const ACTIONS = {
 function reducer(state, action) {
   switch (action.type) {
     case ACTIONS.TOGGLE_SEARCH_INPUT:
-      return { ...state, isSearchInputActive: !state.isSearchInputActive };
+      return { ...state, showSearchInput: !state.showSearchInput };
     case ACTIONS.TOGGLE_IS_PERMANENT:
       return { ...state, isPermanent: !state.isPermanent };
     case ACTIONS.CONVERT_TO_INCOME:
@@ -36,14 +36,14 @@ function reducer(state, action) {
 
 export function SearchResultContextProvider({ children }) {
   const [
-    { isSearchInputActive, isPermanent, isIncome, isRemittance },
+    { showSearchInput, isPermanent, isIncome, isRemittance },
     dispatch,
   ] = useReducer(reducer, INITIAL_STATE);
 
   return (
     <SearchResultContext.Provider
       value={{
-        isSearchInputActive,
+        showSearchInput,
         isPermanent,
         isIncome,
         isRemittance,

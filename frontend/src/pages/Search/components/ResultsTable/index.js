@@ -1,33 +1,46 @@
-import { useContext, useState } from "react";
+import { useState, useContext, useRef } from "react";
 import SearchResultContext from "contexts/SearchResultContext";
 import ResultsContext from "contexts/ResultsContext";
-import Spinner from "components/Spinner";
+import { IconX } from "@tabler/icons-react";
 import ListOfResults from "./components/ListOfResults";
-import StyledResultsDiv from "./styles";
+import { StyledTable, StyledInput, StyledWarning } from "./styles";
 
 export default function ResultsTable() {
-  const { isSearchInputActive, reset } = useContext(SearchResultContext);
-  const { isLoading } = useContext(ResultsContext);
-  const [searchInputValue, setSearchInputValue] = useState("");
+  const { showSearchInput, toggleSearchInput } = useContext(SearchResultContext);
+  const { results } = useContext(ResultsContext);
+  const [inputValue, setInputValue] = useState("");
+  const [direction, setDirection] = useState("");
+  const lastScrollY = useRef(0);
 
-  const handleInputValue = ({ target: { value } }) => {
-    setSearchInputValue(value);
+  const handleScroll = ({ target: { scrollTop } }) => {
+    const nextDirection = scrollTop > lastScrollY.current
+      ? "down"
+      : "up";
+    lastScrollY.current = scrollTop;
+    direction != nextDirection && setDirection(nextDirection);
   };
+
+  const handleInputValue = ({ target: { value } }) =>
+    setInputValue(value);
 
   const closeSearchInput = () => {
-    reset();
-    setSearchInputValue("");
+    setInputValue("");
+    toggleSearchInput();
   };
 
-  if(isLoading) return <Spinner />;
+  if(!results.length) {
+    return <StyledWarning>
+      <p>There are neither incomes nor remittances yet!</p>
+    </StyledWarning>
+  }
 
   return (
-    <StyledResultsDiv>
-      <table>
+    <>
+      <StyledTable onScroll={handleScroll} direction={direction}>
         <thead>
           <tr className="head-row">
             <th>
-              <span>Title</span>
+              <span>Description</span>
             </th>
             <th>
               <span>Amount</span>
@@ -38,15 +51,13 @@ export default function ResultsTable() {
           </tr>
         </thead>
         <tbody>
-          <ListOfResults searchInputValue={searchInputValue.toLowerCase()} />
+          <ListOfResults searchInputValue={inputValue.toLowerCase()} />
         </tbody>
-      </table>
-      {isSearchInputActive && (
-        <div className="search-container">
-          <input autoFocus onChange={handleInputValue} type="text" />
-          <button onClick={closeSearchInput}>x</button>
-        </div>
-      )}
-    </StyledResultsDiv>
+      </StyledTable>
+      {showSearchInput && <StyledInput>
+         <input autoFocus onChange={handleInputValue} type="text" />
+         <button onClick={closeSearchInput}><IconX /></button>
+      </StyledInput>}
+    </>
   );
 }

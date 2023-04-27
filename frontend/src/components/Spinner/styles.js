@@ -1,31 +1,34 @@
 import styled from "@emotion/styled";
 
 const StyledSpinner = styled.div`
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  height: ${props => props.height};
   justify-content: center;
-  height: 100%;
   width: 100%;
 
   div {
-    height: ${props => props.size ? props.size : "75px"};
-    width: ${props => props.size ? props.size : "75px"};
-    border-radius: 50%;
-    border: 2px solid #bbb;
-    border-top-color: transparent;
-    border-bottom-color: transparent;
     animation: 1s linear 0s infinite load;
+    border: 2px solid;
+    border-color: ${({ color }) => color ? color : "#bbb"};
+    border-bottom-color: transparent;
+    border-left: none;
+    border-radius: 50%;
+    border-right-color: transparent;
+    height: ${props => props.size};
+    width: ${props => props.size};
   }
 
   p {
-    color: #bbb !important;
+    color: ${({ color }) => color ? color : "#bbb"} !important;
+    font-size: ${props => props.size / 2};
     margin-top: 30px;
   }
   
   p::after {
-    content: "";
     animation: 1s ease-out 0s infinite addDots;
+    content: "";
   }
 
   @keyframes load {
@@ -34,15 +37,6 @@ const StyledSpinner = styled.div`
     }
     to {
       transform: rotate(360deg);
-    }
-  }
-
-  @keyframes getSmall {
-    from {
-      transform: scale(1);
-    }
-    to {
-      transform: scale(0.9);
     }
   }
 
@@ -59,7 +53,7 @@ const StyledSpinner = styled.div`
     75% {
       content: "...";
     }
-  }  
+  }
 `
 
 export default StyledSpinner;

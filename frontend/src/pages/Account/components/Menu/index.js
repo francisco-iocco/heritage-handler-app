@@ -1,33 +1,37 @@
 import { memo } from "react";
-import { FaRegUserCircle, FaCog, FaExchangeAlt, FaBell } from "react-icons/fa";
+import { IconSettings, IconExchange, IconBell, IconUserCircle } from "@tabler/icons-react";
 
-function Menu({ setSectionToRender, userData }) {
+function Menu({ sectionToRender, setSectionToRender, userData }) {
+
+  const changeSection = (section) => {
+    (sectionToRender != section) && setSectionToRender(section);
+  }
+
   return (
     <>
       <div className="presentation">
-        <div className="bg-blue"></div>
         <div className="info">
-          <span>
-            <FaRegUserCircle />
-          </span>
+          <div>
+            <IconUserCircle size="1em" />
+          </div>
           <p>{userData.username}</p>
         </div>
       </div>
       <div className="menu">
         <button
           className="settings"
-          onClick={() => setSectionToRender("settings")}
+          onClick={() => changeSection("settings")}
         >
-          <FaCog />
+          <IconSettings size="1em" />
         </button>
-        <button className="list" onClick={() => setSectionToRender("list")}>
-          <FaExchangeAlt />
+        <button className="list" onClick={() => changeSection("list")}>
+          <IconExchange size="1em" />
         </button>
         <button
-          className="link-request"
-          onClick={() => setSectionToRender("link-requests")}
+          className="link-requests"
+          onClick={() => changeSection("link-requests")}
         >
-          <FaBell />
+          <IconBell size="1em" />
         </button>
       </div>
     </>

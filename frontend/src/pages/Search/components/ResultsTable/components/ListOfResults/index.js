@@ -12,8 +12,8 @@ export default function ListOfResults({ searchInputValue }) {
     let info = results;
 
     if(isPermanent) info = info.filter(result => result.isPermanent);
-    if(isIncome) info = info.filter(result => result.amount > 0);
-    if(isRemittance) info = info.filter(result => result.amount < 0);
+    if(isIncome) info = info.filter(result => result.type === "income");
+    if(isRemittance) info = info.filter(result => result.type === "remittance");
 
     setRenderResults(info);
 

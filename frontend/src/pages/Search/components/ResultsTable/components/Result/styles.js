@@ -2,36 +2,32 @@ import styled from "@emotion/styled";
 
 const StyledResult = styled.tr`
   position: relative;
-  &:nth-of-type(odd) {
-    background-color: #eee;
+  :nth-of-type(odd) {
+    background-color: ${({ theme }) => theme.colors.quaternary};
   }
 
   td div.permanent::before {
+    background-color: ${props => props.index % 2 === 0 ? "#eee" : "#fff"};
     content: "";
     display: block;
-    background-color: ${props => props.index % 2 === 0 ? "#eee" : "#fff"};
-    width: 20px;
     height: 20px;
-    transform: rotate(45deg);
-    position: absolute;
-    top: 0;
-    left: -10%;
+    transform: rotate(45deg) translateX(-50%) translateY(50%);
+    width: 20px;
   }
 
   td div.permanent {
-    display: flex;
     align-items: center;
-    justify-content: right;
-    overflow: hidden;
-    background-color: #2424d2;
-    width: 30%;
-    height: 20px;
-    font-size: 4vw;
-    text-align: right;
-    padding: 10px 5px 10px 0;
+    background-color: ${({ theme }) => theme.colors.primary};
     color: #fff;
-    position: absolute;
+    display: flex;
+    font-size: ${({ theme }) => theme.fontSizes.s};
+    height: 20px;
+    justify-content: right;
     left: 0;
+    overflow: hidden;
+    padding: 10px 5px 10px 0;
+    position: absolute;
+    text-align: right;
     top: 0;
   }
 
@@ -43,10 +39,15 @@ const StyledResult = styled.tr`
   }
 
   td.amount {
-    color: ${props => props.type === "income" ? "#1ac31a" : "#dc1616"};
     border-left: 1px solid #999;
     border-right: 1px solid #999;
+    color: ${props => props.type === "income" ? "#1ac31a" : "#dc1616"};
     height: 80%;
+  }
+
+  td.amount p:last-child {
+    color: ${({ theme }) => theme.colors.tertiary};
+    margin-top: 5px;
   }
 
   td:last-child {
@@ -54,20 +55,69 @@ const StyledResult = styled.tr`
     justify-content: space-evenly;
   }
 
-  td:last-child button {
+  button {
     border-radius: 5px;
     border: none;
     color: #fff;
-    font-size: 16px;
+    font-size: ${({ theme }) => theme.fontSizes.s};
     padding: 10px;
   }
 
-  td:last-child button.edit {
-    background-color: #2424d2;
+  button.edit {
+    background-color: inherit;
+    border: 2px solid ${({ theme }) => theme.colors.secondary};
+    color: ${({ theme }) => theme.colors.secondary};
   }
 
-  td:last-child button.delete {
-    background-color: #dc1616;
+  button.delete {
+    background-color: inherit;
+    border: 2px solid ${({ theme }) => theme.colors.remittance};
+    color: ${({ theme }) => theme.colors.remittance};
+  }
+
+  ${({ theme }) => theme.bps.laptops} {
+    button {
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+    }
+    
+    button:hover {
+      color: #fff;
+    }
+
+    button::before, button::after {
+      content: "";
+      display: inline-block;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      transition: transform .5s;
+      width: 50%;
+      z-index: -1;
+    }
+    
+    button.edit::before, button.edit::after {
+      background-color: ${({ theme }) => theme.colors.secondary};
+    }
+    
+    button.delete::before, button.delete::after {
+      background-color: ${({ theme }) => theme.colors.remittance};
+    }
+
+    button::before {
+      left: 0;
+      transform: translateX(-150%);
+    }
+
+    button::after {
+      right: 0;
+      transform: translateX(150%);
+    }
+
+    button:hover::before, button:hover::after {
+      transform: translateX(0);
+    }
   }
 `;
 

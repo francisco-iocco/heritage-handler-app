@@ -9,21 +9,39 @@ import StyledAccount from "./styles";
 
 export default function Account() {
   const { userData, isLoading } = useContext(UserDataContext);
-  const [ sectionToRender, setSectionToRender ] = useState("settings");
+  const [sectionToRender, setSectionToRender] = useState("settings");
+  const [animation, setAnimation] = useState("");
 
-  if (isLoading) return <Spinner />;
+  const changeSection = (section) => {
+    setSectionToRender(section);
+    setAnimation("slide-up");
+  };
+
   return (
-    <StyledAccount className="section" sectionToRender={sectionToRender}>
-      <Menu setSectionToRender={setSectionToRender} userData={userData} />
-      <div className="configuration">
-        <div>
-          {sectionToRender === "settings" && <Settings />}
-          {sectionToRender === "list" && (
-            <AccountList myUsername={userData.username} />
-          )}
-          {sectionToRender === "link-requests" && <LinkRequests />}
-        </div>
-      </div>
+    <StyledAccount
+      sectionToRender={sectionToRender}
+      animation={animation}
+      onAnimationEnd={() => setAnimation("")}
+    >
+      {isLoading
+        ? <Spinner height="100%" size="2.618em" />
+        : <>
+            <Menu
+              sectionToRender={sectionToRender}
+              setSectionToRender={changeSection}
+              userData={userData}
+            />
+            <div className="configuration">
+              <div>
+                {sectionToRender === "settings" && <Settings />}
+                {sectionToRender === "list" && (
+                  <AccountList myUsername={userData.username} />
+                )}
+                {sectionToRender === "link-requests" && <LinkRequests />}
+              </div>
+            </div>
+          </>
+        }
     </StyledAccount>
   );
 }

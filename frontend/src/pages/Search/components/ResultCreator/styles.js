@@ -2,54 +2,93 @@ import styled from "@emotion/styled";
 
 const StyledResultCreator = styled.div`
   background-color: #fff;
-  border-bottom: 1px solid #999;
-  display: flex;
-  height: 75px;
-  justify-content: space-evenly;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.tertiary};
+  height: 100px;
   position: sticky;
   top: 0;
   z-index: 1;
 
-  & > button {
-    align-self: center;
-    border-radius: 15px;
-    border: none;
-    color: #fff;
-    font-size: 1.5vh;
-    height: 80%;
-    margin: 0 15px;
-    padding: 15px;
-    width: 40%;
-  }
-
-  div.filter-container {
+  .filter-container {
     align-items: center;
-    border-right: 1px solid #999;
-    display: flex;
+    border-right: 1px solid ${({ theme }) => theme.colors.tertiary};
+    display: inline-flex;
+    height: 100%;
     justify-content: center;
-    justify-self: flex-start;
     width: 20%;
   }
 
-  button.filter {
+  .filter-container button {
+    ${({ theme, searchFilters }) => searchFilters
+      ? `background-color: transparent;
+        box-shadow: 0 0 30px 0 #eee;`
+      : `background-color: ${theme.colors.primary};`};
+    transition: background-color .5s;
     align-items: center;
-    align-self: center;
-    background-color: #2424d2;
+    background-color: ${({ theme, searchFilters }) => searchFilters
+      ? "transparent" : theme.colors.primary};
     border-radius: 15px;
     border: none;
     color: #fff;
     display: flex;
-    height: 50%;
+    font-size: ${({ theme }) => theme.fontSizes.s};
     justify-content: center;
-    width: 60%;
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
   }
 
-  button.income {
-    background-color: #1ac31a;
+  .filter-container button span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    transition: transform .5s;
   }
 
-  button.remittance {
-    background-color: #dc1616;
+  .filter-container button span:first-of-type {
+    position: absolute;
+    transform: ${({ searchFilters }) => searchFilters 
+      ? "translateY(0)" : "translateY(-100%)"};
+    color: ${({ theme }) => theme.colors.remittance};
+  }
+
+  .filter-container button span:last-of-type {
+    position: absolute;
+    transform: ${({ searchFilters }) => searchFilters 
+      ? "translateY(-100%)" : "translateY(0)"};
+  }
+
+  .buttons-container {
+    align-items: center;
+    display: inline-flex;
+    height: 100%;
+    justify-content: space-evenly;
+    vertical-align: top;
+    width: 80%;
+  }
+
+  .buttons-container button {
+    background-color: #fff;
+    border-radius: 5px;
+    border: 2px solid ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.primary};
+    font-size: ${({ theme }) => theme.fontSizes.m};
+    padding: 10px;
+  }
+
+  ${({ theme }) => theme.bps.laptops} {
+    .filter-container button:hover {
+      ${({ theme, searchFilters }) =>  searchFilters
+        ? "box-shadow: 0 0 30px 0 #ddd;"
+        : `background-color: ${theme.colors.primary}cc;`};
+      
+    }
+
+    .buttons-container button:hover {
+      background-color: ${({ theme }) => theme.colors.primary + "30"};
+      transition: background-color .5s;
+    }
   }
 `;
 

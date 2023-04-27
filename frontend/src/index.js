@@ -1,16 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
-import App from './App';
 import { UserDataContextProvider } from 'contexts/UserDataContext';
+import { ThemeProvider } from '@emotion/react';
+import { theme } from 'styles';
+import App from './App';
 import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <UserDataContextProvider>
-      <App />
-    </UserDataContextProvider>
+    <ThemeProvider theme={theme}>
+      <UserDataContextProvider>
+        <App />
+      </UserDataContextProvider>
+    </ThemeProvider>
   </React.StrictMode>
 );
 

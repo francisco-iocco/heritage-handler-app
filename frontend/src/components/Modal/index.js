@@ -1,19 +1,29 @@
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { FaTimes } from "react-icons/fa";
+import { IconX } from "@tabler/icons-react";
 import StyledModal from "./styles";
 
 function Modal({ onClose, children }) {
-  const handleSubmit = (e) => {
+  const [animation, setAnimation] = useState("");
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setAnimation("close");
+    await new Promise(res => setTimeout(res, 1500));
     onClose(e);
   };
 
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => document.body.style.overflow = "auto";
+  }, []);
+
   return (
-    <StyledModal>
+    <StyledModal close={animation}>
       <div className="modal">
         <div className="close-container">
           <button onClick={handleSubmit}>
-            <FaTimes />
+            <IconX size="2rem" />
           </button>
         </div>
         <div className="content">

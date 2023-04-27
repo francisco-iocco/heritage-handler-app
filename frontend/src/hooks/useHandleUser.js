@@ -9,6 +9,7 @@ import deleteUserService from "services/deleteUser";
 export default function useHandleUser() {
   const { userData, setUserData } = useContext(UserDataContext);
   const [ errors, setErrors ] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
   const cleanError = (error) => setErrors((prevErrors) => {
     let newErrors = {};
     for(const prevError in prevErrors) {
@@ -18,38 +19,38 @@ export default function useHandleUser() {
     return newErrors;
   });
 
-  const inputsValidation = ({ username, password, heritage }) => {
-    let hasError = false;
+  const inputsValidation = async (inputs = {}, callback) => {
+    let err = false;
+    for(let input in inputs) {
+      inputs[input] = inputs[input].trim();
+      if(!inputs[input]) {
+        if(input.includes("username")) input = "username";
+        err = true;
+        setErrors((prevErrors) =>
+          ({ ...prevErrors, [input]: `${input} is required...` }));
+        continue;
+      }
+      if(input.includes("username") || input === "password") {
+        if(inputs[input].length < 6) {
+          if(input.includes("username")) input = "username";
+          err = true;
+          setErrors(prevErrors =>
+            ({ ...prevErrors, [input]: `${input} is too short...`}));
+            continue;
+        }
+      }
+    }   
+      
+    if(Object.keys(errors).length) return true;
+    if(err) return true;
 
-    if(username === "") {
-      hasError = true;
-      setErrors((prevErrors) => {
-        return { ...prevErrors, username: "Username is required..." };
-      });
-    }
-    if(password === "") {
-      hasError = true;
-      setErrors((prevErrors) => {
-        return { ...prevErrors, password: "Password is required..." };
-      });
-    }
-    if(heritage === "") {
-      hasError = true;
-      setErrors((prevErrors) => {
-        return { ...prevErrors, heritage: "Heritage is required..." };
-      });
-    }
-
-    return hasError;
+    setIsLoading(true);
+    err = await callback(inputs);
+    setIsLoading(false);
+    if(err) return err;
   }
 
-  // The next functions return errors (in case there are)
-  // otherwise they return nothing.
-
   const logUser = async ({ username, password }) => {
-    const hasError = inputsValidation({ username, password });
-    if (hasError) return hasError;
-
     const response = await logUserService({ username, password });
     if (response.errors) {
       setErrors(response.errors);
@@ -62,23 +63,7 @@ export default function useHandleUser() {
     if(data?.errors) return true;
     setUserData(data);
   }
-
   const registerUser = async ({ username, password, heritage, idToBeLinked }) => {
-    let hasError = inputsValidation({ username, password, heritage });
-    if(username && username.length < 6) {
-      hasError = true;
-      setErrors((prevErrors) => {
-        return { ...prevErrors, username: "Username is too short..." };
-      });
-    }
-    if(password && password.length < 6) {
-      hasError = true;
-      setErrors((prevErrors) => {
-        return { ...prevErrors, password: "Password is too short..." };
-      });
-    }
-    if (hasError) return hasError;
-    
     const response = await registerUserService({
       username,
       password,
@@ -96,7 +81,6 @@ export default function useHandleUser() {
     if(data?.errors) return true;
     setUserData(data);
   }
-
   const updateUser = async ({
     username,
     password,
@@ -104,12 +88,7 @@ export default function useHandleUser() {
     usernameToBeLinked,
     idToBeUnlinked,
     linkUserResponse,
-  }) => {
-    const hasError = usernameToBeLinked
-      ? inputsValidation({ username: usernameToBeLinked })
-      : inputsValidation({ username, password });
-    if (hasError) return hasError;
-    
+  }) => {    
     const response = await updateUserService({ 
       userId: userData._id,
       username, 
@@ -130,19 +109,16 @@ export default function useHandleUser() {
     if(data?.errors) return true;
     setUserData(data);
   }
-
   const deleteUser = async () => {
     const data = await deleteUserService({ userId: userData._id });
     if(data?.errors) return true;
     setUserData({});
   }
-
   const changeUser = async ({ userId }) => {
     const data = await getUserDataService({ userId });
     if(data?.errors) return true;
     setUserData(data);
   }
-
   const validateCredentials = async ({ password }) => {
     if(password !== userData.password) {
       setErrors({ password: "Password is incorrect..."});
@@ -153,12 +129,32 @@ export default function useHandleUser() {
   }
 
   return {
-    logUser,
-    registerUser,
-    updateUser,
-    deleteUser,
-    changeUser,
-    validateCredentials,
+    logUser: ({ username, password }) =>
+      inputsValidation({ username, password }, logUser),
+    registerUser: ({ username, password, heritage, idToBeLinked }) => {
+      return inputsValidation(
+        { username, password, heritage },
+        (checkedData) => registerUser({ ...checkedData, idToBeLinked })
+      );
+    },
+    updateLastConnection: ({ lastConnection }) =>
+      inputsValidation({}, () => updateUser({ lastConnection })),
+    linkUser: ({ usernameToBeLinked }) =>
+      inputsValidation({ usernameToBeLinked }, updateUser),
+    unlinkUser: ({ idToBeUnlinked }) =>
+      inputsValidation({}, () => updateUser({ idToBeUnlinked })),
+    handleUserResponse: ({ linkUserResponse }) =>
+      inputsValidation({}, () => updateUser({ linkUserResponse })),
+    changeUsername: ({ username }) => 
+      inputsValidation({ username }, updateUser),
+    changePassword: ({ password }) => 
+      inputsValidation({ password }, updateUser),
+    deleteUser: () => inputsValidation({}, deleteUser),
+    changeUser: ({ userId }) => 
+      inputsValidation({}, () => changeUser({ userId })),
+    validateCredentials: ({ password }) =>
+      inputsValidation({ password }, validateCredentials),
+    isLoading,
     errors,
     cleanError
   };

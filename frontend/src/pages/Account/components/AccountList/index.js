@@ -1,37 +1,39 @@
 import { useState, useContext } from "react";
 import UserDataContext from "contexts/UserDataContext";
 import useHandleUser from "hooks/useHandleUser";
-import { FaHistory } from "react-icons/fa";
+import { IconHistory } from "@tabler/icons-react";
 import UserForm from "components/UserForm";
 import Modal from "components/Modal";
+import Spinner from "components/Spinner";
 import StyledAccountList from "./styles";
 
 export default function ChangeAccount({ myUsername }) {
-  const { userData: { linkedAccounts } } = useContext(UserDataContext);
-  const { changeUser, updateUser } = useHandleUser();
-  const [
-    isLinkExistingModalActive, 
-    setIsLinkExistingModalActive
-  ] = useState(false);
-  const [
-    isLinkNewModalActive, 
-    setIsLinkNewModalActive
-  ] = useState(false);
+  const {
+    userData: { linkedAccounts },
+  } = useContext(UserDataContext);
+  const { changeUser, updateLastConnection, unlinkUser } = useHandleUser();
+  const [showLinkExistingModal, setShowLinkExistingModal] = useState(false);
+  const [showLinkNewModal, setShowLinkNewModal] = useState(false);
+  const [whichUnlinkLoading, setWhichUnlinkLoading] = useState("");
+  const [whichChangeLoading, setWhichChangeLoading] = useState("");
 
   const changeAccount = async (userId) => {
-    await updateUser({ lastConnection: new Date() });
-    changeUser({ userId });
-  }
+    setWhichChangeLoading(userId);
+    await updateLastConnection({ lastConnection: new Date() });
+    await changeUser({ userId });
+    setWhichChangeLoading(userId);
+  };
 
   const deleteAccount = async (e, userId) => {
     e.stopPropagation();
-    await updateUser({ idToBeUnlinked: userId });
-  }
+    setWhichUnlinkLoading(userId);
+    await unlinkUser({ idToBeUnlinked: userId });
+    setWhichUnlinkLoading(userId);
+  };
 
   const handleLinkExistingModal = () =>
-    setIsLinkExistingModalActive(!isLinkExistingModalActive);
-  const handleLinkNewModal = () =>
-    setIsLinkNewModalActive(!isLinkNewModalActive);
+    setShowLinkExistingModal(!showLinkExistingModal);
+  const handleLinkNewModal = () => setShowLinkNewModal(!showLinkNewModal);
 
   return (
     <>
@@ -41,19 +43,47 @@ export default function ChangeAccount({ myUsername }) {
           <thead>
             <tr>
               <th>Account</th>
-              <th>Last Conecction <FaHistory /></th>
+              <th>
+                <span>Last Conecction</span>
+                <IconHistory />
+              </th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><p>{myUsername}</p></td>
+              <td>
+                <p>{myUsername}</p>
+              </td>
               <td>Active</td>
             </tr>
             {linkedAccounts.map((linkedAccount) => (
-              <tr key={linkedAccount._id} onClick={() => changeAccount(linkedAccount._id)}>
+              <tr
+                key={linkedAccount._id}
+                onClick={() => changeAccount(linkedAccount._id)}
+              >
                 <td>
-                  <button onClick={(e) => deleteAccount(e, linkedAccount._id)}>Unlink</button>
+                  <button onClick={(e) => deleteAccount(e, linkedAccount._id)}>
+                    {whichUnlinkLoading === linkedAccount._id
+                      ? <Spinner
+                          height="100%" 
+                          size="1em" 
+                          color="inherit"
+                          showText={false}
+                        />
+                      : "Unlink"
+                    }
+                  </button>
                   <p>{linkedAccount.username}</p>
+                  {whichChangeLoading === linkedAccount._id && 
+                    <div className="spinner">
+                      <Spinner
+                        height="100%" 
+                        size="1em" 
+                        color="#b7bbc7"
+                        showText={false}
+                      />
+                    </div>
+                  }
                 </td>
                 <td>{linkedAccount.lastConnection}</td>
               </tr>
@@ -64,13 +94,11 @@ export default function ChangeAccount({ myUsername }) {
           <button onClick={handleLinkExistingModal}>
             Link existing account
           </button>
-          <button onClick={handleLinkNewModal}>
-            Create linked account
-          </button>
+          <button onClick={handleLinkNewModal}>Create linked account</button>
         </div>
       </StyledAccountList>
 
-      {isLinkExistingModalActive && (
+      {showLinkExistingModal && (
         <Modal onClose={handleLinkExistingModal}>
           <UserForm
             title="Link existing account"
@@ -83,7 +111,7 @@ export default function ChangeAccount({ myUsername }) {
         </Modal>
       )}
 
-      {isLinkNewModalActive && (
+      {showLinkNewModal && (
         <Modal onClose={handleLinkNewModal}>
           <UserForm
             title="Link new account"

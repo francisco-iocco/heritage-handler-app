@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import UserDataContext from "contexts/UserDataContext";
 import ResultsContext from "contexts/ResultsContext";
 import useResultsRate from "hooks/useResultsRate";
@@ -20,10 +20,17 @@ export default function Home() {
     setResultsTime,
   } = useResultsRate(results);
 
-  if (isUserDataLoading || areResultsLoading) return <Spinner />;
+  if(isUserDataLoading || areResultsLoading) {
+    return <StyledHome>
+      <Spinner
+        size="2.618em"
+        height="100%"
+      />
+    </StyledHome>
+  }
 
   return (
-    <StyledHome className="section">
+    <StyledHome amount={userData.heritage.amount}>
       <Information
         remittancesAmount={remittancesAmount}
         incomesAmount={incomesAmount}

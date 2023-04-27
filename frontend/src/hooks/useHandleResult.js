@@ -6,94 +6,46 @@ import createResultService from "services/createResult";
 import editResultService from "services/editResult";
 import deleteResultService from "services/deleteResult";
 
-const INITIAL_STATE = {
-  description: "",
-  amount: "",
-  isPermanent: false,
-  time: null,
-};
-
-const ACTIONS = {
-  CHANGE_DESCRIPTION: "CHANGE_DESCRIPTION",
-  CHANGE_AMOUNT: "CHANGE_AMOUNT",
-  TOGGLE_IS_PERMANENT: "TOGGLE_IS_PERMANENT",
-  CHANGE_TIME: "CHANGE_TIME",
-};
-
-function reducer(state, action) {
-  switch (action.type) {
-    case ACTIONS.CHANGE_DESCRIPTION:
-      return { ...state, description: action.payload };
-    case ACTIONS.CHANGE_AMOUNT:
-      return { ...state, amount: action.payload };
-    case ACTIONS.TOGGLE_IS_PERMANENT:
-      return {
-        ...state,
-        isPermanent: !state.isPermanent,
-        time: !state.isPermanent ? "per day" : null,
-      };
-    case ACTIONS.CHANGE_TIME:
-      return { ...state, time: action.payload };
-    default:
-      break;
-  }
-}
-
 export default function useHandleResult(resultToUpdate) {
   const { userData, setUserData } = useContext(UserDataContext);
   const { updateResults } = useContext(ResultsContext);
-
-  const [{ description, amount, isPermanent, time }, dispatch] = useReducer(
-    reducer,
-    resultToUpdate ? resultToUpdate : INITIAL_STATE
-  );
-  const changeDescription = (description) =>
-    dispatch({ type: ACTIONS.CHANGE_DESCRIPTION, payload: description });
-  const changeAmount = (amount) =>
-    dispatch({ type: ACTIONS.CHANGE_AMOUNT, payload: parseInt(amount) });
-  const toggleIsPermanent = () =>
-    dispatch({ type: ACTIONS.TOGGLE_IS_PERMANENT });
-  const changeTime = (time) =>
-    dispatch({ type: ACTIONS.CHANGE_TIME, payload: time });
-  
   const [errors, setErrors] = useState({});
-  const cleanError = (error) =>
-    setErrors((prevErrors) => {
-      let newErrors = {};
-      for (const prevError in prevErrors) {
-        if (prevError === error) continue;
-        newErrors[prevError] = prevErrors[prevError];
-      }
-      return newErrors;
-    });
+  const [isLoading, setIsLoading] = useState(false);
+  const cleanError = (error) => setErrors((prevErrors) => {
+    let newErrors = {};
+    for (const prevError in prevErrors) {
+      if (prevError === error) continue;
+      newErrors[prevError] = prevErrors[prevError];
+    }
+    return newErrors;
+  });
 
-  const inputsValidation = ({ description, amount }) => {
-    let hasError = false;
-    if (!amount) {
-      hasError = true;
-      setErrors((prevErrors) => {
-        return { ...prevErrors, amount: "Amount is required..." };
-      });
+  const inputsValidation = async (inputs = {}) => {
+    let err = false;
+    for(const input in inputs) {
+      if(!inputs[input]) {
+        err = true;
+        setErrors((prevErrors) =>
+          ({ ...prevErrors, [input]: `${input} is required...` }));
+        continue;
+      }
     }
-    if (!description) {
-      hasError = true;
-      setErrors((prevErrors) => {
-        return { ...prevErrors, description: "Description is required..." };
-      });
-    }
-    return hasError;
-  };
+
+    if(Object.keys(errors).length) return true;
+    if(err) return true;
+  }
 
   const createResult = async ({
     description,
     amount,
     isPermanent,
     time,
-    type,
+    type
   }) => {
-    const hasError = inputsValidation({ description, amount });
+    const hasError = await inputsValidation({ description, amount });
     if (hasError) return hasError;
     
+    setIsLoading(true);
     const response = await createResultService({
       description,
       amount,
@@ -106,48 +58,48 @@ export default function useHandleResult(resultToUpdate) {
       setErrors(response.errors);
       return true;
     }
-
+    
     await updateResults();
     setUserData(await getUserData({ userId: userData._id }));
+
+    setIsLoading(false);
   };
 
   const editResult = async ({
     description,
     amount,
-    isPermanent,
-    time,
-    type,
     resultId,
+    type,
   }) => {
-    const hasError = inputsValidation({ description, amount });
+    const hasError = await inputsValidation({ description, amount });
     if (hasError) return hasError;
 
     if(
       description === resultToUpdate.description &&
-      amount === resultToUpdate.amount &&
-      isPermanent === resultToUpdate.isPermanent &&
-      time === resultToUpdate.time
+      amount === resultToUpdate.amount
     ) return;
 
+    setIsLoading(true);
     const response = await editResultService({
       description,
       amount,
-      isPermanent,
-      time,
-      type,
       resultId,
+      type,
       userId: userData._id,
     });
     if (response?.errors) {
       setErrors(response.errors);
       return true;
     }
-
+    
     await updateResults();
     setUserData(await getUserData({ userId: userData._id }));
+
+    setIsLoading(false);
   };
 
   const deleteResult = async ({ resultId, type }) => {
+    setIsLoading(true);
     const response = await deleteResultService({
       resultId,
       type,
@@ -160,17 +112,14 @@ export default function useHandleResult(resultToUpdate) {
 
     await updateResults();
     setUserData(await getUserData({ userId: userData._id }));
+    setIsLoading(false);
   };
 
   return {
-    data: { description, amount, isPermanent, time },
-    changeDescription,
-    changeAmount,
-    toggleIsPermanent,
-    changeTime,
     createResult,
     editResult,
     deleteResult,
+    isLoading,
     errors,
     cleanError,
   };

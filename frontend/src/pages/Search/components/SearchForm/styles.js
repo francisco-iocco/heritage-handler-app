@@ -16,20 +16,38 @@ const StyledSearchForm = styled.form`
         return "color: #dc1616";
       }
     }}
+    color: ${({ theme }) => theme.colors.primary};
     font-size: 30px;
     letter-spacing: 2px;
-    padding: 10px;
+    margin-bottom: 15px;
     text-align: center;
   }
 
-  label {
-    font-size: 20px;
+  input[type="radio"] {
+    align-items: center;
+    appearance: none;
+    border-radius: 50%;
+    border: 2px solid #000;
+    cursor: pointer;
+    display: flex;
+    height: 25px;
+    justify-content: center;
+    margin: 20px 10px;
+    width: 25px;
   }
 
-  input[type="checkbox"],
-  input[type="radio"] {
-    margin: 20px 10px;
-    transform: scale(2);
+  input[type="radio"]::before {
+    border-radius: 50%;
+    content: "";
+    height: 70%;
+    transform: scale(0);
+    transition: transform .5s;
+    width: 70%;
+  }
+
+  input[type="radio"]:checked::before {
+    background-color: #5632fa;
+    transform: scale(1);
   }
 
   div {
@@ -37,18 +55,22 @@ const StyledSearchForm = styled.form`
     display: flex;
   }
 
-  div button {
-    background-color: #1ac31a;
-    border-radius: 10px;
-    border: none;
-    color: #fff;
+  button {
+    background-color: transparent;
+    border: 2px solid ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.primary};
     font-size: 20px;
     margin: 10px;
+    overflow: hidden;
     padding: 15px;
+    position: relative;
+    transition: background-color .5s;
   }
 
-  div button[type="submit"] {
-    background-color: #2424d2;
+  ${({ theme }) => theme.bps.laptops} {
+    button:hover {
+      background-color: ${({ theme }) => theme.colors.primary + "30"};
+    }
   }
 `;
 

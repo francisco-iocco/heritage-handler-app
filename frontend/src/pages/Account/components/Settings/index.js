@@ -44,7 +44,7 @@ export default function Settings() {
           <button onClick={() => handleCheckModal("delete")}>Delete account</button>
         </div>
         <div>
-          <p>Are you looking for <span onClick={logout}>logging out</span>?</p>
+          <p>Are you looking for <button onClick={logout}>logging out</button>?</p>
         </div>
       </StyledSettings>
 
@@ -89,6 +89,7 @@ export default function Settings() {
           <UserForm
             title="Delete account"
             btnTitle="Delete"
+            titleColor="#ef0107"
             note="You won't be able to rescue it!"
             usage="delete-account"
             onSubmit={logout}
