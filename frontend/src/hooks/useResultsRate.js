@@ -39,7 +39,7 @@ export default function useResultsRate(results) {
     },
     dispatch,
   ] = useReducer(reducer, INITIAL_STATE);
-  useEffect(() => { setResultsTime({ target: { value: "This day" } }) }, []);
+  useEffect(() => { setResultsTime({ target: { value: "This day" } }) }, [ results ]);
   
   const currentDate = new Date();
 

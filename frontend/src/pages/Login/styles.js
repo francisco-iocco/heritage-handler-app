@@ -1,6 +1,8 @@
 import styled from "@emotion/styled";
 
 const StyledLogin = styled.div`
+  height: 100%;
+
   form {
     max-width: 350px;
     width: 80%;
@@ -66,7 +68,7 @@ const StyledLogin = styled.div`
     flex-direction: row-reverse;
 
     > div:last-of-type {
-      height: 100vh;
+      height: 100%;
       width: 30%;
     }
 

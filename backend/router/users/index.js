@@ -375,7 +375,12 @@ router.delete("/:myId", async (req, res) => {
     errors: { id: "Id didn't match any user..." }
   })
 
-  // Remove my account from the other users' list of linked accounts.
+  // Delete all the user's own information;
+  const incomes = await Income.deleteMany({ user_id: myId });
+  const remittances = await Remittance.deleteMany({ user_id: myId });
+  const heritage = await Heritage.findByIdAndDelete(myDeletedUser.heritage._id);
+
+  // Remove the account from the other users' list of linked accounts.
   myDeletedUser.linkedAccounts.forEach(async (linkedAccount) => {
     const anotherUser = await User.findById(linkedAccount._id);
     const newLinkedAccounts = anotherUser.linkedAccounts.filter(

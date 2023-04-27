@@ -1,11 +1,11 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import UserDataContext from "contexts/UserDataContext";
 import ResultsContext from "contexts/ResultsContext";
 import useResultsRate from "hooks/useResultsRate";
 import Spinner from "components/Spinner";
 import Information from "./components/Information";
 import Percentajes from "./components/Percentajes";
-import { StyledHome, StyledSpinnerContainer } from "./styles";
+import StyledHome from "./styles";
 
 export default function Home() {
   const { userData, isLoading: isUserDataLoading } =

@@ -14,25 +14,23 @@ const initialWords = [
   "Free"
 ];
 
-export default function Presentation({ showModal }) {
+export default function Presentation() {
   const [words, setWords] = useState(initialWords.slice(0, 2));
 
   useEffect(() => {
     setInterval(() => {
-      if(!showModal) {
-        const newWords = [];
-        while(newWords.length < 2) {
-          const newWord = initialWords[(Math.random() * 9).toFixed(0)];
-          if(newWords.includes(newWord)) continue;
-          newWords.push(newWord);
-        }
-        setWords(newWords);
+      const newWords = [];
+      while(newWords.length < 2) {
+        const newWord = initialWords[(Math.random() * 9).toFixed(0)];
+        if(newWords.includes(newWord)) continue;
+        newWords.push(newWord);
       }
+      setWords(newWords);
     }, 20000);
   }, []);
   
   return (
-    <StyledPresentation showModal={showModal}>
+    <StyledPresentation>
       <div className="title-container">
         <header>
           <svg viewBox="0 0 100 100" className="strokes">

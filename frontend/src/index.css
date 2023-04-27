@@ -34,7 +34,7 @@ input[type="radio"] {
   -webkit-tap-highlight-color: transparent;
 }
 
-button:active {
+button:active, a:active {
   transform: scale(1.05);
 }
 

@@ -44,7 +44,6 @@ export default function useHandleResult(resultToUpdate) {
   }) => {
     const hasError = await inputsValidation({ description, amount });
     if (hasError) return hasError;
-    console.log(hasError);
     
     setIsLoading(true);
     const response = await createResultService({

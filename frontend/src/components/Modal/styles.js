@@ -19,7 +19,7 @@ const StyledModal = styled.div`
   
   .modal {
     ${({ close }) => !close
-      ? "animation: showUp .5s ease 1s forwards"
+      ? "animation: show .5s ease 1s forwards"
       : "animation: hide .5s ease 0s reverse"
     };
     background-color: #fff;
@@ -77,7 +77,7 @@ const StyledModal = styled.div`
     }
   }
 
-  @keyframes ${({ close }) => !close ? "showUp" : "hide"} {
+  @keyframes ${({ close }) => !close ? "show" : "hide"} {
     from {
       transform: scale(0);
     }

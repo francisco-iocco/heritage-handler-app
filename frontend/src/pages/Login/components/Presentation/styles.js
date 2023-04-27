@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 const StyledPresentation = styled.div`
   background-color: ${({ theme }) => theme.colors.primary};
   color: #fff;
-  height: 100vmax;
+  height: 100%;
 
   .title-container, header {
     display: flex;
@@ -328,8 +328,12 @@ const StyledPresentation = styled.div`
     }
   }
 
+  @media (max-height: 480px) and (orientation: landscape) {
+    height: 100vw;
+  }
+
   ${({ theme }) => theme.bps.laptops} {
-    height: 100vh;
+    height: 100%;
     width: 70%;
 
     .title-container {

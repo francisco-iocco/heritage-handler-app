@@ -9,9 +9,6 @@ export default function Login() {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const handleModal = () => setShowModal(!showModal);
-  const handleClick = () => {
-    handleModal();
-  }
 
   if (localStorage.getItem("userId")) return <Navigate to="/home" />;
 
@@ -27,7 +24,7 @@ export default function Login() {
           onSubmit={() => navigate("/home")}
         />
         <div className="divider"></div>
-        <button onClick={handleClick}>Create a new account</button>
+        <button onClick={handleModal}>Create a new account</button>
       </div>
       {showModal && (
         <Modal onClose={handleModal}>

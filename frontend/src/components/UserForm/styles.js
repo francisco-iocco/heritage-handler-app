@@ -60,6 +60,7 @@ export const StyledForm = styled.form`
   ${({ theme }) => theme.bps.laptops} {
     button {
       cursor: pointer;
+      transition: background-color .5s;
     }
 
     button:hover {
